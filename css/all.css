@@ -15046,6 +15046,7 @@ textarea:focus-visible {
 }
 .site-header-logo img {
   flex-shrink: 0;
+  width: 30px;
 }
 
 .site-header-logo-text {
@@ -17956,7 +17957,7 @@ textarea:focus-visible {
     padding: 16px 20px;
   }
   .modalPhoto-body {
-    padding: 8px 20px 4px;
+    padding: 8px 0px 4px;
   }
   .modalPhoto-footer {
     flex-direction: column;
