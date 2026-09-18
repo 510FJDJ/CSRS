@@ -1,0 +1,222 @@
+// ============================================================
+// 首頁 Hero 區塊＋快速預約列
+// 背景裝飾（灰色格狀點點、右側圓環、斜虛線）一律以 CSS 繪製，
+// 不引用 img/參考圖/（該資料夾僅供比對，禁止在頁面引用）
+// ============================================================
+
+.hero-home {
+    position: relative;
+    padding: 10px 0 36px;
+    overflow: clip;
+    background-color:#F9FAFD;
+    // 格狀灰色點點
+    background-image: radial-gradient(circle, rgba(85, 96, 110, .16) 1px, transparent 1.5px);
+    background-size: 24px 24px;
+
+    // 右側大圓環
+    &::before {
+        content: "";
+        position: absolute;
+        top: 14%;
+        right: 2%;
+        width: 240px;
+        height: 240px;
+        border: 56px solid rgba($color-primary, .05);
+        border-radius: 50%;
+    }
+
+    // 左下半圓環
+    &::after {
+        content: "";
+        position: absolute;
+        top: 58%;
+        right: 43%;
+        width: 320px;
+        height: 320px;
+        border: 55px solid transparent;
+        border-top-color:  rgba($color-primary, .05);
+        border-left-color: rgba($color-primary, .05);
+        border-radius: 50%;
+         box-sizing: border-box; 
+    }
+
+}
+
+@include media-breakpoint-down(md) {
+    .hero-home {
+        padding: 30px 0 36px;
+    }
+    .hero-home::before {
+        top: 45%;
+        right: -22%;
+    }
+}
+
+// 底部沉底虛線弧：格子點到了弧線就被蓋掉（遮罩），弧線本體另用 svg.hero-home-arc 疊在同一條曲線上
+// clip-path／漸層定義見 index.html 內隱藏的 <svg><defs>（#heroDotsClip／#heroArcGradient）
+.hero-home-mask {
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 110px;
+    background-color: #FBFCFE;
+    clip-path: url(#heroDotsClip);
+    pointer-events: none;
+
+    @media (max-width: 767.98px) {
+        height: 44px;
+    }
+}
+
+.hero-home-arc {
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 110px;
+    pointer-events: none;
+
+    @media (max-width: 767.98px) {
+        height: 44px;
+    }
+}
+
+.hero-home-grid {
+    position: relative;
+    z-index: 1;
+    align-items: center;
+    gap: 32px;
+
+    @media (max-width: 991.98px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap:10px;
+    }
+}
+
+.hero-home-copy {
+    max-width: 560px;
+    padding: 0px 10px;
+
+    h1 {
+        margin-bottom: 24px;
+        font-size: 4rem;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: .08em;
+
+        @media (max-width: 767.98px) {
+            font-size: 2.25rem;
+        }
+    }
+    @include media-breakpoint-up(lg) {
+   padding:0px 40px;
+  }
+}
+
+// 「點一下」漸層字（使用者指定漸層值）
+.hero-home-highlight {
+    background: linear-gradient(180deg, #1257CE 15.87%, #0A92D2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: $color-primary; // 不支援 background-clip:text 時的備援色
+}
+
+.hero-home-desc {
+    margin-bottom: 32px;
+    color: $color-ink-soft;
+    font-size: 1.0625rem;
+    line-height: 2;
+}
+
+.hero-home-actions {
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-home-visual {
+    flex: 1 1 320px;
+    min-width: 0;
+    max-width: 700px;
+    margin-inline: auto;
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+// ---- 快速預約列：深藍色圓角橫條，左下實色位移陰影 ----
+.hero-quicksearch {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px 24px;
+    margin-top: -70px;
+    padding: 24px 32px;
+    border-radius: 20px;
+    background-color: $color-primary;
+    color: #fff;
+    box-shadow: 0px 4px 16px 0px #11111A0D,0px 8px 32px 0px #11111A0D, 0px 6px 16px 0px #1E5FC447;
+
+    @media (max-width: 1200px) {
+        margin-top: 0px;
+        padding: 16px 20px;
+    }
+    @media (max-width: 992px) {
+        margin-top: -40px;
+    }
+}
+
+.hero-quicksearch-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 0 0 auto;
+    align-self: center;
+    padding-right: 8px;
+
+    img {
+        width: 40px;
+        height: 40px;
+    }
+
+    strong {
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+    }
+
+    small {
+        color: rgba(255, 255, 255, .85);
+    }
+
+    @media (max-width: 767.98px) {
+        flex: 1 1 100%;
+    }
+}
+
+.hero-quicksearch-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 180px;
+
+    label {
+        font-size: .875rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, .92);
+    }
+}
+
+.hero-quicksearch-submit {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}

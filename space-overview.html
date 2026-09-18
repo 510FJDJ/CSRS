@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <script>
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="img/logo/logo-uni.svg">
+    <title>空間使用總覽 - 彰特空間預約</title>
+    <meta name="description" content="查看全校空間各節次使用狀況，點選格子可查看使用詳情。">
+
+    <link rel="stylesheet" href="css/all.css">
+</head>
+<body>
+    <a href="#goCenter" class="sr-only focusable" accesskey="C" title="跳過導覽列，進入主要內容區">主要內容區</a>
+    <a href="#headerNav" class="sr-only focusable" accesskey="U" title="跳至上方導覽列" tabindex="-1">上方導覽列</a>
+
+    <div id="header" data-layout="layout/header_AdminLogged.html"></div>
+
+    <main id="goCenter" tabindex="-1">
+        <!-- 內頁 Banner -->
+        <section class="page-banner">
+            <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+                <defs>
+                    <linearGradient id="bannerArcGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="15.87%" stop-color="#084DC7" stop-opacity=".58"/>
+                        <stop offset="62.02%" stop-color="#DDE9FC"/>
+                    </linearGradient>
+                    <clipPath id="bannerDotsClip" clipPathUnits="objectBoundingBox">
+                        <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <svg class="page-banner-arc" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path class="page-banner-arc-mask" d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z"/>
+                <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05" fill="none" stroke="url(#bannerArcGradient)" stroke-width="1" stroke-dasharray="6 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <img class="page-banner-mountain" src="img/dec/內頁背景banner素材/Subtract.svg" alt="">
+
+            <div class="container page-banner-content">
+                <nav class="page-banner-breadcrumb" aria-label="麵包屑導覽">
+                    <ol>
+                        <li>
+                            <a class="breadcrumb-home" href="index.html" aria-label="首頁">
+                                <i class="bi bi-house-door" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li aria-current="page">空間使用總覽</li>
+                    </ol>
+                </nav>
+
+                <div class="page-banner-main flex-row-between">
+                    <div class="page-banner-text">
+                        <h1 class="page-banner-title">空間使用總覽</h1>
+                        <p class="page-banner-desc">選一間空間看一整週；選全部或某個分類，看單日所有空間。點格子可查看使用詳情。</p>
+                    </div>
+                    <div class="page-banner-visual" aria-hidden="true">
+                        <img src="img/dec/內頁背景banner素材/人物組圖.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 篩選列 -->
+        <section class="filter-section">
+            <div class="container">
+                <div class="filter-card">
+                    <form class="filter-form" id="scheduleFilterForm">
+                        <div class="filter-field">
+                            <label for="filterCategory">類別</label>
+                            <select id="filterCategory" name="category" class="form-select">
+                                <option value="all" selected>全部分類</option>
+                                <option value="general">一般教學</option>
+                                <option value="artSport">藝術體育</option>
+                                <option value="special">特教專業</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="filterSpace">空間</label>
+                            <select id="filterSpace" name="space" class="form-select">
+                                <option value="all" selected>全部空間(9)</option>
+                                <option value="computer1" data-category="general">電腦教室(一)</option>
+                                <option value="computer2" data-category="general">電腦教室(二)</option>
+                                <option value="av" data-category="general">視聽教室</option>
+                                <option value="motor" data-category="general">知動教室</option>
+                                <option value="rhythm" data-category="artSport">韻律教室</option>
+                                <option value="art" data-category="artSport">美勞教室</option>
+                                <option value="hall" data-category="artSport">綜合活動中心</option>
+                                <option value="sensory" data-category="special">感統教室</option>
+                                <option value="counseling" data-category="special">團體諮商室</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="filterDate">日期</label>
+                            <input type="date" id="filterDate" name="date" class="form-control" value="2026-09-17">
+                        </div>
+
+                        <div class="filter-actions">
+                            <button type="submit" class="btnRounded btn-primary">
+                                <i class="bi bi-search" aria-hidden="true"></i>查詢
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 時段表結果 -->
+        <section class="reservation-section">
+            <div class="container">
+                <div class="scheduleBoard">
+                    <div class="scheduleBoard-toolbar flex-row-between">
+                        <h2 class="scheduleBoard-title" id="scheduleResultTitle">全部空間<small>9間</small></h2>
+
+                        <div class="scheduleBoard-nav flex-row-center">
+                            <button type="button" class="scheduleBoard-navBtn" id="scheduleNavPrev" aria-label="上一個日期">
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <div class="scheduleBoard-dateLabel" id="scheduleDateLabel">
+                                <strong>9/17（四）</strong>
+                                <span>今天</span>
+                            </div>
+                            <button type="button" class="scheduleBoard-navBtn" id="scheduleNavNext" aria-label="下一個日期">
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btnRounded btn-soft btn-compact" id="scheduleNavToday">今天</button>
+                            <span class="tagPill tag-info" id="scheduleViewLabel">
+                                <i class="bi bi-calendar-day" aria-hidden="true"></i>單日檢視
+                            </span>
+                        </div>
+                    </div>
+
+                    <ul class="scheduleLegend flex-row-center" id="scheduleLegend">
+                        <li><span class="scheduleLegend-swatch is-used" aria-hidden="true"></span>課表占用、已使用</li>
+                        <li><span class="scheduleLegend-swatch is-approved" aria-hidden="true"></span>已核准</li>
+                        <li><span class="scheduleLegend-swatch is-pending" aria-hidden="true"></span>待審核</li>
+                        <li><span class="scheduleLegend-swatch is-conflict" aria-hidden="true"></span>衝突待裁決</li>
+                    </ul>
+
+                    <div class="scheduleBoard-empty" id="scheduleEmptyState" hidden>
+                        <i class="bi bi-calendar-x" aria-hidden="true"></i>
+                        <p>此日期尚無資料</p>
+                    </div>
+
+                    <!-- 單日檢視：空間×節次 -->
+                    <div class="scheduleBoard-tablewrap" id="scheduleDayWrap">
+                        <table class="scheduleTable" aria-label="全部空間單日時段表">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="scheduleTable-cornerHead">空間</th>
+                                    <th scope="col" class="scheduleTable-colHead">第一節<span class="scheduleTable-colHead-time">08:00</span></th>
+                                    <th scope="col" class="scheduleTable-colHead">第二節<span class="scheduleTable-colHead-time">09:00</span></th>
+                                    <th scope="col" class="scheduleTable-colHead">第三節<span class="scheduleTable-colHead-time">10:00</span></th>
+                                    <th scope="col" class="scheduleTable-colHead">第四節<span class="scheduleTable-colHead-time">10:55</span></th>
+                                    <th scope="col" class="scheduleTable-colHead">第五節<span class="scheduleTable-colHead-time">13:00</span></th>
+                                    <th scope="col" class="scheduleTable-colHead">第六節<span class="scheduleTable-colHead-time">13:50</span></th>
+                                    <th scope="col" class="scheduleTable-colHead">第七節<span class="scheduleTable-colHead-time">14:50</span></th>
+                                    <th scope="col" class="scheduleTable-colHead">第八節<span class="scheduleTable-colHead-time">15:45</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="scheduleTable-groupRow" data-category="general">
+                                    <th colspan="9" scope="colgroup">一般教學</th>
+                                </tr>
+
+                                <tr data-category="general">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">電腦教室(一)</span>
+                                        <span class="scheduleTable-rowHead-sub">容納2班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第一節" data-subtitle="9/17（四）　08:00-08:50" data-schedule='{"class":"國三甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第三節" data-subtitle="9/17（四）　10:00-10:50" data-schedule='{"class":"高一甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">高一甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第五節" data-subtitle="9/17（四）　13:00-13:40" data-schedule='{"class":"高二甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr data-category="general">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">電腦教室(二)</span>
+                                        <span class="scheduleTable-rowHead-sub">容納1班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(二)　第四節" data-subtitle="9/17（四）　10:55-11:45" data-schedule='{"class":"高二甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(二)　第六節" data-subtitle="9/17（四）　13:50-14:40" data-schedule='{"class":"高三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="approved">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(二)　第七節" data-subtitle="9/17（四）　14:50-15:40" data-entries='[{"name":"蔡O宏","status":"approved","reason":"班級簡報製作教學","ticket":"3101"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">已核准</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(二)　第八節" data-subtitle="9/17（四）　15:45-16:30" data-schedule='{"class":"國三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-category="general">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">視聽教室</span>
+                                        <span class="scheduleTable-rowHead-sub">容納2班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="pending">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="視聽教室　第三節" data-subtitle="9/17（四）　10:00-10:50" data-entries='[{"name":"蔡O宏","status":"pending","reason":"生命教育影片賞析","ticket":"3102"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">待審核</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="視聽教室　第七節" data-subtitle="9/17（四）　14:50-15:40" data-schedule='{"class":"高二甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr data-category="general">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">知動教室</span>
+                                        <span class="scheduleTable-rowHead-sub">容納2班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="知動教室　第一節" data-subtitle="9/17（四）　08:00-08:50" data-schedule='{"class":"高三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="approved">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="知動教室　第二節" data-subtitle="9/17（四）　09:00-09:50" data-entries='[{"name":"蔡O宏","status":"approved","reason":"知動訓練觀摩","ticket":"3103"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">已核准</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="conflict">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="知動教室　第三節" data-subtitle="9/17（四）　10:00-10:50" data-alert="true" data-schedule='{"class":"高一甲","course":"知動訓練"}' data-entries='[{"name":"王O名","status":"pending","conflict":true,"reason":"個別化知動訓練","ticket":"3104"}]'>
+                                            <span class="tagPill tagPill-sm tag-dangerFill">衝突</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr class="scheduleTable-groupRow" data-category="artSport">
+                                    <th colspan="9" scope="colgroup">藝術體育</th>
+                                </tr>
+
+                                <tr data-category="artSport">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">韻律教室</span>
+                                        <span class="scheduleTable-rowHead-sub">容納1班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="韻律教室　第二節" data-subtitle="9/17（四）　09:00-09:50" data-schedule='{"class":"高三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="approved">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="韻律教室　第三節" data-subtitle="9/17（四）　10:00-10:50" data-entries='[{"name":"蔡O宏","status":"approved","reason":"韻律活動場地確認","ticket":"3106"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">已核准</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="韻律教室　第四節" data-subtitle="9/17（四）　10:55-11:45" data-schedule='{"class":"國三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="韻律教室　第六節" data-subtitle="9/17（四）　13:50-14:40" data-schedule='{"class":"高二甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr data-category="artSport">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">美勞教室</span>
+                                        <span class="scheduleTable-rowHead-sub">容納2班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="approved">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="美勞教室　第四節" data-subtitle="9/17（四）　10:55-11:45" data-entries='[{"name":"蔡O宏","status":"approved","reason":"美勞作品佈展","ticket":"3107"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">已核准</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="美勞教室　第五節" data-subtitle="9/17（四）　13:00-13:40" data-schedule='{"class":"國三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="美勞教室　第七節" data-subtitle="9/17（四）　14:50-15:40" data-schedule='{"class":"高二甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr data-category="artSport">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">綜合活動中心</span>
+                                        <span class="scheduleTable-rowHead-sub">容納1班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="綜合活動中心　第一節" data-subtitle="9/17（四）　08:00-08:50" data-schedule='{"class":"高二甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="pending">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="綜合活動中心　第二節" data-subtitle="9/17（四）　09:00-09:50" data-entries='[{"name":"蔡O宏","status":"pending","reason":"期初班親會場地布置","ticket":"3108"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">待審核</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="pending">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="綜合活動中心　第四節" data-subtitle="9/17（四）　10:55-11:45" data-merged="true" data-entries='[{"name":"蔡O宏","status":"pending","merged":true,"reason":"班親會排練","ticket":"3109"},{"name":"黃O君","status":"pending","merged":true,"reason":"班親會排練（併班）","ticket":"3110"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="tagPill tagPill-sm tag-mergedFill">合併</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="綜合活動中心　第八節" data-subtitle="9/17（四）　15:45-16:30" data-schedule='{"class":"高二甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr class="scheduleTable-groupRow" data-category="special">
+                                    <th colspan="9" scope="colgroup">特教專業</th>
+                                </tr>
+
+                                <tr data-category="special">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">感統教室</span>
+                                        <span class="scheduleTable-rowHead-sub">容納2班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="pending">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="感統教室　第一節" data-subtitle="9/17（四）　08:00-08:50" data-entries='[{"name":"蔡O宏","status":"pending","reason":"感覺統合評估","ticket":"3111"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">待審核</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="感統教室　第二節" data-subtitle="9/17（四）　09:00-09:50" data-schedule='{"class":"國三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="approved">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="感統教室　第三節" data-subtitle="9/17（四）　10:00-10:50" data-entries='[{"name":"蔡O宏","status":"approved","reason":"感統器材測試","ticket":"3112"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">已核准</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="感統教室　第四節" data-subtitle="9/17（四）　10:55-11:45" data-schedule='{"class":"國三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="conflict">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="感統教室　第六節" data-subtitle="9/17（四）　13:50-14:40" data-alert="true" data-schedule='{"class":"高二甲","course":"感統活動"}' data-entries='[{"name":"王O名","status":"pending","conflict":true,"reason":"個別化感統訓練","ticket":"3113"},{"name":"高三甲","status":"used","reason":"班級感統補課紀錄","ticket":"3114"}]'>
+                                            <span class="tagPill tagPill-sm tag-dangerFill">衝突</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr data-category="special">
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">團體諮商室</span>
+                                        <span class="scheduleTable-rowHead-sub">容納2班</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="approved">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="團體諮商室　第一節" data-subtitle="9/17（四）　08:00-08:50" data-entries='[{"name":"蔡O宏","status":"approved","reason":"團體諮商方案籌備","ticket":"3115"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">已核准</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="團體諮商室　第三節" data-subtitle="9/17（四）　10:00-10:50" data-schedule='{"class":"國三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="團體諮商室　第五節" data-subtitle="9/17（四）　13:00-13:40" data-schedule='{"class":"高二甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="團體諮商室　第七節" data-subtitle="9/17（四）　14:50-15:40" data-schedule='{"class":"高二甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 周檢視：節次×日期（單一空間） -->
+                    <div class="scheduleBoard-tablewrap" id="scheduleWeekWrap" hidden>
+                        <table class="scheduleTable" aria-label="單一空間週時段表">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="scheduleTable-cornerHead">節次</th>
+                                    <th scope="col" class="scheduleTable-colHead"><span class="scheduleTable-colHead-weekday">週日</span><span class="scheduleTable-colHead-num">9/13</span></th>
+                                    <th scope="col" class="scheduleTable-colHead"><span class="scheduleTable-colHead-weekday">週一</span><span class="scheduleTable-colHead-num">9/14</span></th>
+                                    <th scope="col" class="scheduleTable-colHead"><span class="scheduleTable-colHead-weekday">週二</span><span class="scheduleTable-colHead-num">9/15</span></th>
+                                    <th scope="col" class="scheduleTable-colHead"><span class="scheduleTable-colHead-weekday">週三</span><span class="scheduleTable-colHead-num">9/16</span></th>
+                                    <th scope="col" class="scheduleTable-colHead is-today"><span class="scheduleTable-colHead-weekday">週四</span><span class="scheduleTable-colHead-num">9/17</span></th>
+                                    <th scope="col" class="scheduleTable-colHead"><span class="scheduleTable-colHead-weekday">週五</span><span class="scheduleTable-colHead-num">9/18</span></th>
+                                    <th scope="col" class="scheduleTable-colHead"><span class="scheduleTable-colHead-weekday">週六</span><span class="scheduleTable-colHead-num">9/19</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">第一節</span>
+                                        <span class="scheduleTable-rowHead-sub">08:00-08:50</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第一節" data-subtitle="9/14（一）　08:00-08:50" data-entries='[{"name":"王O明","status":"used","reason":"資訊課程實作","ticket":"2201"}]'>
+                                            <span class="scheduleTable-slotStatus">王O明</span>
+                                            <span class="scheduleTable-slotMeta">已使用</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第一節" data-subtitle="9/16（三）　08:00-08:50" data-entries='[{"name":"鄭O雯","status":"used","reason":"ISP 會議，需使用單面鏡觀察室","ticket":"2202"},{"name":"黃O君","status":"used","reason":"個案觀察紀錄","ticket":"2203"}]'>
+                                            <span class="scheduleTable-slotStatus">鄭O雯</span>
+                                            <span class="scheduleTable-slotMeta">已使用</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第一節" data-subtitle="9/17（四）　08:00-08:50" data-schedule='{"class":"國三甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="pending">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第一節" data-subtitle="9/18（五）　08:00-08:50" data-entries='[{"name":"蔡O宏","status":"pending","reason":"班級資訊能力測驗","ticket":"2204"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">待審核</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">第二節</span>
+                                        <span class="scheduleTable-rowHead-sub">09:00-09:50</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第二節" data-subtitle="9/14（一）　09:00-09:50" data-entries='[{"name":"王O明","status":"used","reason":"資訊課程實作","ticket":"2205"}]'>
+                                            <span class="scheduleTable-slotStatus">王O明</span>
+                                            <span class="scheduleTable-slotMeta">已使用</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第二節" data-subtitle="9/15（二）　09:00-09:50" data-schedule='{"class":"高三乙","course":"社會技巧"}'>
+                                            <span class="scheduleTable-slotStatus">高三乙</span>
+                                            <span class="scheduleTable-slotMeta">課表・社會技巧</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="conflict">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第二節" data-subtitle="9/18（五）　09:00-09:50" data-alert="true" data-schedule='{"class":"高二甲","course":"溝通訓練"}' data-entries='[{"name":"鄭O雯","status":"pending","conflict":true,"reason":"班級資訊能力測驗複試","ticket":"2206"},{"name":"黃O君","status":"pending","reason":"個案觀察紀錄","ticket":"2207"},{"name":"劉O伶","status":"used","reason":"其他借用紀錄","ticket":"2208"}]'>
+                                            <span class="tagPill tagPill-sm tag-dangerFill">衝突</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">第三節</span>
+                                        <span class="scheduleTable-rowHead-sub">10:00-10:50</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第三節" data-subtitle="9/15（二）　10:00-10:50" data-entries='[{"name":"王O明","status":"used","reason":"資訊課程實作","ticket":"2209"}]'>
+                                            <span class="scheduleTable-slotStatus">王O明</span>
+                                            <span class="scheduleTable-slotMeta">已使用</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第三節" data-subtitle="9/16（三）　10:00-10:50" data-entries='[{"name":"高三乙","status":"used","reason":"社會技巧課程","ticket":"2210"},{"name":"許O安","status":"used","reason":"班際競賽練習","ticket":"2211"}]'>
+                                            <span class="scheduleTable-slotStatus">高三乙</span>
+                                            <span class="scheduleTable-slotMeta">已使用</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第三節" data-subtitle="9/17（四）　10:00-10:50" data-schedule='{"class":"高二甲","course":"溝通訓練"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・溝通訓練</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">第四節</span>
+                                        <span class="scheduleTable-rowHead-sub">10:55-11:45</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第四節" data-subtitle="9/15（二）　10:55-11:45" data-schedule='{"class":"高三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="approved">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第四節" data-subtitle="9/18（五）　10:55-11:45" data-entries='[{"name":"蔡O宏","status":"approved","reason":"班級資訊能力測驗","ticket":"2212"}]'>
+                                            <span class="scheduleTable-slotStatus">蔡O宏</span>
+                                            <span class="scheduleTable-slotMeta">已核准</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr class="scheduleTable-breakRow">
+                                    <td colspan="8">午休</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">第五節</span>
+                                        <span class="scheduleTable-rowHead-sub">13:00-13:40</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第五節" data-subtitle="9/14（一）　13:00-13:40" data-schedule='{"class":"高三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第五節" data-subtitle="9/17（四）　13:00-13:40" data-schedule='{"class":"國三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">第六節</span>
+                                        <span class="scheduleTable-rowHead-sub">13:50-14:40</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第六節" data-subtitle="9/16（三）　13:50-14:40" data-schedule='{"class":"國三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">國三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">第七節</span>
+                                        <span class="scheduleTable-rowHead-sub">14:50-15:40</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第七節" data-subtitle="9/14（一）　14:50-15:40" data-schedule='{"class":"高三甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第七節" data-subtitle="9/18（五）　14:50-15:40" data-schedule='{"class":"高二甲","course":"中文閱讀與寫作"}'>
+                                            <span class="scheduleTable-slotStatus">高二甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・中文閱讀與寫作</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row" class="scheduleTable-rowHead">
+                                        <span class="scheduleTable-rowHead-label">第八節</span>
+                                        <span class="scheduleTable-rowHead-sub">15:45-16:30</span>
+                                    </th>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第八節" data-subtitle="9/15（二）　15:45-16:30" data-entries='[{"name":"吳O廷","status":"used","reason":"資訊自主學習","ticket":"2213"}]'>
+                                            <span class="scheduleTable-slotStatus">吳O廷</span>
+                                            <span class="scheduleTable-slotMeta">已使用</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="used">
+                                        <button type="button" class="scheduleTable-slot is-clickable" data-bs-toggle="modal" data-bs-target="#modalScheduleDetail" data-title="電腦教室(一)　第八節" data-subtitle="9/16（三）　15:45-16:30" data-schedule='{"class":"高三甲","course":"休閒教育"}'>
+                                            <span class="scheduleTable-slotStatus">高三甲</span>
+                                            <span class="scheduleTable-slotMeta">課表・休閒教育</span>
+                                        </button>
+                                    </td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                    <td class="scheduleTable-cell" data-state="empty"><span class="scheduleTable-dash" aria-hidden="true">-</span><span class="sr-only">尚無使用紀錄</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 使用明細 Modal（單一實例，內容由 js/spaceOverview.js 依點擊格子動態填入） -->
+    <div class="modal fade" id="modalScheduleDetail" tabindex="-1" aria-labelledby="modalScheduleDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content detailModal">
+                <div class="modal-header detailModal-header">
+                    <div>
+                        <h2 class="modal-title detailModal-title" id="modalScheduleDetailLabel" data-modal-title>使用詳情</h2>
+                        <p class="detailModal-subtitle" data-modal-subtitle></p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body detailModal-body">
+                    <div class="noticeBox noticeBox-danger" data-modal-alert hidden>
+                        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+                        <p class="mb-0">這個時段有預約和既有使用重疊，申請人選擇交由管理者裁決。</p>
+                    </div>
+
+                    <section class="detailModal-section" data-modal-scheduleSection hidden>
+                        <h3 class="detailModal-sectionTitle">課表占用</h3>
+                        <dl class="detailModal-table">
+                            <div class="detailModal-row">
+                                <dt>班級</dt>
+                                <dd data-modal-scheduleClass></dd>
+                            </div>
+                            <div class="detailModal-row">
+                                <dt>課程</dt>
+                                <dd data-modal-scheduleCourse></dd>
+                            </div>
+                        </dl>
+                        <p class="detailModal-rowSub mt-2"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> 課表同步</p>
+                    </section>
+
+                    <section class="detailModal-section" data-modal-entrySection hidden>
+                        <h3 class="detailModal-sectionTitle">預約明細</h3>
+                        <div data-modal-entries></div>
+                    </section>
+                </div>
+                <div class="modal-footer detailModal-footer">
+                    <button type="button" class="btnPill btn-soft" data-bs-dismiss="modal">關閉</button>
+                    <a href="review.html" class="btnPill btn-primary flex-fill" data-modal-reviewLink hidden>
+                        前往預約審核管理<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 回到頂部 -->
+    <button type="button" class="scroll-top-btn" aria-label="回到頁面頂端">
+        <i class="bi bi-arrow-up" aria-hidden="true"></i>
+        <span class="scroll-top-text">回頂端</span>
+    </button>
+
+    <div id="footer" data-layout="layout/footer.html"></div>
+
+    <script src="js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/spaceOverview.js"></script>
+</body>
+</html>

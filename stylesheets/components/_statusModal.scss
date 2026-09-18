@@ -1,0 +1,111 @@
+// ============================================================
+// 插圖狀態彈窗（外型元件）：右側出血角色插圖＋左側標題說明，用於任何「單一結果狀態」的提示彈窗
+// 原為登入頁「驗證信已寄出／密碼重設完成」專屬 authStatusModal，因「已送出申請」（reservation.html）
+// 重用同一外型而抽成外型命名元件（CLAUDE.md §5.1「新增元件前先盤點既有元件」教訓）
+// footer 按鈕沿用 _login.scss 既有的 .authModalBtn-close／-main／-full（已是通用的 flex 版位樣式，非 auth 專屬邏輯）
+// ============================================================
+
+.statusModal {
+    position: relative;
+    overflow: clip;
+}
+
+.statusModal-circle {
+    position: absolute;
+    z-index: 0;
+    top: -90px;
+    right: -70px;
+    width: 258px;
+    height: 258px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, rgba(231, 245, 255, .501961) 0%, #E7F5FF 100%);
+}
+
+.statusModal-body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 40px;
+    min-height: 230px;
+}
+
+.statusModal-text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.statusModal-title {
+    margin: 0 0 8px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $color-ink;
+}
+.statusModal-desc{
+    max-width: 260px;
+}
+.statusModal-subtitle {
+    margin: 0;
+    color: $color-ink;
+    font-size: 1rem;
+    max-width: 200px;
+    strong{
+        color:$color-primary;
+    }
+    + .statusModal-desc {
+        color: $color-ink-soft;
+        margin-top: 10px;
+        max-width: 220px;
+    }
+}
+
+// 強調段落：深色文字，用於刪除確認等需要先陳述具體對象內容（時間／地點）再接警語說明的彈窗
+.statusModal-desc-emphasis {
+    color: $color-ink;
+    font-weight: 500;
+}
+
+.statusModal-illustration {
+    flex: 0 0 auto;
+    width: 220px;
+    position: absolute;
+    bottom:0px;
+    left:260px;
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
+.statusModal .modal-footer {
+    gap: 12px;
+    padding: 20px 28px 28px;
+    border-top-color: $color-border;
+    justify-content:center;
+
+    > * {
+        margin: 0;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .statusModal-body {
+        padding: 28px 24px 20px;
+        gap: 12px;
+    }
+
+    .statusModal-illustration {
+        width: 180px;
+        bottom:0px;
+        left:240px;
+    }
+
+    .statusModal-circle {
+        top: -50px;
+        right: -30px;
+        width: 180px;
+        height: 180px;
+    }
+}

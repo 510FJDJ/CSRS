@@ -1,0 +1,198 @@
+// ============================================================
+// 內頁 Banner（全校預約清單等內頁共用）
+// 背景點狀網格／底部漸層虛線弧：與首頁 hero 相同做法（見 _heroHome.scss）
+// 右上角中空圓：CSS 繪製，不引用 img/dec/內頁背景banner素材/Ellipse 2.svg（省檔案大小）
+// 底部遮罩色塊：畫在 svg.page-banner-arc 裡（與弧線共用同一份 0–1 座標系，隨容器寬度即時跟著弧線一起縮放）
+// 左下角山形裝飾：直接引用現成的 img/dec/內頁背景banner素材/Subtract.svg（2026/9 使用者確認改用原始素材，CSS 繪製版本視覺跟原稿差太多），
+// 外層包一個跟弧線同尺寸的 .page-banner-clip 當裁切窗口，讓 img 依真實弧線位置裁切
+// ============================================================
+
+.page-banner {
+    position: relative;
+    padding: 28px 0 96px;
+    overflow: clip;
+    background-color: #F9FAFD;
+    // 淺藍色點狀網格
+    background-image: radial-gradient(circle, rgba(85, 96, 110, .16) 1px, transparent 1.5px);
+    background-size: 24px 24px;
+
+    // 右上角中空圓
+    &::before {
+        content: "";
+        position: absolute;
+        top: -38%;
+        right: -7%;
+        width: 260px;
+        height: 260px;
+        border: 45px solid #DDEBF5;
+        border-radius: 50%;
+    }
+}
+
+@include media-breakpoint-down(lg) {
+    .page-banner {
+        padding: 24px 0 64px;
+
+        &::before {
+            display: none;
+        }
+    }
+}
+
+.page-banner-arc {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 110px;
+    pointer-events: none;
+
+    @media (max-width: 991.98px) {
+        height: 44px;
+    }
+}
+.page-banner-mountain {
+    position: absolute;
+    z-index: 1;     
+    left: -130px;
+    bottom: 26px; 
+    
+    width: auto;     
+    height: 220px;  
+    object-fit: contain; 
+    pointer-events: none;
+
+    @media (max-width: 991.98px) {
+        display: none;
+    }
+}
+.page-banner-arc-mask {
+    fill: #FBFCFE;
+}
+
+.page-banner-content {
+    position: relative;
+    z-index: 1;
+}
+
+.page-banner-breadcrumb {
+
+    ol {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: .9375rem;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        &:not(:last-child)::after {
+            content: "•";
+            color: $color-border;
+        }
+    }
+
+    a {
+        color: $color-ink-soft;
+        text-decoration: none;
+
+        &:hover {
+            color: $color-primary;
+            text-decoration: underline;
+        }
+    }
+
+    .breadcrumb-home {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: white;
+        border: 1px solid $color-border;
+        color: $color-primary;
+
+        &:hover {
+            background-color: rgba($color-primary, .18);
+            text-decoration: none;
+        }
+    }
+
+    li[aria-current="page"] {
+        color: $color-ink;
+        font-weight: 500;
+    }
+}
+
+.page-banner-main {
+    position: relative;
+    align-items: center;
+    gap: 32px;
+
+    @media (max-width: 991.98px) {
+        align-items: flex-start;
+    }
+}
+
+.page-banner-text {
+    max-width: 620px;
+}
+
+.page-banner-title {
+    margin-bottom: 12px;
+    font-size: 2.25rem;
+
+    @media (max-width: 767.98px) {
+        font-size: 1.75rem;
+    }
+}
+
+.page-banner-desc {
+    margin-bottom: 0;
+    color: $color-ink-soft;
+    font-size: 1.0625rem;
+    line-height: 1.9;
+
+    @media (max-width: 991.98px) {
+        max-width: 68%;
+    }
+}
+
+// 插圖：貼齊下方圓弧（負 margin 下沉）；手機版改疊在說明文字右側後方
+// （絕對定位＋負 z-index＋淡化透明度），不再排在文字下方佔用垂直空間
+.page-banner-visual {
+    flex: 0 0 auto;
+    align-self: flex-end;
+    margin-bottom: -80px;
+
+    img {
+        display: block;
+        width: 460px;
+        max-width: 100%;
+        height: auto;
+    }
+
+    @media (max-width: 991.98px) {
+        position: absolute;
+        right: -80px;
+        bottom: -32px;
+        z-index: -1;
+        align-self: auto;
+        margin-bottom: 0;
+        opacity: .6;
+
+        img {
+            width: 250px;
+        }
+    }
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <script>
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo/logo-uni.svg" type="image/svg+xml">
+    <title>登入 - 國立彰化特殊教育學校雲端空間預約管理系統</title>
+    <meta name="description" content="登入彰特空間預約管理系統，送出預約申請並查詢審核進度。">
+
+    <link rel="stylesheet" href="css/all.css">
+</head>
+<body>
+    <a href="#goCenter" class="sr-only focusable" accesskey="C" title="跳過導覽列，進入主要內容區">主要內容區</a>
+    <div class="container">
+         <a href="index.html" class="auth-form-backhome">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i>返回首頁
+            </a>
+    </div>
+    
+    <div class="authShell">
+        
+        <div class="authCard">
+            <section class="auth-hero">
+                <div class="auth-hero-bg" aria-hidden="true">
+                    <span class="auth-hero-dots"></span>
+                    <span class="auth-hero-circle-fill"></span>
+                    <span class="auth-hero-circle-ring"></span>
+                    <img class="auth-hero-deco-left" src="img/dec/登入頁hero內容/登入hero背景裝飾左.svg" alt="">
+                    <img class="auth-hero-deco-right" src="img/dec/登入頁hero內容/登入hero背景裝飾右.svg" alt="">
+                </div>
+
+                <a href="index.html" class="auth-hero-logo">
+                    <img src="img/logo/logo-uni.svg" alt="">
+                    <span class="flex-column">
+                        <strong>國立彰化特殊教育學校</strong>
+                        <small>雲端空間預約管理系統</small>
+                    </span>
+                </a>
+
+                <!-- 桌機／手機共用真實 HTML 文字，design.md §7 -->
+                <div class="auth-hero-copy">
+                    <p class="auth-hero-title">省下的時間<br>拿去<span class="auth-hero-highlight">備課</span>吧！</p>
+                    <p class="auth-hero-desc">線上查詢、申請、追蹤，把找場地的時間留給教學。</p>
+                </div>
+
+                <div class="auth-hero-visual" aria-hidden="true">
+                    <img class="auth-hero-calendar" src="img/dec/登入頁hero內容/日曆.jpg" alt="">
+                    <img class="auth-hero-person" src="img/dec/登入頁hero內容/登入hero背景人物.svg" alt="">
+                </div>
+            </section>
+
+            <main id="goCenter" tabindex="-1" class="auth-form-panel">
+                <div class="auth-form-card">
+                    <h1>歡迎登入 彰特空間預約</h1>
+                    <p class="auth-form-desc">請使用校務系統的教職員帳號登入，不需另外註冊。</p>
+
+                    <form novalidate>
+                        <div class="auth-form-group">
+                            <label for="loginAccount">帳號<span class="tagPill tag-dangerFill tagPill-sm">必填</span></label>
+                            <input type="text" id="loginAccount" name="loginAccount" class="form-control"
+                                   autocomplete="username" placeholder="請輸入帳號">
+                        </div>
+
+                        <div class="auth-form-group">
+                            <div class="auth-form-labelrow flex-row-between">
+                                <label for="loginPassword">密碼<span class="tagPill tag-dangerFill tagPill-sm">必填</span></label>
+                                <button type="button" class="auth-form-forgot btnText" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">
+                                    忘記密碼?
+                                </button>
+                            </div>
+                            <div class="auth-form-password-field">
+                                <input type="password" id="loginPassword" name="loginPassword" class="form-control"
+                                       autocomplete="current-password" placeholder="請輸入 6 至 12 碼大小寫英文字母、數字或半形特殊符號">
+                                <button type="button" class="auth-form-password-toggle" id="passwordToggleBtn"
+                                        aria-pressed="false" aria-label="顯示密碼">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="auth-form-group">
+                            <label for="captchaInput">圖形驗證碼<span class="tagPill tag-dangerFill tagPill-sm">必填</span></label>
+                            <div class="captcha-row flex-row-center">
+                                <input type="text" id="captchaInput" name="captchaInput" class="form-control" autocomplete="off"
+                                       inputmode="text" placeholder="請輸入圖片中顯示的 4 位英數字混和">
+                                <div class="captcha-display" id="captchaDisplay" aria-hidden="true"></div>
+                            </div>
+                            <div class="captcha-actions flex-row-start">
+                                <button type="button" class="btnRounded btn-soft btn-compact" id="captchaVoiceBtn" aria-label="播放驗證碼語音">
+                                    <i class="bi bi-volume-up" aria-hidden="true"></i>語音播放
+                                </button>
+                                <button type="button" class="btnRounded btn-soft btn-compact" id="captchaRefreshBtn">
+                                    <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>換一張
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-check auth-form-remember">
+                            <input type="checkbox" id="rememberMe" name="rememberMe" class="form-check-input">
+                            <label for="rememberMe" class="form-check-label">
+                                記住我的帳號
+                                <small>公用電腦請勿勾選</small>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btnRounded btn-primary btn-rect auth-form-submit">立即登入</button>
+                    </form>
+                    <hr class="auth-form-divider">
+
+                    <p class="auth-form-note">未登入也可查詢預約空間。無法登入請洽教務處 (04) 872-7303</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <footer class="auth-footer">
+        <div class="container">
+            <nav class="auth-footer-nav flex-center-center flex-wrap" aria-label="頁尾導覽">
+                <a href="index.html">首頁</a>
+                <a href="reservation.html">預約空間</a>
+                <a href="reservation-list.html">全校預約清單</a>
+                <a href="sitemap.html">網站導覽</a>
+            </nav>
+            <p class="auth-footer-copyright">Copyright &copy;2026 國立彰化特殊教育學校 雲端空間預約管理系統．版權所有.</p>
+            <p class="auth-footer-copyright">Design by <a href="tel:+886-2-2748-7499">辛太科技 (02) 2748-7499</a> 建議瀏覽器Edge、Firefox或Chrome，建議瀏覽解析度為1920 x 1080 以上</p>
+        </div>
+    </footer>
+
+    <!-- Modal 1：忘記密碼 -->
+    <div class="modal fade" id="modalForgotPassword" tabindex="-1" aria-labelledby="modalForgotPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content authFormModal">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalForgotPasswordLabel">忘記密碼</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body">
+                    <form novalidate>
+                        <div class="auth-form-group">
+                            <label for="forgotAccount">帳號<span class="tagPill tag-dangerFill tagPill-sm">必填</span></label>
+                            <input type="text" id="forgotAccount" name="forgotAccount" class="form-control"
+                                   autocomplete="username" placeholder="請輸入帳號">
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="forgotEmail">信箱<span class="tagPill tag-dangerFill tagPill-sm">必填</span></label>
+                            <input type="email" id="forgotEmail" name="forgotEmail" class="form-control"
+                                   autocomplete="email" placeholder="請輸入信箱">
+                        </div>
+                    </form>
+                    <p class="noticeBox mb-5">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i>
+                        請輸入帳號與註冊時使用的電子郵件信箱，我們將寄送驗證信協助您重設密碼。
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btnRounded authModalBtn-close" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btnRounded btn-primary authModalBtn-main" id="sendVerificationBtn">
+                        發送驗證信<i class="bi bi-send" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2：驗證碼已寄出 -->
+    <div class="modal fade" id="modalVerificationSent" tabindex="-1" aria-labelledby="modalVerificationSentLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content statusModal">
+                <span class="statusModal-circle" aria-hidden="true"></span>
+                <div class="modal-body statusModal-body">
+                    <div class="statusModal-text">
+                        <h2 class="statusModal-title" id="modalVerificationSentLabel">驗證信已寄出</h2>
+                        <p class="statusModal-desc">您可以至信箱查看並重設密碼</p>
+                        <button type="button" class="btnText modal-demo-hint" id="demoResetCompleteBtn">
+                            （靜態展示）模擬已完成密碼重設
+                        </button>
+                    </div>
+                    <div class="statusModal-illustration" aria-hidden="true">
+                        <img src="img/characters/驗證信已寄出.png" alt="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btnRounded btn-primary authModalBtn-full" data-bs-dismiss="modal">
+                        關閉<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3：密碼重設完成 -->
+    <div class="modal fade" id="modalPasswordResetComplete" tabindex="-1" aria-labelledby="modalPasswordResetCompleteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content statusModal">
+                <span class="statusModal-circle" aria-hidden="true"></span>
+                <div class="modal-body statusModal-body">
+                    <div class="statusModal-text">
+                        <h2 class="statusModal-title" id="modalPasswordResetCompleteLabel">密碼重設完成</h2>
+                        <p class="statusModal-desc">您可以重新登入</p>
+                    </div>
+                    <div class="statusModal-illustration" aria-hidden="true">
+                        <img src="img/characters/密碼重設完成.png" alt="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btnRounded btn-primary authModalBtn-full" data-bs-dismiss="modal">
+                        關閉<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

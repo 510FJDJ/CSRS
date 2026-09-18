@@ -1,0 +1,246 @@
+// ============================================================
+// 系統管理員版 Header：雙列（使用者列 + 導覽列）+ 手風琴式手機選單
+// 使用者選單樣式沿用 _headerStaff.scss 的 .site-header-user／.site-offcanvas-account
+// ============================================================
+
+.site-admin-nav {
+    background-color: $color-bg-soft;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+
+    // 與 .site-header 玻璃質感一致：半透明底，讓模糊透出上排 header
+    @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+        background-color: rgba($color-bg-soft, .55);
+    }
+
+    ul {
+        gap: 32px;
+        margin: 0;
+        padding: 8px;
+        list-style: none;
+    }
+
+    a,
+    .dropdown-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 0;
+        padding: 0;
+        background: none;
+        color: $color-ink;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            color: $color-primary;
+        }
+
+        &[aria-current="page"] {
+            color: $color-primary;
+            font-weight: 700;
+        }
+    }
+
+    .dropdown-toggle::after {
+        display: none;
+    }
+}
+
+.site-admin-nav-divider {
+    width: 1px;
+    height: 20px;
+    background-color: $color-border;
+}
+
+.site-admin-nav-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: $border-radius-pill;
+    background-color: $color-accent-orange;
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+    margin-top:3px;
+}
+
+// 桌面版下拉選單 icon 旋轉切換：與上排使用者選單共用 .site-header-user-iconToggle 機制，
+// 這裡另外複製一組觸發選擇器，範圍限定在 .site-admin-nav 內，避免擴大共用選擇器的影響範圍
+.site-admin-nav .dropdown:hover .site-header-user-iconToggle .icon-plus,
+.site-admin-nav .dropdown-toggle[aria-expanded="true"] .site-header-user-iconToggle .icon-plus {
+    opacity: 0;
+    transform: rotate(360deg);
+}
+
+.site-admin-nav .dropdown:hover .site-header-user-iconToggle .icon-minus,
+.site-admin-nav .dropdown-toggle[aria-expanded="true"] .site-header-user-iconToggle .icon-minus {
+    opacity: 1;
+    transform: rotate(0deg);
+    color: $color-primary;
+}
+
+// 滑鼠 hover 於整個下拉項目（按鈕＋選單）時，直接展開選單；margin-top 抵消 .site-admin-nav ul
+// 的 padding: 14px 0，讓選單貼齊導覽列底部，不然會被導覽列本身的下緣擋到
+// 點擊展開（.show）時套用同一組定位，與 hover 狀態保持一致，避免位置或間距忽大忽小
+.site-admin-nav .dropdown:hover .site-admin-nav-menu,
+.site-admin-nav .dropdown-toggle[aria-expanded="true"] + .site-admin-nav-menu {
+    display: block;
+    top: 100%;
+    right: 0;
+    left: auto;
+    margin-top: 10px;
+}
+
+// 按鈕與選單之間有 14px 視覺間隔（margin-top），但 margin 不屬於可 hover 範圍，
+// 滑鼠從按鈕移向選單途中會先離開 :hover 判定導致選單消失，故加透明橋接偽元素蓋住這段間隔
+.site-admin-nav .dropdown {
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        height: 14px;
+    }
+}
+
+.site-admin-nav-menu {
+    min-width: 200px;
+    padding: 8px;
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    box-shadow: $shadow-card-white;
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: $border-radius-sm;
+        color: $color-ink;
+
+        &:hover,
+        &:focus-visible {
+            background-color: rgba($color-primary, .1);
+            color: $color-primary-hover;
+        }
+    }
+}
+
+// ---- 桌面版：往下捲動時第一排（logo＋使用者選單）收合，回到頂部時恢復 ----
+@media (min-width: 992px) {
+    .site-header-admin.is-scrolled .site-header-bar {
+        height: 0;
+        min-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: height .25s ease, min-height .25s ease, padding .25s ease, opacity .2s ease;
+    }
+
+    .site-header-admin .site-header-bar {
+        transition: height .25s ease, min-height .25s ease, padding .25s ease, opacity .2s ease;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-header-admin .site-header-bar {
+        transition: none;
+    }
+}
+
+// ---- 行動版 offcanvas：手風琴子選單 ----
+.site-admin-offcanvas-toggle .site-header-user-icon {
+    color: #fff;
+}
+
+// 手風琴子選單展開時，+ / − 圖示切換（顏色沿用上方白色，不套用桌機版的品牌藍）
+.site-admin-offcanvas-toggle[aria-expanded="true"] .site-header-user-iconToggle .icon-plus {
+    opacity: 0;
+    transform: rotate(360deg);
+}
+
+.site-admin-offcanvas-toggle[aria-expanded="true"] .site-header-user-iconToggle .icon-minus {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.site-admin-offcanvas-nav {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li {
+        border-bottom: 1px solid rgba(255, 255, 255, .25);
+    }
+
+    > li > a,
+    .site-admin-offcanvas-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        width: 100%;
+        padding: 16px 4px;
+        border: 0;
+        background: none;
+        color: #fff;
+        font-size: 1.0625rem;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color .2s ease;
+
+        &:hover,
+        &:active,
+        &:focus-visible {
+            background-color: rgba(191, 219, 254, .25);
+        }
+
+        &[aria-current="page"] {
+            font-weight: 700;
+        }
+    }
+}
+
+.site-admin-offcanvas-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 0 4px 16px 16px;
+    list-style: none;
+
+    a {
+        display:block;
+        padding: 8px;
+        color: rgba(255, 255, 255, .9);
+        text-decoration: none;
+        transition: background-color .2s ease;
+        
+        &:hover,
+        &:active,
+        &:focus-visible {
+            background-color: rgba(191, 219, 254, .25);
+            color: #fff;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-admin-offcanvas-nav > li > a,
+    .site-admin-offcanvas-toggle,
+    .site-admin-offcanvas-submenu a {
+        transition: none;
+    }
+}

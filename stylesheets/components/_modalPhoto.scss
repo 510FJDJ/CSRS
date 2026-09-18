@@ -1,0 +1,108 @@
+// ============================================================
+// 照片橫幅 Modal（外型元件）：頂部照片橫幅＋淡出遮罩＋圓形關閉鈕，適用任何需要照片預覽的彈窗
+// ============================================================
+
+.modalPhoto {
+    overflow: hidden;
+    border: 0;
+    border-radius: $border-radius-lg;
+}
+
+.modalPhoto-banner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+    min-height: 100px;
+    padding: 20px 28px;
+    background-size: cover;
+    background-position: center;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180.34deg, rgba(2, 25, 74, 0) -18.66%, rgba(2, 25, 74, .68) 95.86%);
+    }
+
+    > * {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.modalPhoto-close {
+    position: absolute;
+    z-index: 2;
+    top: 16px;
+    right: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background-color: $color-bg-page;
+    color: $color-ink;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color .16s ease;
+
+    &:hover {
+        background-color: $color-bg-soft;
+    }
+}
+
+.modalPhoto-kicker {
+    color: #fff;
+    font-size: .8125rem;
+}
+
+.modalPhoto-title {
+    margin: 0;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.modalPhoto-meta {
+    margin: 0;
+    color: rgba(255, 255, 255, .88);
+    font-size: .875rem;
+}
+
+.modalPhoto-body {
+    padding: 8px 0 0;
+}
+
+.modalPhoto-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 28px;
+    border-top: 1px solid $color-border;
+
+    small {
+        color: $color-ink-soft;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .modalPhoto-banner {
+        min-height: 160px;
+        padding: 16px 20px;
+    }
+
+    .modalPhoto-body {
+        padding: 8px 20px 4px;
+    }
+
+    .modalPhoto-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 20px;
+    }
+}

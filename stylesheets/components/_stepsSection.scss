@@ -1,0 +1,199 @@
+// ============================================================
+// 三步驟預約流程：查詢空間 → 送出申請 → 追蹤審核（img/characters/*.svg）
+// 參考圖：之字形交錯、紙飛機裝飾（img/dec/紙飛機.jpg，實為透明背景 PNG）
+// 01/02/03 數字已內建於 img/characters/*.svg 插圖本身，HTML 不再重複渲染
+// 底部雙層波浪背景以 CSS clip-path 繪製，座標依參考圖（img/參考圖/首頁/彰特空間預約未登入 首頁.jpg
+// 三步驟區塊底部）實際像素描出，不引用 img/參考圖/ 圖檔本身
+// ============================================================
+
+$steps-wave-back:  #F8FAFD;
+$steps-wave-front: #F1F6FD;
+
+.steps-section {
+    position: relative;
+    overflow: clip;
+    padding: 64px 0 96px;
+    background-color: $color-bg-page;
+
+    // 底部雙層波浪裝飾：後層（淺色）＋前層（淺藍），曲線依參考圖描出、非對稱缺塊造型
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 100vw;
+        height: 52px;
+        transform: translateX(-50%);
+        pointer-events: none;
+    }
+
+    &::before {
+        background-color: $steps-wave-back;
+        clip-path: polygon(0% 40.4%, 5% 19.2%, 10% 15.4%, 15% 21.2%, 20% 30.8%, 25% 40.4%, 30% 34.6%, 35% 21.2%, 40% 9.6%, 45% 5.8%, 50% 11.5%, 55% 19.2%, 60% 28.8%, 65% 30.8%, 70% 17.3%, 75% 3.8%, 80% 0%, 85% 5.8%, 90% 17.3%, 95% 23.1%, 100% 13.5%, 100% 100%, 0% 100%);
+    }
+
+    &::after {
+        background-color: $steps-wave-front;
+        clip-path: polygon(0% 69.2%, 5% 51.9%, 10% 46.2%, 15% 51.9%, 20% 57.7%, 25% 63.5%, 30% 59.6%, 35% 55.8%, 40% 48.1%, 45% 40.4%, 50% 40.4%, 55% 44.2%, 60% 50%, 65% 55.8%, 70% 55.8%, 75% 50%, 80% 42.3%, 85% 40.4%, 90% 48.1%, 95% 59.6%, 100% 55.8%, 100% 100%, 0% 100%);
+    }
+}
+
+.steps-plane {
+    position: absolute;
+    top: 56px;
+    right: 6%;
+    width: 180px;
+    pointer-events: none;
+
+    @media (max-width: 991.98px) {
+        display: none;
+    }
+}
+
+.steps-section-head {
+    max-width: 640px;
+    margin: 0 auto 48px;
+    text-align: center;
+
+    h2 {
+        margin-bottom: 12px;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    p {
+        margin: 0;
+        color: $color-ink-soft;
+    }
+}
+@include media-breakpoint-down(md) {
+    .steps-section {
+        padding: 48px 0 64px;
+    }
+
+    .steps-plane {
+        width: 120px;
+        top: 32px;
+        right: 4%;
+    }
+
+    .steps-section-head {
+        margin-bottom: 32px;
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+}
+.steps-grid {
+    position: relative;
+    z-index: 1;
+    align-items: flex-start;
+    gap: 24px;
+
+    // 兩道黃色虛線箭頭裝飾：人物一→二、二→三，縫隙偏上處（img/dec/黃色箭頭.svg）
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        width: 110px;
+        height: 44px;
+        background: url("../img/dec/黃色箭頭.svg") no-repeat center / contain;
+        pointer-events: none;
+
+        @media (max-width: 991.98px) {
+            display: none;
+        }
+    }
+
+    &::before {
+        top: 24px;
+        left: 28%;
+    }
+
+    &::after {
+        top: 104px;
+        left: 63%;
+    }
+}
+
+.steps-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 240px;
+    padding: 0 16px;
+
+    // 參考圖：三步驟之字形往下錯落
+    @media (min-width: 992px) {
+        &:nth-child(2) {
+            margin-top: 80px;
+        }
+
+        &:nth-child(3) {
+            margin-top: 130px;
+        }
+    }
+}
+
+.steps-item-visual {
+    width: 100%;
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+// 三張插圖原始畫布留白比例不同（查詢空間.png 含電腦視窗、留白較多），
+// 若同寬顯示臉部會大小不一，故各自校正 max-width 讓臉部視覺尺寸一致
+.steps-item:nth-child(1) .steps-item-visual {
+    max-width: 300px;
+}
+
+.steps-item:nth-child(2) .steps-item-visual {
+    max-width: 200px;
+}
+
+.steps-item:nth-child(3) .steps-item-visual {
+    max-width: 220px;
+}
+
+.steps-item-title {
+    margin: 0;
+    margin-top:28px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.steps-item-desc {
+    margin: 0;
+    color: $color-ink-soft;
+    text-align: center;
+    font-size: .9375rem;
+}
+
+.steps-section-more {
+    position: relative;
+    z-index: 1;
+    margin-top: 48px;
+}
+
+@include media-breakpoint-down(md) {
+    .steps-item-title {
+    margin-top:0;
+}
+.steps-item:nth-child(1) .steps-item-visual{
+    max-width: 200px;
+}
+.steps-item:nth-child(2) .steps-item-visual{
+    max-width: 150px;
+}
+.steps-item:nth-child(3) .steps-item-visual {
+    max-width: 180px;
+}
+}

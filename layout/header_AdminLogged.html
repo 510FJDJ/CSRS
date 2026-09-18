@@ -1,0 +1,164 @@
+<header id="headerNav" class="site-header site-header-admin">
+    <div class="container">
+        <div class="site-header-bar flex-row-between">
+            <a href="index.html" class="site-header-logo flex-row-center" aria-label="回到首頁">
+                <img src="img/logo/logo-uni.svg" alt="" width="40" height="40">
+                <span class="site-header-logo-text flex-column">
+                    <strong>雲端空間預約管理系統</strong>
+                    <small>國立彰化特殊教育學校</small>
+                </span>
+            </a>
+
+            <div class="site-header-actions flex-row-center">
+                <div class="dropdown site-header-user d-none d-lg-block">
+                    <button type="button" class="site-header-user-trigger flex-row-center" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle" aria-hidden="true"></i>
+                        <span class="site-header-user-info flex-column">
+                            <strong data-user-name>陳韻茹</strong>
+                            <small data-user-role>教務處・系統管理員</small>
+                        </span>
+                        <span class="site-header-user-iconToggle">
+                            <i class="bi bi-plus-lg site-header-user-icon icon-plus" aria-hidden="true"></i>
+                            <i class="bi bi-dash-lg site-header-user-icon icon-minus" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end site-header-user-menu">
+                        <a class="dropdown-item" href="change-password.html">
+                            <i class="bi bi-lock" aria-hidden="true"></i>修改密碼
+                        </a>
+                        <a class="dropdown-item site-header-user-menu-danger" href="index.html">
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>登出
+                        </a>
+                    </div>
+                </div>
+
+                <button type="button" class="site-header-toggle d-lg-none" data-bs-toggle="offcanvas"
+                        data-bs-target="#adminOffcanvas" aria-controls="adminOffcanvas" aria-label="開啟選單">
+                    <i class="bi bi-list" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="site-admin-nav d-none d-lg-block" aria-label="主要導覽">
+        <div class="container">
+            <ul class="flex-center-center">
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="space-overview.html">空間使用總覽</a></li>
+                <li>
+                    <a href="review.html">
+                        審核管理
+                        <span class="site-admin-nav-badge" data-pending-count>11</span>
+                    </a>
+                </li>
+                <li><a href="reports.html">報表匯出</a></li>
+                <li class="site-admin-nav-divider" aria-hidden="true"></li>
+                <li class="dropdown">
+                    <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        空間設定
+                        <span class="site-header-user-iconToggle">
+                            <i class="bi bi-plus-lg site-header-user-icon icon-plus" aria-hidden="true"></i>
+                            <i class="bi bi-dash-lg site-header-user-icon icon-minus" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu site-admin-nav-menu">
+                        <li><a class="dropdown-item" href="space-management.html">空間管理</a></li>
+                        <li><a class="dropdown-item" href="space-rules.html">空間使用規則</a></li>
+                        <li><a class="dropdown-item" href="calendar-management.html">行事曆管理</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        人員與課表
+                        <span class="site-header-user-iconToggle">
+                            <i class="bi bi-plus-lg site-header-user-icon icon-plus" aria-hidden="true"></i>
+                            <i class="bi bi-dash-lg site-header-user-icon icon-minus" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu site-admin-nav-menu">
+                        <li><a class="dropdown-item" href="staff-management.html">教職員管理</a></li>
+                        <li><a class="dropdown-item" href="account-management.html">帳號管理</a></li>
+                        <li><a class="dropdown-item" href="schedule-management.html">課表管理</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="offcanvas offcanvas-end site-offcanvas" tabindex="-1" id="adminOffcanvas" aria-labelledby="adminOffcanvasLabel">
+    <div class="offcanvas-header">
+        <a href="index.html" class="site-header-logo flex-row-center" aria-label="回到首頁">
+            <img src="img/logo/logo-uni.svg" alt="" width="36" height="36">
+            <span class="site-header-logo-text flex-column" id="adminOffcanvasLabel">
+                <strong>雲端空間預約管理系統</strong>
+                <small>國立彰化特殊教育學校</small>
+            </span>
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="關閉選單"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="flex-column gap-3">
+            <div class="site-offcanvas-user flex-row-center">
+                <i class="bi bi-person-circle" aria-hidden="true"></i>
+                <div>
+                    <span class="fs-3 me-2" data-user-name>陳韻茹</span>
+                    <span data-user-role>教務處・系統管理員</span>
+                </div>
+            </div>
+            <ul class="site-admin-offcanvas-nav" aria-label="行動版主要導覽">
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="space-overview.html">空間使用總覽</a></li>
+                <li>
+                    <a href="review.html">
+                        審核管理
+                        <span class="site-admin-nav-badge" data-pending-count>11</span>
+                    </a>
+                </li>
+                <li><a href="reports.html">報表匯出</a></li>
+                <li>
+                    <button type="button" class="site-admin-offcanvas-toggle" data-bs-toggle="collapse"
+                            data-bs-target="#adminSpaceSettingsCollapse" aria-expanded="false" aria-controls="adminSpaceSettingsCollapse">
+                        空間設定
+                        <span class="site-header-user-iconToggle">
+                            <i class="bi bi-plus-lg site-header-user-icon icon-plus" aria-hidden="true"></i>
+                            <i class="bi bi-dash-lg site-header-user-icon icon-minus" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <ul class="collapse site-admin-offcanvas-submenu" id="adminSpaceSettingsCollapse">
+                        <li><a href="space-management.html">空間管理</a></li>
+                        <li><a href="space-rules.html">空間使用規則</a></li>
+                        <li><a href="calendar-management.html">行事曆管理</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button type="button" class="site-admin-offcanvas-toggle" data-bs-toggle="collapse"
+                            data-bs-target="#adminStaffScheduleCollapse" aria-expanded="false" aria-controls="adminStaffScheduleCollapse">
+                        人員與課表
+                        <span class="site-header-user-iconToggle">
+                            <i class="bi bi-plus-lg site-header-user-icon icon-plus" aria-hidden="true"></i>
+                            <i class="bi bi-dash-lg site-header-user-icon icon-minus" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <ul class="collapse site-admin-offcanvas-submenu" id="adminStaffScheduleCollapse">
+                        <li><a href="staff-management.html">教職員管理</a></li>
+                        <li><a href="account-management.html">帳號管理</a></li>
+                        <li><a href="schedule-management.html">課表管理</a></li>
+                    </ul>
+                </li>
+                <li><a href="sitemap.html">網站導覽</a></li>
+            </ul>
+        </div>
+
+        <div class="flex-column gap-2">
+            <div class="site-offcanvas-account">
+                <a href="change-password.html"><i class="bi bi-lock" aria-hidden="true"></i>修改密碼</a>
+            </div>
+
+            <a href="index.html" class="site-offcanvas-pill flex-row-between">
+                <span>登出</span>
+                <span class="site-offcanvas-pill-icon" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+{
+  "name": "CSRS",
+  "description": "國立彰化特殊教育學校 雲端空間預約管理系統（CSRS）",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3"
+  }
+}

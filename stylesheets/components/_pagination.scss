@@ -1,0 +1,24 @@
+// ============================================================
+// 分頁（全校預約清單等清單頁共用）
+// 覆寫 Bootstrap 預設「相連無間隔」樣式，改為每顆按鈕獨立、彼此有間隔
+// ============================================================
+
+.pagination {
+    --bs-pagination-border-radius: #{$border-radius-sm};
+
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-item .page-link {
+    margin-left: 0;
+    border-radius: var(--bs-pagination-border-radius);
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}

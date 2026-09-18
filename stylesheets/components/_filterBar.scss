@@ -1,0 +1,94 @@
+// ============================================================
+// 篩選列：白底圓角卡片，視覺上疊在 page-banner 之上（負 margin 位移，與首頁快速預約列同技巧）
+// ============================================================
+
+.filter-section {
+    position: relative;
+    z-index: 2;
+}
+
+.filter-card {
+    margin-top: -100px;
+    padding: 24px 32px;
+    border-radius: 20px;
+    background-color: $color-bg-page;
+    box-shadow: $shadow-card-white;
+
+    @media (max-width: 992px) {
+        margin-top: -40px;
+        padding: 20px;
+    }
+}
+
+.filter-card-title {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color:$color-primary;
+}
+
+.filter-card-divider {
+    height: 1px;
+    margin-bottom: 20px;
+    background-color: $color-border;
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px 24px;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 180px;
+
+    label {
+        font-size: .875rem;
+        font-weight: 500;
+        color: $color-ink;
+    }
+}
+
+.filter-field-dateRange {
+    flex: 1 1 280px;
+}
+
+.filter-field-keyword {
+    flex: 1 1 220px;
+}
+
+.filter-dateRange {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    gap: 8px;
+
+    @media (max-width: 992px) {
+        flex-wrap: wrap;
+
+        input[type="date"] {
+            flex: 1 1 100%;
+        }
+
+        .filter-dateRange-sep {
+            flex: 1 1 100%;
+            text-align: center;
+        }
+    }
+}
+
+.filter-dateRange-sep {
+    flex: 0 0 auto;
+    color: $color-ink-soft;
+}
+
+.filter-actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin:0 auto;
+}

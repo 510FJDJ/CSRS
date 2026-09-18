@@ -1,0 +1,264 @@
+// ============================================================
+// 資料表格（全校預約清單等清單頁共用）
+// 桌機：CSS Grid 直式表格；lg（992px）以下改為卡片式垂直堆疊，非橫向捲動
+// 欄寬由 --dataTable-cols 自訂屬性控制，各頁在自己的 .dataTable-card 用
+// inline style 宣告（緊鄰該表格的 <th> 清單，方便對欄位數），本檔不寫死預設值。
+// ============================================================
+
+.dataTable-section {
+    padding: 24px 0 64px;
+}
+
+.dataTable-head-row {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.dataTable-heading {
+    margin-bottom: 0;
+    font-size: 1.5rem;
+    color: $color-primary;
+}
+
+.dataTable-pageSize {
+    gap: 8px;
+    font-size: .9375rem;
+    color: $color-ink-soft;
+
+    select {
+        width: auto;
+    }
+}
+
+.dataTable-divider {
+    height: 1px;
+    margin-bottom: 20px;
+    background-color: $color-border;
+}
+
+.dataTable-card {
+    border-radius: $border-radius;
+    background-color: $color-bg-page;
+    box-shadow: $shadow-card-white;
+    overflow: hidden;
+}
+
+.dataTable {
+    display: block;
+
+    thead {
+        display: block;
+        width: 100%;
+    }
+
+    th,
+    td {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-weight: 400;
+        text-align: left;
+    }
+}
+
+.dataTable-head {
+    display: grid;
+    grid-template-columns: var(--dataTable-cols);
+    width: 100%;
+    gap: 16px;
+    padding: 16px 24px;
+    background-color: $color-bg-soft;
+
+    th {
+        color: $color-ink-soft;
+        font-size: .9375rem;
+        font-weight: 500;
+    }
+}
+
+.dataTable-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.dataTable-row {
+    display: grid;
+    grid-template-columns: var(--dataTable-cols);
+    width: 100%;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid $color-border;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    &:nth-child(even) {
+        background-color: rgba($color-primary, .03);
+    }
+}
+
+.dataTable-cell {
+    min-width: 0;
+}
+
+.dataTable-cellLabel {
+    display: none;
+}
+
+.dataTable-cellPrimary {
+    color: $color-ink;
+}
+
+// 事由欄唯讀文字框：預設單行高度，可拖右下角展開看全文，無法輸入
+.cellReasonBox {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
+    resize: vertical;
+    overflow: auto;
+    background-color: $color-bg-soft;
+    color: $color-ink;
+    font-size: .875rem;
+    line-height: 1.4;
+}
+
+.dataTable-cellSub {
+    margin-top: 4px;
+    color: $color-ink-soft;
+    font-size: .875rem;
+}
+
+.dataTable-cellTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.dataTable-statusReason {
+    margin-top: 6px;
+    font-size: .8125rem;
+    color: $color-danger;
+}
+
+.dataTable-statusReason-neutral {
+    color: $color-ink-soft;
+}
+
+// ---- 審核操作（待審核分頁：核准／拒絕 + 送出） ----
+.dataTable-decision {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dataTable-decision-radios {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0;
+        padding-left: 0;
+
+        input {
+            margin: 0;
+            float: none;
+        }
+
+        label {
+            margin: 0;
+            font-size: 1.125rem;
+            color: $color-ink;
+        }
+    }
+}
+
+.dataTable-decision-rejectReason {
+    margin-top: 8px;
+
+    textarea {
+        width: 100%;
+    }
+}
+
+// ---- 分頁 ----
+.dataTable-footer {
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.dataTable-summary {
+    color: $color-ink-soft;
+    font-size: .9375rem;
+}
+
+@include media-breakpoint-down(lg) {
+    .dataTable-card {
+        border-radius: 0;
+        background-color: transparent;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .dataTable-head {
+        display: none;
+    }
+
+    .dataTable-row {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        padding: 20px;
+        border-radius: $border-radius;
+        background-color: $color-bg-page;
+        box-shadow: $shadow-card-white;
+        border-bottom: 0;
+
+        &:not(:last-child) {
+            margin-bottom: 16px;
+        }
+
+        &:nth-child(even) {
+            background-color: rgba($color-primary, .01);
+        }
+    }
+
+    .dataTable-cell {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        align-items: center;
+        gap: 4px 14px;
+        padding: 10px 0;
+        border-bottom: 1px dashed $color-border;
+        width: 100%;
+
+        &:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+    }
+
+    .dataTable-cellLabel {
+        display: block;
+        grid-column: 1;
+        grid-row: 1 / -1;
+        align-self: center;
+        color: $color-ink-soft;
+        font-size: .9375rem;
+        font-weight: 500;
+    }
+
+    .dataTable-cell > *:not(.dataTable-cellLabel) {
+        grid-column: 2;
+    }
+}

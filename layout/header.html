@@ -1,0 +1,53 @@
+<header id="headerNav" class="site-header">
+    <div class="container">
+        <div class="site-header-bar flex-row-between">
+            <a href="index.html" class="site-header-logo flex-row-center" aria-label="回到首頁">
+                <img src="img/logo/logo-uni.svg" alt="" width="40" height="40">
+                <span class="site-header-logo-text flex-column">
+                    <strong>雲端空間預約管理系統</strong>
+                    <small>國立彰化特殊教育學校</small>
+                </span>
+            </a>
+
+            <nav class="site-header-nav flex-row-center d-none d-lg-flex" aria-label="主要導覽">
+                <a href="index.html#calendarHome" data-scroll-link="calendarHome">全校行事曆</a>
+                <a href="reservation-list.html">全校預約清單</a>
+                <a href="reservation.html">我要預約</a>
+            </nav>
+
+            <div class="site-header-actions flex-row-center">
+                <a href="login.html" class="btnRounded btn-primary btn-compact d-none d-lg-inline-flex">立即登入</a>
+                <button type="button" class="site-header-toggle d-lg-none" data-bs-toggle="offcanvas"
+                        data-bs-target="#guestOffcanvas" aria-controls="guestOffcanvas" aria-label="開啟選單">
+                    <i class="bi bi-list" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="offcanvas offcanvas-end site-offcanvas" tabindex="-1" id="guestOffcanvas" aria-labelledby="guestOffcanvasLabel">
+    <div class="offcanvas-header">
+        <a href="index.html" class="site-header-logo flex-row-center" aria-label="回到首頁">
+            <img src="img/logo/logo-uni.svg" alt="" width="36" height="36">
+            <span class="site-header-logo-text flex-column" id="guestOffcanvasLabel">
+                <strong>雲端空間預約管理系統</strong>
+                <small>國立彰化特殊教育學校</small>
+            </span>
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="關閉選單"></button>
+    </div>
+    <div class="offcanvas-body">
+        <nav class="site-offcanvas-nav" aria-label="行動版主要導覽">
+            <a href="index.html">首頁</a>
+            <a href="index.html#calendarHome" data-scroll-link="calendarHome">全校行事曆</a>
+            <a href="reservation-list.html">全校預約清單</a>
+            <a href="reservation.html">我要預約</a>
+            <a href="sitemap.html">網站導覽</a>
+        </nav>
+        <a href="login.html" class="site-offcanvas-pill flex-row-between">
+            <span>登入</span>
+            <span class="site-offcanvas-pill-icon" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+        </a>
+    </div>
+</div>

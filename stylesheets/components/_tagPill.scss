@@ -1,0 +1,60 @@
+// ============================================================
+// 狀態標籤（design.md §3／§6：.tagPill + 色彩修飾子，對比皆符合 WCAG AA）
+// ============================================================
+
+.tagPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: $border-radius-pill;
+    font-size: .8125rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.tag-success {
+    background-color: rgba($color-success, .12);
+    color: $color-success;
+}
+
+.tag-warning {
+    background-color: rgba($color-warning, .14);
+    color: $color-warning;
+}
+
+.tag-danger {
+    background-color: rgba($color-danger, .12);
+    color: $color-danger;
+}
+
+.tag-neutral {
+    background-color: $color-bg-soft;
+    color: $color-ink-soft;
+}
+
+.tag-dangerFill {
+    background-color: $color-danger;
+    color: #fff;
+}
+
+.tag-purple {
+    background-color: rgba($color-purple, .12);
+    color: $color-purple;
+}
+
+.tag-info {
+    background-color: rgba($color-primary-hover, .12);
+    color: $color-primary-hover;
+}
+
+.tag-mergedFill {
+    background-color: #6B4A21; // 合併狀態專用深棕色，與紅色衝突徽章區隔（見 design.md 空間使用總覽章節）
+    color: #fff;
+}
+
+// 小尺寸修飾子
+.tagPill-sm {
+    padding: 4px 10px;
+    font-size: .75rem;
+}

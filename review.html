@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <script>
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="img/logo/logo-uni.svg" type="image/svg+xml">
+    <title>審核管理 - 彰特空間預約</title>
+    <meta name="description" content="掌握最新空間預約狀態，即時處理衝突與審核。">
+
+    <link rel="stylesheet" href="css/all.css">
+</head>
+<body>
+    <a href="#goCenter" class="sr-only focusable" accesskey="C" title="跳過導覽列，進入主要內容區">主要內容區</a>
+    <a href="#headerNav" class="sr-only focusable" accesskey="U" title="跳至上方導覽列" tabindex="-1">上方導覽列</a>
+
+    <div id="header" data-layout="layout/header_AdminLogged.html"></div>
+
+    <main id="goCenter" tabindex="-1">
+        <!-- 內頁 Banner -->
+        <section class="page-banner">
+            <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+                <defs>
+                    <linearGradient id="bannerArcGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="15.87%" stop-color="#084DC7" stop-opacity=".58"/>
+                        <stop offset="62.02%" stop-color="#DDE9FC"/>
+                    </linearGradient>
+                    <clipPath id="bannerDotsClip" clipPathUnits="objectBoundingBox">
+                        <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <svg class="page-banner-arc" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path class="page-banner-arc-mask" d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z"/>
+                <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05" fill="none" stroke="url(#bannerArcGradient)" stroke-width="1" stroke-dasharray="6 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <img class="page-banner-mountain" src="img/dec/內頁背景banner素材/Subtract.svg" alt="">
+
+            <div class="container page-banner-content">
+                <nav class="page-banner-breadcrumb" aria-label="麵包屑導覽">
+                    <ol>
+                        <li>
+                            <a class="breadcrumb-home" href="index.html" aria-label="首頁">
+                                <i class="bi bi-house-door" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li aria-current="page">審核管理</li>
+                    </ol>
+                </nav>
+
+                <div class="page-banner-main flex-row-between">
+                    <div class="page-banner-text">
+                        <h1 class="page-banner-title">審核管理</h1>
+                        <p class="page-banner-desc">掌握最新空間預約狀態，即時處理衝突與審核。</p>
+                    </div>
+                    <div class="page-banner-visual" aria-hidden="true">
+                        <img src="img/dec/內頁背景banner素材/人物組圖.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 頁籤 + 篩選 -->
+        <section class="filter-section">
+            <div class="container">
+                <div class="filter-card">
+                    <div class="tabsUnderline" role="tablist" aria-label="審核狀態頁籤">
+                        <button type="button" class="tabsUnderline-tab" role="tab" id="tab-pending" aria-selected="true" aria-controls="panel-pending" tabindex="0">
+                            <i class="bi bi-hourglass-split tabsUnderline-tab-icon-pending" aria-hidden="true"></i>待審核 (11)
+                        </button>
+                        <button type="button" class="tabsUnderline-tab" role="tab" id="tab-approved" aria-selected="false" aria-controls="panel-approved" tabindex="-1">
+                            <i class="bi bi-check-circle tabsUnderline-tab-icon-success" aria-hidden="true"></i>已核准 (4)
+                        </button>
+                        <button type="button" class="tabsUnderline-tab" role="tab" id="tab-rejected" aria-selected="false" aria-controls="panel-rejected" tabindex="-1">
+                            <i class="bi bi-x-circle tabsUnderline-tab-icon-danger" aria-hidden="true"></i>已拒絕 (1)
+                        </button>
+                    </div>
+                    <div class="filter-card-divider"></div>
+
+                    <form class="filter-form" action="review.html" method="get">
+                        <div class="filter-field">
+                            <label for="filterCategory">類別</label>
+                            <select id="filterCategory" name="category" class="form-select">
+                                <option value="" selected>請選擇</option>
+                                <option value="general">一般教學</option>
+                                <option value="artSport">藝術體育</option>
+                                <option value="special">特教專業</option>
+                                <option value="vocational">職業教育</option>
+                                <option value="meeting">會議空間</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="filterSpace">空間</label>
+                            <select id="filterSpace" name="space" class="form-select">
+                                <option value="" selected>請選擇</option>
+                                <option value="computer1">電腦教室(一)</option>
+                                <option value="computer2">電腦教室(二)</option>
+                                <option value="gym">體育館</option>
+                                <option value="av">視聽教室</option>
+                                <option value="meeting-a">第一會議室</option>
+                                <option value="baking">烘焙教室</option>
+                                <option value="sensory">感覺統合教室</option>
+                                <option value="rhythm">韻律教室</option>
+                                <option value="greenhouse">溫室</option>
+                                <option value="laundry">洗衣工作室</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field filter-field-dateRange">
+                            <label for="filterDateStart">使用日期</label>
+                            <div class="filter-dateRange">
+                                <input type="date" id="filterDateStart" name="dateStart" class="form-control" value="2026-08-30">
+                                <span class="filter-dateRange-sep" aria-hidden="true">～</span>
+                                <label for="filterDateEnd" class="sr-only">結束日期</label>
+                                <input type="date" id="filterDateEnd" name="dateEnd" class="form-control" value="2026-08-30">
+                            </div>
+                        </div>
+
+                        <div class="filter-field filter-field-keyword">
+                            <label for="filterKeyword">關鍵字</label>
+                            <input type="search" id="filterKeyword" name="keyword" class="form-control" placeholder="申請人或預約單號">
+                        </div>
+
+                        <div class="filter-actions">
+                            <button type="submit" class="btnRounded btn-primary">
+                                <i class="bi bi-search" aria-hidden="true"></i>查詢
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 審核清單表格 -->
+        <section class="dataTable-section">
+            <div class="container">
+                <!-- 待審核 -->
+                <div class="tabs-panel" role="tabpanel" id="panel-pending" aria-labelledby="tab-pending">
+                    <div class="dataTable-head-row flex-row-between">
+                        <h2 class="dataTable-heading">待審核清單</h2>
+                        <div class="dataTable-pageSize flex-row-center">
+                            <label for="pageSizePending">每頁顯示</label>
+                            <select id="pageSizePending" name="pageSize" class="form-select form-select-sm">
+                                <option value="15" selected>15筆</option>
+                                <option value="30">30筆</option>
+                                <option value="50">50筆</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dataTable-divider"></div>
+
+                    <div class="dataTable-card" style="--dataTable-cols: 1.3fr 1.1fr 1.2fr 0.9fr 1.8fr 1.3fr 1.5fr;">
+                        <table class="dataTable" role="table" aria-label="待審核預約清單">
+                            <thead role="rowgroup">
+                                <tr class="dataTable-head" role="row">
+                                    <th scope="col" role="columnheader">日期/星期</th>
+                                    <th scope="col" role="columnheader">節次</th>
+                                    <th scope="col" role="columnheader">場地名稱</th>
+                                    <th scope="col" role="columnheader">申請人</th>
+                                    <th scope="col" role="columnheader">事由</th>
+                                    <th scope="col" role="columnheader">提示</th>
+                                    <th scope="col" role="columnheader">功能</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="dataTable-body" role="rowgroup">
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/10（四）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第二節～第三節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">電腦教室(一)</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">王O明</div>
+                                        <div class="dataTable-cellSub">綜職科</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">ISP 會議，需使用單面鏡觀察室</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                        <div class="dataTable-statusReason">・時段已滿</div>
+                                        <div class="dataTable-statusReason dataTable-statusReason-neutral">・今天使用</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <div class="dataTable-decision">
+                                            <div class="dataTable-decision-radios">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="decisionRow1" id="decisionRow1Approve" data-decision="approve">
+                                                    <label class="form-check-label" for="decisionRow1Approve">核准</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="decisionRow1" id="decisionRow1Reject" data-decision="reject">
+                                                    <label class="form-check-label" for="decisionRow1Reject">拒絕</label>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btnRounded btn-primary btn-compact" data-decision-submit>送出</button>
+                                        </div>
+                                        <div class="dataTable-decision-rejectReason" hidden>
+                                            <label for="decisionRow1RejectReason" class="visually-hidden">退回原因</label>
+                                            <textarea class="form-control form-control-sm" id="decisionRow1RejectReason" rows="2" placeholder="請輸入退回原因，將顯示給申請人"></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/11（五）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第五節～第六節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">體育館</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">黃O君</div>
+                                        <div class="dataTable-cellSub">國中部</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">感覺統合訓練課程，國三甲 6 位學生每週固定訓練，需使用大型器材</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                        <div class="dataTable-statusReason dataTable-statusReason-neutral">・明天使用</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <div class="dataTable-decision">
+                                            <div class="dataTable-decision-radios">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="decisionRow2" id="decisionRow2Approve" data-decision="approve">
+                                                    <label class="form-check-label" for="decisionRow2Approve">核准</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="decisionRow2" id="decisionRow2Reject" data-decision="reject">
+                                                    <label class="form-check-label" for="decisionRow2Reject">拒絕</label>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btnRounded btn-primary btn-compact" data-decision-submit>送出</button>
+                                        </div>
+                                        <div class="dataTable-decision-rejectReason" hidden>
+                                            <label for="decisionRow2RejectReason" class="visually-hidden">退回原因</label>
+                                            <textarea class="form-control form-control-sm" id="decisionRow2RejectReason" rows="2" placeholder="請輸入退回原因，將顯示給申請人"></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/14（一）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第一節～第二節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">視聽教室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">劉O伶</div>
+                                        <div class="dataTable-cellSub">輔導室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">學生輔導會議</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <button type="button" class="btnRounded btn-dangerOutline btn-compact" data-bs-toggle="modal" data-bs-target="#modalConflict">處理衝突</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/15 起 每週二、三 至 10/14</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第四節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">第一會議室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">陳O華</div>
+                                        <div class="dataTable-cellSub">餐服科</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">綜職科二年級 烘培丙級技術科練習</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                        <div class="dataTable-statusReason">・衝突一節</div>
+                                        <div class="dataTable-statusReason dataTable-statusReason-neutral">・已滿一節，核准時退回</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <button type="button" class="btnRounded btn-dangerOutline btn-compact" data-bs-toggle="modal" data-bs-target="#modalConflict">處理衝突</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/15（二）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第五節～第七節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">烘焙教室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">李O婷</div>
+                                        <div class="dataTable-cellSub">國中部</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">家長日活動排練，需使用烤箱示範</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                        <div class="dataTable-statusReason">・衝突一節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <button type="button" class="btnRounded btn-dangerOutline btn-compact" data-bs-toggle="modal" data-bs-target="#modalConflict">處理衝突</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/16（三）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第二節～第三節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">感覺統合教室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">鄭O雯</div>
+                                        <div class="dataTable-cellSub">國小部</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">課程發展委員會</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                        <div class="dataTable-statusReason">・衝突一節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <button type="button" class="btnRounded btn-dangerOutline btn-compact" data-bs-toggle="modal" data-bs-target="#modalConflict">處理衝突</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/16（三）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第五節～第六節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">韻律教室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">蔡O宏</div>
+                                        <div class="dataTable-cellSub">教務處</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">特推會期初會議</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                        <div class="dataTable-statusReason">・衝突一節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <button type="button" class="btnRounded btn-dangerOutline btn-compact" data-bs-toggle="modal" data-bs-target="#modalConflict">處理衝突</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/17（四）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第七節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">溫室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">楊O甄</div>
+                                        <div class="dataTable-cellSub">高職部</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">高一乙體適能檢測</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                        <div class="dataTable-statusReason">・衝突一節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <button type="button" class="btnRounded btn-dangerOutline btn-compact" data-bs-toggle="modal" data-bs-target="#modalConflict">處理衝突</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/17（四）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第一節～第二節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">電腦教室(二)</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">許O安</div>
+                                        <div class="dataTable-cellSub">國中部</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">班際樂樂棒球賽賽前練習</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                        <div class="dataTable-statusReason">・衝突一節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <button type="button" class="btnRounded btn-dangerOutline btn-compact" data-bs-toggle="modal" data-bs-target="#modalConflict">處理衝突</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/17 起每週四 至 10/8</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第四節～第五節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">洗衣工作室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">吳O廷</div>
+                                        <div class="dataTable-cellSub">農園藝科</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">秋季播種實作</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <div class="dataTable-decision">
+                                            <div class="dataTable-decision-radios">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="decisionRow10" id="decisionRow10Approve" data-decision="approve">
+                                                    <label class="form-check-label" for="decisionRow10Approve">核准</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="decisionRow10" id="decisionRow10Reject" data-decision="reject">
+                                                    <label class="form-check-label" for="decisionRow10Reject">拒絕</label>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btnRounded btn-primary btn-compact" data-decision-submit>送出</button>
+                                        </div>
+                                        <div class="dataTable-decision-rejectReason" hidden>
+                                            <label for="decisionRow10RejectReason" class="visually-hidden">退回原因</label>
+                                            <textarea class="form-control form-control-sm" id="decisionRow10RejectReason" rows="2" placeholder="請輸入退回原因，將顯示給申請人"></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dataTable-footer flex-column-center">
+                        <p class="dataTable-summary">顯示第 1 至 15 筆，共 32 筆資料</p>
+                        <nav aria-label="分頁導覽">
+                            <ul class="pagination mb-0">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="第一頁"><i class="bi bi-chevron-bar-left" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="上一頁"><i class="bi bi-chevron-left me-2" aria-hidden="true"></i>上一頁</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active"><a class="page-link" href="#" aria-current="page">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="下一頁">下一頁<i class="bi bi-chevron-right ms-2" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="最後一頁"><i class="bi bi-chevron-bar-right" aria-hidden="true"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- 已核准 -->
+                <div class="tabs-panel" role="tabpanel" id="panel-approved" aria-labelledby="tab-approved" hidden>
+                    <div class="dataTable-head-row flex-row-between">
+                        <h2 class="dataTable-heading">已核准清單</h2>
+                        <div class="dataTable-pageSize flex-row-center">
+                            <label for="pageSizeApproved">每頁顯示</label>
+                            <select id="pageSizeApproved" name="pageSize" class="form-select form-select-sm">
+                                <option value="15" selected>15筆</option>
+                                <option value="30">30筆</option>
+                                <option value="50">50筆</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dataTable-divider"></div>
+
+                    <div class="dataTable-card" style="--dataTable-cols: 1.3fr 1.1fr 1.2fr 0.9fr 1.8fr 1.3fr 1.5fr;">
+                        <table class="dataTable" role="table" aria-label="已核准預約清單">
+                            <thead role="rowgroup">
+                                <tr class="dataTable-head" role="row">
+                                    <th scope="col" role="columnheader">日期/星期</th>
+                                    <th scope="col" role="columnheader">節次</th>
+                                    <th scope="col" role="columnheader">場地名稱</th>
+                                    <th scope="col" role="columnheader">申請人</th>
+                                    <th scope="col" role="columnheader">事由</th>
+                                    <th scope="col" role="columnheader">提示</th>
+                                    <th scope="col" role="columnheader">功能</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="dataTable-body" role="rowgroup">
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/9（三）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第三節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">音樂教室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">詹O瑜</div>
+                                        <div class="dataTable-cellSub">藝才班</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">合唱團晨間練習</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <span class="tagPill tag-success"><i class="bi bi-check-circle" aria-hidden="true"></i>已核准</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/9（三）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第六節～第七節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">活動中心</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">林O志</div>
+                                        <div class="dataTable-cellSub">體育組</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">全校運動會場地測試</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <span class="tagPill tag-success"><i class="bi bi-check-circle" aria-hidden="true"></i>已核准</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/12（六）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第一節～第二節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">第一會議室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">黃O芬</div>
+                                        <div class="dataTable-cellSub">教務處</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">期初校務會議</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <span class="tagPill tag-success"><i class="bi bi-check-circle" aria-hidden="true"></i>已核准</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/13（日）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第四節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">烘焙教室</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">周O廷</div>
+                                        <div class="dataTable-cellSub">餐服科</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">烘焙丙級檢定模擬考</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <span class="tagPill tag-success"><i class="bi bi-check-circle" aria-hidden="true"></i>已核准</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dataTable-footer flex-column-center">
+                        <p class="dataTable-summary">顯示第 1 至 4 筆，共 4 筆資料</p>
+                        <nav aria-label="分頁導覽">
+                            <ul class="pagination mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="第一頁"><i class="bi bi-chevron-bar-left" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="上一頁"><i class="bi bi-chevron-left me-2" aria-hidden="true"></i>上一頁</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="下一頁">下一頁<i class="bi bi-chevron-right ms-2" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="最後一頁"><i class="bi bi-chevron-bar-right" aria-hidden="true"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- 已拒絕 -->
+                <div class="tabs-panel" role="tabpanel" id="panel-rejected" aria-labelledby="tab-rejected" hidden>
+                    <div class="dataTable-head-row flex-row-between">
+                        <h2 class="dataTable-heading">已拒絕清單</h2>
+                        <div class="dataTable-pageSize flex-row-center">
+                            <label for="pageSizeRejected">每頁顯示</label>
+                            <select id="pageSizeRejected" name="pageSize" class="form-select form-select-sm">
+                                <option value="15" selected>15筆</option>
+                                <option value="30">30筆</option>
+                                <option value="50">50筆</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dataTable-divider"></div>
+
+                    <div class="dataTable-card" style="--dataTable-cols: 1.3fr 1.1fr 1.2fr 0.9fr 1.8fr 1.3fr 1.5fr;">
+                        <table class="dataTable" role="table" aria-label="已拒絕預約清單">
+                            <thead role="rowgroup">
+                                <tr class="dataTable-head" role="row">
+                                    <th scope="col" role="columnheader">日期/星期</th>
+                                    <th scope="col" role="columnheader">節次</th>
+                                    <th scope="col" role="columnheader">場地名稱</th>
+                                    <th scope="col" role="columnheader">申請人</th>
+                                    <th scope="col" role="columnheader">事由</th>
+                                    <th scope="col" role="columnheader">提示</th>
+                                    <th scope="col" role="columnheader">功能</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="dataTable-body" role="rowgroup">
+                                <tr class="dataTable-row" role="row">
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                        <div class="dataTable-cellPrimary">9/8（二）</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">節次</span>
+                                        <div class="dataTable-cellPrimary">第五節</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                        <div class="dataTable-cellPrimary">體育館</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">申請人</span>
+                                        <div class="dataTable-cellPrimary">謝O翔</div>
+                                        <div class="dataTable-cellSub">體衛組</div>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                        <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">全校運動會排練</textarea>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">提示</span>
+                                    </td>
+                                    <td class="dataTable-cell" role="cell">
+                                        <span class="dataTable-cellLabel" aria-hidden="true">功能</span>
+                                        <span class="tagPill tag-danger"><i class="bi bi-x-circle" aria-hidden="true"></i>已拒絕</span>
+                                        <div class="dataTable-statusReason">同時段已有其他班級申請並優先核准</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="dataTable-footer flex-column-center">
+                        <p class="dataTable-summary">顯示第 1 至 1 筆，共 1 筆資料</p>
+                        <nav aria-label="分頁導覽">
+                            <ul class="pagination mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="第一頁"><i class="bi bi-chevron-bar-left" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="上一頁"><i class="bi bi-chevron-left me-2" aria-hidden="true"></i>上一頁</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="下一頁">下一頁<i class="bi bi-chevron-right ms-2" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="最後一頁"><i class="bi bi-chevron-bar-right" aria-hidden="true"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 處理衝突 Modal -->
+    <div class="modal fade" id="modalConflict" tabindex="-1" aria-labelledby="modalConflictLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content detailModal">
+                <div class="modal-header detailModal-header">
+                    <div>
+                        <h2 class="modal-title detailModal-title" id="modalConflictLabel">處理衝突</h2>
+                        <p class="detailModal-subtitle">第一會議室<span aria-hidden="true"> ・ </span>容納 20 人</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body detailModal-body">
+                    <p class="detailModal-conflictSummary">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i>
+                        本次共有 10 筆申請，其中 2 節發生衝突，請依序處理
+                    </p>
+
+                    <section class="detailModal-conflictCard">
+                        <div class="detailModal-conflictCard-header">
+                            <h3 class="detailModal-sectionTitle">9/15（二）第四節　11:00-11:50</h3>
+                            <span class="tagPill tag-danger">衝突</span>
+                        </div>
+                        <p class="detailModal-conflictCard-desc is-instruction">請選擇一保留，另一筆將自動退回</p>
+
+                        <div class="radioCard-group radioCard-group-pair" role="radiogroup" aria-label="9/15（二）第四節 11:00-11:50 核准項目">
+                            <label class="radioCard">
+                                <input type="radio" name="conflictSlot1" id="conflictSlot1Opt1" data-applicant="陳O華">
+                                <span class="radioCard-body">
+                                    <span class="radioCard-header">
+                                        <span class="radioCard-title">陳O華 (餐服科)</span>
+                                        <span class="tagPill tagPill-sm tag-neutral">預約單 #1442</span>
+                                    </span>
+                                    <dl class="metaList">
+                                        <div class="metaList-row"><dt>申請班級</dt><dd>餐服科・二年級</dd></div>
+                                        <div class="metaList-row"><dt>預約日期</dt><dd>8/10</dd></div>
+                                        <div class="metaList-row"><dt>事由</dt><dd>家長日活動排練</dd></div>
+                                    </dl>
+                                </span>
+                            </label>
+                            <label class="radioCard">
+                                <input type="radio" name="conflictSlot1" id="conflictSlot1Opt2" checked data-applicant="李O婷">
+                                <span class="radioCard-body">
+                                    <span class="radioCard-header">
+                                        <span class="radioCard-title">李O婷 (國中部)</span>
+                                        <span class="tagPill tagPill-sm tag-neutral">預約單 #1437</span>
+                                    </span>
+                                    <dl class="metaList">
+                                        <div class="metaList-row"><dt>申請班級</dt><dd>國中部・一年級</dd></div>
+                                        <div class="metaList-row"><dt>預約日期</dt><dd>8/11</dd></div>
+                                        <div class="metaList-row"><dt>事由</dt><dd>家長日活動排練</dd></div>
+                                    </dl>
+                                </span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="detailModal-conflictCard">
+                        <div class="detailModal-conflictCard-header">
+                            <h3 class="detailModal-sectionTitle">9/16（三）第四節　11:00-11:50</h3>
+                            <span class="tagPill tag-neutral">已滿</span>
+                        </div>
+                        <p class="detailModal-conflictNote">
+                            <i class="bi bi-arrow-return-right" aria-hidden="true"></i>
+                            已核准其他節次，這節將自動退回
+                        </p>
+
+                        <div class="detailModal-entryPair">
+                            <div class="detailModal-entry is-conflict">
+                                <div class="detailModal-entryHead">
+                                    <div class="flex-row-center gap-2">
+                                        <p class="detailModal-entryName">陳O華（餐服科）</p>
+                                        <span class="tagPill tagPill-sm tag-warning">審核中</span>
+                                    </div>
+                                    <span class="tagPill tagPill-sm tag-neutral">預約單 #1442</span>
+                                </div>
+                                <dl class="metaList">
+                                    <div class="metaList-row"><dt>申請班級</dt><dd>餐服科・一年級</dd></div>
+                                    <div class="metaList-row"><dt>預約日期</dt><dd>8/10</dd></div>
+                                    <div class="metaList-row"><dt>事由</dt><dd>練習:烘培丙級技術科練習</dd></div>
+                                </dl>
+                            </div>
+                            <div class="detailModal-entry">
+                                <div class="detailModal-entryHead">
+                                    <div class="flex-row-center gap-2">
+                                        <p class="detailModal-entryName">林O芳（餐服科）</p>
+                                        <span class="tagPill tagPill-sm tag-success">已核准</span>
+                                    </div>
+                                    <span class="tagPill tagPill-sm tag-neutral">預約單 #1401</span>
+                                </div>
+                                <dl class="metaList">
+                                    <div class="metaList-row"><dt>申請班級</dt><dd>餐服科・二年級</dd></div>
+                                    <div class="metaList-row"><dt>預約日期</dt><dd>8/10</dd></div>
+                                    <div class="metaList-row"><dt>事由</dt><dd>餐服科技能指定輔導</dd></div>
+                                </dl>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="modal-footer detailModal-footer">
+                    <p class="detailModal-conflictConfirm w-100">
+                        <i class="bi bi-check-circle" aria-hidden="true"></i>
+                        送出後：核准 9 節、退回 2 節
+                    </p>
+                    <button type="button" class="btnPill btn-soft" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btnPill btn-primary flex-fill" data-conflict-submit>
+                        確定送出<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 已送出審核結果 -->
+    <div class="modal fade" id="modalReviewSubmitted" tabindex="-1" aria-labelledby="modalReviewSubmittedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content statusModal">
+                <span class="statusModal-circle" aria-hidden="true"></span>
+                <div class="modal-body statusModal-body">
+                    <div class="statusModal-text">
+                        <h2 class="statusModal-title" id="modalReviewSubmittedLabel">已送出審核結果</h2>
+                        <p class="statusModal-desc">審核結果已通知申請人，可至「全校預約清單」查看最新狀態。</p>
+                    </div>
+                    <div class="statusModal-illustration" aria-hidden="true">
+                        <img src="img/characters/已送出申請.png" alt="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btnRounded authModalBtn-close" data-bs-dismiss="modal">關閉</button>
+                    <a href="reservation-list.html" class="btnRounded btn-primary authModalBtn-main">
+                        查看全校預約清單<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 回到頂部 -->
+    <button type="button" class="scroll-top-btn" aria-label="回到頁面頂端">
+        <i class="bi bi-arrow-up" aria-hidden="true"></i>
+        <span class="scroll-top-text">回頂端</span>
+    </button>
+
+    <div id="footer" data-layout="layout/footer.html"></div>
+
+    <script src="js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tabs.js"></script>
+    <script src="js/reviewConflict.js"></script>
+    <script src="js/reviewDecision.js"></script>
+</body>
+</html>

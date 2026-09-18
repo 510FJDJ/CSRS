@@ -1,0 +1,477 @@
+// ============================================================
+// 登入頁：獨立版型（無共用 header/footer），CLAUDE.md §5.2 Sticky Footer
+// 例外——.authShell 為 body 直接子層，flex:1 0 auto 設在 .authShell 而非 main
+// 參考圖：白底頁面置中一張大圓角卡片（左藍 hero＋右表單），響應式決策見 design.md §7
+// ============================================================
+
+.authShell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 auto;
+    padding: 20px 24px 48px 24px;
+    background-color: $color-bg-page;
+
+    @media (max-width: 767.98px) {
+        padding: 24px 16px;
+    }
+}
+
+.authCard {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 640px;
+    border-radius: 24px;
+    background-color: #fff;
+    box-shadow: 0px 4px 16px 0px #11111A1A,0px 8px 32px 0px #11111A0D;
+    overflow: clip;
+
+    @media (max-width: 991.98px) {
+        flex-direction: column;
+        min-height: 0;
+    }
+}
+
+// ---- 左側 Hero 面板 ----
+// 背景裝飾拆成獨立元素見 .auth-hero-bg，方便各自微調大小位置
+// 手機板整塊隱藏（見 design.md §7 響應式決策），故內部元素不需另寫手機版覆寫
+.auth-hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 44%;
+    overflow: clip;
+    background-color: #1E5FC5;
+    color: #fff;
+
+    @media (max-width: 991.98px) {
+        display: none;
+    }
+}
+
+// ---- 背景裝飾（拆成獨立圖層，各自可調大小位置）----
+.auth-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.auth-hero-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, .14) 1.4px, transparent 1.6px);
+    background-size: 18px 18px;
+}
+
+// 左上實心圓，完整圓形，面積需蓋住右側標題文字整塊
+.auth-hero-circle-fill {
+    position: absolute;
+    top: -180px;
+    left: -140px;
+    width: 580px;
+    height: 580px;
+    border-radius: 50%;
+    background-color: rgba(248, 249, 250, .1);
+}
+
+// 右下中空圓（環狀），用 border 畫出完整圓形，避免漸層裁切出現空白
+.auth-hero-circle-ring {
+    position: absolute;
+    right: -50px;
+    bottom: -100px;
+    width: 270px;
+    height: 270px;
+    box-sizing: border-box;
+    border: 40px solid rgba(248, 249, 250, .1);
+    border-radius: 50%;
+}
+
+.auth-hero-deco-left {
+    position: absolute;
+    left: -20px;
+    bottom: -10px;
+    width: 340px;
+    height: auto;
+}
+
+.auth-hero-deco-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 160px;
+    height: auto;
+}
+
+.auth-hero-logo {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 32px 0 0 40px;
+    color: #fff;
+    text-decoration: none;
+
+    img {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+    }
+
+    strong {
+        font-size: 1.0625rem;
+        font-weight: 700;
+        line-height: 1.4;
+    }
+
+    small {
+        font-size: .8125rem;
+        color: rgba(255, 255, 255, .9);
+    }
+}
+
+// ---- Hero 文案（桌機專用真實 HTML 文字，手機隱藏見 .auth-hero）----
+.auth-hero-copy {
+    position: relative;
+    z-index: 2;
+    padding: 28px 40px 0;
+}
+
+.auth-hero-title {
+    margin: 0 0 12px;
+    color: #fff;
+    font-size: 3.875rem; // 62px，使用者指定數值
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.auth-hero-highlight {
+    color: #90BCFF; // 使用者指定數值
+}
+
+.auth-hero-desc {
+    margin: 0;
+    max-width: 320px;
+    color: rgba(255, 255, 255, .85);
+    font-size: .9375rem;
+    line-height: 1.7;
+}
+
+// ---- Hero 插圖（日曆＋人物，純裝飾；人物疊在日曆之上，靠 DOM 順序決定疊層）----
+.auth-hero-visual {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+
+    img {
+        position: absolute;
+    }
+}
+
+.auth-hero-calendar {
+    left: 20px;
+    bottom: 48px;
+    width: 280px;
+    height: auto;
+    transform: rotate(-5deg);
+}
+
+.auth-hero-person {
+    right: 20px;
+    bottom: 0;
+    width: 250px;
+    height: auto;
+}
+
+// ---- 右側表單面板 ----
+.auth-form-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+    padding: 30px;
+
+    @media (max-width: 767.98px) {
+        padding: 32px 20px;
+    }
+}
+
+.auth-form-card {
+    width: 100%;
+    max-width: 480px;
+}
+
+.auth-form-card h1 {
+    margin-bottom: 8px;
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.auth-form-desc {
+    margin-bottom: 28px;
+    color: $color-ink-soft;
+}
+
+.auth-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+
+    label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        color: $color-ink;
+    }
+}
+
+.auth-form-labelrow {
+    gap: 12px;
+}
+
+.auth-form-error {
+    color: $color-danger;
+    font-size: .8125rem;
+}
+
+// 密碼格式提示：橘色系文字（$color-warning 同色相加深版，見 _variables.scss），非錯誤訊息，恆常顯示
+.auth-form-hint {
+    color: $color-warning-text;
+    font-size: .8125rem;
+}
+
+.auth-form-password-field {
+    position: relative;
+
+    input {
+        padding-right: 44px;
+    }
+}
+
+.auth-form-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    border: 0;
+    background: none;
+    color: $color-ink-soft;
+    cursor: pointer;
+
+    &:hover {
+        color: $color-primary;
+    }
+}
+
+.auth-form-forgot {
+    min-height: auto;
+    padding: 0;
+    color: $color-primary;
+    font-size: .9375rem;
+}
+
+.auth-form-remember {
+    margin-bottom: 24px;
+
+    .form-check-label {
+        font-weight: 500;
+
+        small {
+            display: block;
+            color: $color-ink-soft;
+        }
+    }
+}
+
+.auth-form-submit {
+    width: 100%;
+}
+
+.auth-form-backhome {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    margin: 30px 60px 0 0;
+    color: $color-ink-soft;
+    text-decoration: none;
+    font-size: .9375rem;
+
+    &:hover {
+        color: $color-primary;
+    }
+}
+
+.auth-form-divider {
+    margin: 24px 0 16px;
+    border-color: $color-border;
+    opacity: 1;
+}
+
+.auth-form-note {
+    margin: 0;
+    color: $color-ink-soft;
+    font-size: .9375rem;
+    text-align: center;
+}
+
+// ---- CAPTCHA：輸入框左、驗證碼圖右，下方「語音播放／換一張」----
+.captcha-row {
+    gap: 12px;
+
+    input {
+        flex: 1 1 auto;
+    }
+}
+
+.captcha-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 0 0 120px;
+    height: 44px;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    background-color: $color-bg-soft;
+    letter-spacing: 4px;
+    font-family: $font-family-sans-serif;
+    font-size: 1.375rem;
+    font-style: italic;
+    font-weight: 700;
+    color: $color-primary;
+    user-select: none;
+
+    span {
+        display: inline-block;
+    }
+}
+
+.captcha-actions {
+    gap: 12px;
+    margin-top: 4px;
+}
+
+// ---- 登入頁自訂 Footer（置中連結＋版權）----
+.auth-footer {
+    flex: 0 0 auto;
+    padding: 24px 0 32px;
+    text-align: center;
+}
+
+.auth-footer-nav {
+    gap: 0;
+    margin-bottom: 16px;
+
+    a {
+        padding: 0 16px;
+        color: $color-primary;
+        text-decoration: none;
+        font-size: .9375rem;
+        border-left: 1px solid $color-border;
+
+        &:first-child {
+            border-left: 0;
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.auth-footer-copyright {
+    margin-bottom: 4px;
+    color: $color-ink-soft;
+    font-size: .8125rem;
+
+    a {
+        color: $color-primary;
+    }
+}
+
+// ---- 忘記密碼流程 Modal（參考圖：img/參考圖/登入頁/）----
+
+// Modal 1：忘記密碼（表單型，標題無底線、置左）
+.authFormModal {
+    .modal-header {
+        align-items: center;
+        padding: 28px 28px 8px;
+        border-bottom: 0;
+    }
+
+    .modal-title {
+        font-size: 1.75rem;
+        font-weight: 500;
+        color: $color-ink;
+    }
+
+    .btn-close {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        background-color: $color-bg-soft;
+        opacity: 1;
+        transition: background-color .16s ease;
+
+        &:hover {
+            background-color: darken($color-bg-soft, 4%);
+        }
+    }
+
+    .modal-body {
+        padding: 8px 28px 24px;
+    }
+
+    .modal-footer {
+        gap: 12px;
+        padding: 20px 28px 28px;
+        border-top-color: $color-border;
+
+        > * {
+            margin: 0;
+        }
+    }
+}
+
+// Modal 1 footer 按鈕：關閉（淺灰填色，固定寬）／發送驗證信（主色，撐滿剩餘空間）
+// 圓角矩形（非膠囊）以呼應參考圖的按鈕樣式
+.authModalBtn-close,
+.authModalBtn-main,
+.authModalBtn-full {
+    border-radius: $border-radius;
+}
+
+.authModalBtn-close {
+    flex: 0 0 auto;
+    min-width: 128px;
+    background-color: $color-bg-soft;
+    border-color: transparent;
+    color: $color-ink;
+
+    &:hover {
+        background-color: darken($color-bg-soft, 4%);
+    }
+}
+
+.authModalBtn-main {
+    flex: 1 1 auto;
+}
+
+// Modal 2／3 footer 滿版單一按鈕（插圖狀態彈窗樣式已抽成外型元件 .statusModal，見 _statusModal.scss）
+.authModalBtn-full {
+    width: 100%;
+}
+
+.modal-demo-hint {
+    display: block;
+    margin-top: 12px;
+    color: $color-ink-soft;
+    font-size: .8125rem;
+}

@@ -1,0 +1,46 @@
+// ============================================================
+// 回到頂部按鈕（ACCESSIBILITY.md §8：固定 bottom:50px; right:25px）
+// ============================================================
+
+.scroll-top-btn {
+    position: fixed;
+    right: 25px;
+    bottom: 50px;
+    z-index: 1020;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 60px;
+    height: 60px;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-pill;
+    background-color: $color-bg-page;
+    color: $color-primary;
+    box-shadow: $shadow-card-white;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .16s ease, visibility .16s ease, transform .16s ease;
+
+    &.is-visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: $color-primary;
+    }
+
+    .bi {
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    .scroll-top-text {
+        font-size: .8125rem;
+        line-height: 1.2;
+    }
+}

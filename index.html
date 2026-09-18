@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <script>
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo/logo-uni.svg" type="image/svg+xml">
+    <title>首頁 - 國立彰化特殊教育學校雲端空間預約管理系統</title>
+    <meta name="description" content="查詢全校空間使用狀況、線上送出空間預約申請，並追蹤審核進度。">
+
+    <link rel="stylesheet" href="css/all.css">
+</head>
+<body>
+    <a href="#goCenter" class="sr-only focusable" accesskey="C" title="跳過導覽列，進入主要內容區">主要內容區</a>
+    <a href="#headerNav" class="sr-only focusable" accesskey="U" title="跳至上方導覽列" tabindex="-1">上方導覽列</a>
+
+    <div id="header" data-layout="layout/header.html"></div>
+
+    <main id="goCenter" tabindex="-1">
+        <!-- Hero -->
+        <section class="hero-home">
+            <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+                <defs>
+                    <linearGradient id="heroArcGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="15.87%" stop-color="#084DC7" stop-opacity=".58"/>
+                        <stop offset="62.02%" stop-color="#DDE9FC"/>
+                    </linearGradient>
+                    <clipPath id="heroDotsClip" clipPathUnits="objectBoundingBox">
+                        <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z"/>
+                    </clipPath>
+                </defs>
+            </svg>
+            <div class="hero-home-mask" aria-hidden="true"></div>
+            <svg class="hero-home-arc" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05" fill="none" stroke="url(#heroArcGradient)" stroke-width="1" stroke-dasharray="6 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <div class="container">
+                <div class="hero-home-grid flex-row-between">
+                    <div class="hero-home-copy">
+                        <h1>想用哪間<br><span class="hero-home-highlight">點一下</span>就好</h1>
+                        <p class="hero-home-desc">整合空間課表查詢、線上申請與審核進度追蹤，<br>讓你用最少的步驟，找到最合適的教室！</p>
+                        <div class="hero-home-actions flex-row-start">
+                            <a href="login.html" class="btnRounded btn-primary">立即登入</a>
+                            <a href="reservation.html" class="btnRounded btn-outline">查看空間課表</a>
+                        </div>
+                    </div>
+
+                    <div class="hero-home-visual" aria-hidden="true">
+                        <img src="img/dec/空間預約主視覺.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 快速預約列 -->
+         <section class="container">
+            <div class="row">
+                <div class="col-lg-10 col-12 mx-auto">
+                    <form class="hero-quicksearch" action="reservation.html" method="get">
+                        <div class="hero-quicksearch-label">
+                            <img src="img/dec/快速預約搜尋.svg" alt="">
+                            <span class="flex-column">
+                                <strong>快速預約</strong>
+                                <small>找到您需要的空間</small>
+                            </span>
+                        </div>
+
+                        <div class="hero-quicksearch-field">
+                            <label for="quickType">選擇空間類型</label>
+                            <select id="quickType" name="quickType" class="form-select">
+                                <option value="">全部類型</option>
+                                <option value="general">一般教學</option>
+                                <option value="arts-sports">藝術體育</option>
+                                <option value="special-ed">特教專業</option>
+                                <option value="vocational">職業教育</option>
+                                <option value="meeting">會議空間</option>
+                            </select>
+                        </div>
+
+                        <div class="hero-quicksearch-field">
+                            <label for="quickDate">選擇日期</label>
+                            <input type="date" id="quickDate" name="quickDate" class="form-control" value="2026-08-30">
+                        </div>
+
+                        <div class="hero-quicksearch-field">
+                            <label for="quickPeriod">選擇節次</label>
+                            <select id="quickPeriod" name="quickPeriod" class="form-select">
+                                <option value="">選擇節次</option>
+                                <option value="1">第一節（08:00-08:50）</option>
+                                <option value="2">第二節（09:00-09:50）</option>
+                                <option value="3">第三節（10:00-10:50）</option>
+                                <option value="4">第四節（11:00-11:50）</option>
+                                <option value="5">第五節（12:50-13:40）</option>
+                                <option value="6">第六節（13:50-14:40）</option>
+                                <option value="7">第七節（14:50-15:40）</option>
+                                <option value="8">第八節（15:45-16:30）</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btnRounded btn-white hero-quicksearch-submit mx-auto">
+                            查詢可用空間<i class="bi bi-search" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+         </section>
+
+        <!-- 空間概況統計 -->
+        <section class="stat-section">
+            <div class="container">
+                <div class="stat-section-head">
+                    <h2>空間概況</h2>
+                    <p>以下為<span class="stat-section-date">今日（8/15）</span>校內空間的即時使用狀態，僅供查詢，實際預約請見下方行事曆。</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10 col-12 mx-auto">
+                        <div class="stat-grid">
+                            <div class="cardStat">
+                                <span class="cardStat-icon"><img src="img/dec/可用場地數.svg" alt=""></span>
+                                <span class="cardStat-label">可用場地數</span>
+                                <p class="cardStat-value">28<small>可用 / 42</small></p>
+                            </div>
+                            <div class="cardStat">
+                                <span class="cardStat-icon"><img src="img/dec/今日預約總數.svg" alt=""></span>
+                                <span class="cardStat-label">今日預約總數</span>
+                                <p class="cardStat-value">56<small>件</small></p>
+                            </div>
+                            <div class="cardStat">
+                                <span class="cardStat-icon"><img src="img/dec/使用率.svg" alt=""></span>
+                                <span class="cardStat-label">使用率</span>
+                                <p class="cardStat-value">66<small>%</small></p>
+                            </div>
+                            <div class="cardStat">
+                                <span class="cardStat-icon"><img src="img/dec/即將使用中.svg" alt=""></span>
+                                <span class="cardStat-label">即將使用中</span>
+                                <p class="cardStat-value">18<small>件（1小時內）</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- 全校預約行事曆 -->
+        <section class="calendar-home" id="calendarHome">
+            <span class="calendar-home-watermark" aria-hidden="true">CALENDAR</span>
+            
+
+            <div class="container">
+                <div class="calendar-home-head">
+                    <h2>全校預約行事曆</h2>
+                    <p>先選分類，再看哪一天還有空檔。灰底斜線代表已超過 24 小時申請期限。</p>
+
+                    <div class="calendar-home-filters" role="tablist" aria-label="全校預約行事曆空間分類頁籤">
+                        <button type="button" class="calendar-home-filter" role="tab" id="tab-all" aria-selected="true" aria-controls="panel-calendarHome" tabindex="0">全部空間</button>
+                        <button type="button" class="calendar-home-filter" role="tab" id="tab-general" aria-selected="false" aria-controls="panel-calendarHome" tabindex="-1">一般教學</button>
+                        <button type="button" class="calendar-home-filter" role="tab" id="tab-artsSports" aria-selected="false" aria-controls="panel-calendarHome" tabindex="-1">藝術體育</button>
+                        <button type="button" class="calendar-home-filter" role="tab" id="tab-specialEd" aria-selected="false" aria-controls="panel-calendarHome" tabindex="-1">特教專業</button>
+                        <button type="button" class="calendar-home-filter" role="tab" id="tab-vocational" aria-selected="false" aria-controls="panel-calendarHome" tabindex="-1">職業教育</button>
+                        <button type="button" class="calendar-home-filter" role="tab" id="tab-meeting" aria-selected="false" aria-controls="panel-calendarHome" tabindex="-1">會議空間</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-home-grid flex-row-between" role="tabpanel" id="panel-calendarHome" aria-labelledby="tab-all">
+                    <img class="calendar-home-deco" src="img/dec/行事曆女.jpg" alt="">
+                    <!-- 月曆卡 -->
+                    <div class="calendar-home-board">
+                        <div class="calendar-home-toolbar flex-row-between">
+                            <div class="flex-row-center calendar-home-toolbar-nav">
+                                <button type="button" class="calendar-home-navbtn" aria-label="上個月"><i class="bi bi-chevron-left" aria-hidden="true"></i></button>
+                                <strong class="calendar-home-month"></strong>
+                                <button type="button" class="calendar-home-navbtn" aria-label="下個月"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+                                <button type="button" class="btnRounded btn-outline btn-compact calendar-home-todaybtn">今天</button>
+                            </div>
+                            <p class="calendar-home-view">目前檢視：<strong>全部空間</strong></p>
+                        </div>
+
+                        <p id="calPastHint" class="sr-only">已超過 24 小時申請期限，僅供查詢，無法預約</p>
+
+                        <div class="calendar-home-weekdays" aria-hidden="true">
+                            <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+                        </div>
+
+                        <div class="calendar-home-days"></div>
+
+                        <div class="calendar-home-legend flex-row-between flex-wrap">
+                            <span class="flex-row-center">
+                                <span class="calendar-home-legend-dot is-past-dot" aria-hidden="true"></span>已過申請期限
+                                <span class="calendar-home-legend-dot is-fastest-dot" aria-hidden="true"></span>最快可預約
+                            </span>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <!-- 當日動態卡 -->
+                    <div class="calendar-home-agenda">
+                        <div class="calendar-agenda-head flex-row-between">
+                            <div class="flex-column">
+                                <h3></h3>
+                                <small></small>
+                            </div>
+                            <div class="flex-row-center calendar-agenda-tools">
+                                <span class="calendar-agenda-count"></span>
+                            </div>
+                        </div>
+
+                        <div class="calendar-agenda-scroll" role="region" aria-label="當日預約清單" tabindex="0">
+                            <ol class="calendar-agenda-list"></ol>
+                        </div>
+
+                        <button type="button" class="calendar-agenda-more btnText">
+                            滾動 查看更多動態<i class="bi bi-chevron-double-down" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 各類空間 -->
+        <section class="category-section">
+            <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+                <defs>
+                    <linearGradient id="categoryWaveGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="37.98%" stop-color="#DDE9FC"/>
+                        <stop offset="84.13%" stop-color="#084DC7" stop-opacity=".58"/>
+                    </linearGradient>
+                    <clipPath id="categoryWaveClip" clipPathUnits="objectBoundingBox">
+                        <path d="M0,0.9487 C0.0001,0.9474 0.0535,-0.0747 0.1513,0.024 C0.2495,0.123 0.3271,0.9487 0.4253,0.9487 C0.5234,0.9487 0.6904,0.0239 0.7885,0.0239 C0.8854,0.0239 0.9999,0.9482 1,0.9487 L1,1 L0,1 Z"/>
+                    </clipPath>
+                </defs>
+            </svg>
+            
+            <div class="category-section-mask" aria-hidden="true"></div>
+            <svg class="category-section-line" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path d="M0,0.9487 C0.0001,0.9474 0.0535,-0.0747 0.1513,0.024 C0.2495,0.123 0.3271,0.9487 0.4253,0.9487 C0.5234,0.9487 0.6904,0.0239 0.7885,0.0239 C0.8854,0.0239 0.9999,0.9482 1,0.9487" fill="none" stroke="url(#categoryWaveGradient)" stroke-width="1" stroke-dasharray="6 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            </svg>
+
+            <div class="container">
+                <img class="category-deco-left" src="img/dec/男老師.jpg" alt="">
+                <img class="category-deco-right" src="img/dec/花.jpg" alt="">
+                <div class="category-section-head">
+                    <h2>各類空間．最快可預約</h2>
+                    <p>不確定哪一間排得進去？點開類別，最快能用的時段立刻呈現。</p>
+                </div>
+
+                <div class="category-grid">
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/一般教學.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-general">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-title">一般教學</span>
+                                    <span class="cardCategory-count">共8間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/藝術體育.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-artsSports">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-title">藝術體育</span>
+                                    <span class="cardCategory-count">共7間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/特教專業.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-specialEd">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-title">特教專業</span>
+                                    <span class="cardCategory-count">共3間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/手作包裝.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-packaging">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-kicker">職業教育</span>
+                                    <span class="cardCategory-title">手作包裝</span>
+                                    <span class="cardCategory-count">共7間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/餐飲.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-catering">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-kicker">職業教育</span>
+                                    <span class="cardCategory-title">餐飲</span>
+                                    <span class="cardCategory-count">共7間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/清潔服務.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-cleaning">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-kicker">職業教育</span>
+                                    <span class="cardCategory-title">清潔服務</span>
+                                    <span class="cardCategory-count">共6間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/農園藝.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-gardening">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-kicker">職業教育</span>
+                                    <span class="cardCategory-title">農園藝</span>
+                                    <span class="cardCategory-count">共2間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/生活自理.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-dailyLiving">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-kicker">職業教育</span>
+                                    <span class="cardCategory-title">生活自理</span>
+                                    <span class="cardCategory-count">共2間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="cardCategory" style="background-image:url('img/photo/會議.avif');" data-bs-toggle="modal" data-bs-target="#spaceQuickViewModal-meeting">
+                        <span class="cardCategory-body">
+                            <span class="cardCategory-row">
+                                <span class="cardCategory-text">
+                                    <span class="cardCategory-title">會議空間</span>
+                                    <span class="cardCategory-count">共2間空間</span>
+                                </span>
+                                <i class="bi bi-arrow-right cardCategory-arrow" aria-hidden="true"></i>
+                            </span>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="category-section-more flex-center-center">
+                    <a href="reservation.html" class="btnRounded btn-outline">前往預約空間<i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 預約流程 -->
+        <section class="steps-section">
+            <img class="steps-plane" src="img/dec/紙飛機.jpg" alt="">
+
+            <div class="container">
+                <div class="steps-section-head">
+                    <h2>三步驟．完成一次預約</h2>
+                    <p>從找空間到收到核准通知，全程線上處理，不必再跑一趟辦公室。</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10 col-12 mx-auto">
+                         <div class="steps-grid flex-row-between flex-wrap">
+                            <div class="steps-item">
+                                <div class="steps-item-visual"><img src="img/characters/查詢空間.png" alt=""></div>
+                                <h3 class="steps-item-title">查詢空間</h3>
+                                <p class="steps-item-desc">依日期、節次與空間類型篩選，<br>即時顯示目前可用的教室。</p>
+                            </div>
+
+                            <div class="steps-item">
+                                <div class="steps-item-visual"><img src="img/characters/送出申請.png" alt=""></div>
+                                <h3 class="steps-item-title">送出申請</h3>
+                                <p class="steps-item-desc">須提前 24 小時送出，<br>系統自動比對課表避免衝突。</p>
+                            </div>
+
+                            <div class="steps-item">
+                                <div class="steps-item-visual"><img src="img/characters/追蹤審核.png" alt=""></div>
+                                <h3 class="steps-item-title">追蹤審核</h3>
+                                <p class="steps-item-desc">核准進度即時更新，<br>結果同步通知申請人。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+
+                <div class="steps-section-more flex-center-center">
+                    <a href="login.html" class="btnRounded btn-primary">登入開始預約</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 手作包裝空間快覽 -->
+    <div class="modal fade" id="spaceQuickViewModal-packaging" tabindex="-1" aria-labelledby="spaceQuickViewModalLabel-packaging" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content modalPhoto">
+                <div class="modalPhoto-banner" style="background-image:url('img/photo/手作包裝.avif');">
+                    <button type="button" class="modalPhoto-close" data-bs-dismiss="modal" aria-label="關閉">
+                        <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </button>
+                    <span class="modalPhoto-kicker">職業教育</span>
+                    <h2 class="modalPhoto-title" id="spaceQuickViewModalLabel-packaging">手作包裝</h2>
+                    <p class="modalPhoto-meta">共7間空間・申請需提前24小時</p>
+                </div>
+                <div class="modalPhoto-body">
+                    <div class="listRow-head" aria-hidden="true">
+                        <span>空間</span>
+                        <span>最快可申請的節次</span>
+                    </div>
+                    <ul class="listRow-group">
+                        <li>
+                            <a href="reservation-list.html?category=packaging&amp;space=handmade-a" class="listRow">
+                                <span class="listRow-main">
+                                    <strong>手作工坊A</strong>
+                                    <small>可容納20人・1樓</small>
+                                </span>
+                                <span class="listRow-trailing">
+                                    <span class="listRow-side">
+                                        <span class="tagPill tag-neutral tagPill-sm">今天</span>
+                                        <span class="listRow-date">8/15（六）第三節</span>
+                                    </span>
+                                    <span class="listRow-arrow" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="reservation-list.html?category=packaging&amp;space=handmade-b" class="listRow">
+                                <span class="listRow-main">
+                                    <strong>手作工坊B</strong>
+                                    <small>可容納18人・1樓</small>
+                                </span>
+                                <span class="listRow-trailing">
+                                    <span class="listRow-side">
+                                        <span class="tagPill tag-neutral tagPill-sm">明天</span>
+                                        <span class="listRow-date">8/16（日）第六節</span>
+                                    </span>
+                                    <span class="listRow-arrow" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="reservation-list.html?category=packaging&amp;space=packing-material" class="listRow">
+                                <span class="listRow-main">
+                                    <strong>包裝材料室</strong>
+                                    <small>可容納12人・1樓</small>
+                                </span>
+                                <span class="listRow-trailing">
+                                    <span class="listRow-side">
+                                        <span class="tagPill tag-neutral tagPill-sm">明天</span>
+                                        <span class="listRow-date">8/16（日）第八節</span>
+                                    </span>
+                                    <span class="listRow-arrow" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="reservation-list.html?category=packaging&amp;space=equipment" class="listRow">
+                                <span class="listRow-main">
+                                    <strong>器材室</strong>
+                                    <small>可容納10人・2樓</small>
+                                </span>
+                                <span class="listRow-trailing">
+                                    <span class="listRow-side">
+                                        <span class="tagPill tag-neutral tagPill-sm">4天後</span>
+                                        <span class="listRow-date">8/19（三）第二節</span>
+                                    </span>
+                                    <span class="listRow-arrow" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="reservation-list.html?category=packaging&amp;space=exhibit" class="listRow">
+                                <span class="listRow-main">
+                                    <strong>展示教室</strong>
+                                    <small>可容納25人・2樓</small>
+                                </span>
+                                <span class="listRow-trailing">
+                                    <span class="listRow-side">
+                                        <span class="tagPill tag-neutral tagPill-sm">7天後</span>
+                                        <span class="listRow-date">8/22（六）第一節</span>
+                                    </span>
+                                    <span class="listRow-arrow" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="reservation-list.html?category=packaging&amp;space=assembly-a" class="listRow">
+                                <span class="listRow-main">
+                                    <strong>裝配教室A</strong>
+                                    <small>可容納15人・2樓</small>
+                                </span>
+                                <span class="listRow-trailing">
+                                    <span class="listRow-side is-stacked">
+                                        <span>未來3週都排滿了</span>
+                                        <span class="listRow-more">看更後面的日期</span>
+                                    </span>
+                                    <span class="listRow-arrow" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="reservation-list.html?category=packaging&amp;space=assembly-b" class="listRow">
+                                <span class="listRow-main">
+                                    <strong>裝配教室B</strong>
+                                    <small>可容納15人・2樓</small>
+                                </span>
+                                <span class="listRow-trailing">
+                                    <span class="listRow-side">
+                                        <span class="tagPill tag-neutral tagPill-sm">8天後</span>
+                                        <span class="listRow-date">8/23（日）第五節</span>
+                                    </span>
+                                    <span class="listRow-arrow" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modalPhoto-footer">
+                    <small>資料每日依課表與既有預約重新計算</small>
+                    <a href="reservation-list.html?category=packaging" class="btnText">前往完整空間課表<i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="scroll-top-btn" aria-label="回到頁面頂端">
+        <i class="bi bi-arrow-up" aria-hidden="true"></i>
+        <span class="scroll-top-text">回頂端</span>
+    </button>
+
+    <div id="footer" data-layout="layout/footer.html"></div>
+
+    <script>
+        (function () {
+            var validTabs = ['tab-all', 'tab-general', 'tab-artsSports', 'tab-specialEd', 'tab-vocational', 'tab-meeting'];
+
+            var hash = window.location.hash.replace('#', '');
+            if (validTabs.indexOf(hash) !== -1) {
+                document.querySelectorAll('.calendar-home-filters[role="tablist"] [role="tab"]').forEach(function (tab) {
+                    var selected = tab.id === hash;
+                    tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+                    tab.tabIndex = selected ? 0 : -1;
+                    tab.classList.toggle('is-active', selected);
+                });
+                var panel = document.getElementById('panel-calendarHome');
+                if (panel) { panel.setAttribute('aria-labelledby', hash); }
+            }
+
+            function activateTabByHash(targetHash) {
+                if (validTabs.indexOf(targetHash) === -1) { return; }
+                var tab = document.getElementById(targetHash);
+                if (!tab || tab.getAttribute('aria-selected') === 'true') { return; }
+                tab.click();
+                tab.focus();
+            }
+
+            window.addEventListener('hashchange', function () {
+                activateTabByHash(window.location.hash.replace('#', ''));
+            });
+
+            document.addEventListener('click', function (e) {
+                var link = e.target.closest ? e.target.closest('a[href*="index.html#tab-"], a[href^="#tab-"]') : null;
+                if (!link) { return; }
+                var targetHash = link.getAttribute('href').split('#')[1];
+                window.setTimeout(function () { activateTabByHash(targetHash); }, 0);
+            });
+        })();
+    </script>
+
+    <script src="js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tabs.js"></script>
+    <script src="js/homeCalendar.js"></script>
+</body>
+</html>

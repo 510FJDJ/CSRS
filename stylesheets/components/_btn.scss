@@ -1,0 +1,176 @@
+// ============================================================
+// 按鈕（design.md §6）：外型命名＋色彩修飾子，不綁功能
+// 色彩／狀態樣式共用一份 %btnColors，供兩種圓角外型套用：
+// .btnRounded（全膠囊，站內一般按鈕）／.btnPill（小圓角，modal 底部按鈕，見參考圖）
+// focus 樣式由 base/_base.scss 統一處理
+// ============================================================
+
+%btnColors {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 8px 24px;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .16s ease, color .16s ease, border-color .16s ease;
+
+    // Primary：品牌藍實心
+    &.btn-primary {
+        background-color: $color-primary;
+        color: #fff;
+        box-shadow: 0px 6px 16px 0px #1E5FC447;
+
+        &:hover {
+            background-color: $color-primary-hover;
+        }
+    }
+
+    // Outline：白底藍框
+    &.btn-outline {
+        background-color: $color-bg-page;
+        border-color: $color-primary;
+        color: $color-primary;
+
+        &:hover {
+            background-color: $color-primary;
+            color: #fff;
+        }
+    }
+
+    // White：白底藍字，用於深藍色底上（如快速預約列）
+    &.btn-white {
+        background-color: #fff;
+        color: $color-primary;
+
+        &:hover {
+            background-color: $color-bg-soft;
+        }
+    }
+
+    // Soft：白底灰框墨字（如驗證碼「語音播放／換一張」、行事曆「回到今天」）
+    &.btn-soft {
+        background-color: #fff;
+        border-color: $color-border;
+        color: $color-ink;
+
+        &:hover {
+            border-color: $color-primary;
+            color: $color-primary;
+        }
+    }
+
+    // Rect：圓角矩形（非膠囊），用於登入頁大顆送出鈕
+    &.btn-rect {
+        min-height: 56px;
+        border-radius: $border-radius;
+        font-size: 1.125rem;
+    }
+
+    // Ghost：透明底，用於深色背景上（如登入頁 hero）
+    &.btn-ghost {
+        background-color: rgba(255, 255, 255, .12);
+        border-color: rgba(255, 255, 255, .6);
+        color: #fff;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, .22);
+        }
+    }
+
+    // Accent：橘底實心，深色文字（白字在橘底對比度不足 WCAG AA），用於「匯出」等次要強調操作
+    &.btn-accent {
+        background-color: $color-accent-orange;
+        color: $color-ink;
+
+        &:hover {
+            background-color: #E2941A;
+        }
+    }
+
+    // Danger：紅底實心，用於刪除等破壞性操作的確認按鈕
+    &.btn-danger {
+        background-color: $color-danger;
+        color: #fff;
+
+        &:hover {
+            background-color: darken($color-danger, 8%);
+        }
+    }
+
+    // DangerOutline：白底紅框紅字，用於觸發刪除流程但尚未確認的按鈕
+    &.btn-dangerOutline {
+        background-color: $color-bg-page;
+        border-color: $color-danger;
+        color: $color-danger;
+
+        &:hover {
+            background-color: $color-danger;
+            color: #fff;
+        }
+    }
+
+    &.btn-compact {
+        min-height: 40px;
+        padding: 6px 18px;
+        font-size: .9375rem;
+    }
+
+    // Disabled：一律 aria-disabled（不可用原生 disabled）
+    &[aria-disabled="true"] {
+        background-color: $color-bg-soft;
+        border-color: $color-border;
+        color: $color-ink-soft;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    i.bi-arrow-right {
+        transition: transform .16s ease;
+    }
+
+    &:hover i.bi-arrow-right {
+        transform: translateX(4px);
+    }
+}
+
+.btnRounded {
+    @extend %btnColors;
+    border-radius: $border-radius-pill;
+}
+
+// 小圓角外型，用於 modal 底部按鈕（見 img/參考圖/教職員登入/空間明細.png、刪除預約.png）
+.btnPill {
+    @extend %btnColors;
+    border-radius: $border-radius;
+}
+
+// Text 按鈕：藍字，hover 加底線
+.btnText {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 44px;
+    padding: 4px 8px;
+    border: 0;
+    background: none;
+    color: $color-primary;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &[aria-disabled="true"] {
+        color: $color-ink-soft;
+        cursor: not-allowed;
+        pointer-events: none;
+        text-decoration: none;
+    }
+}

@@ -1,0 +1,29 @@
+// 提示框（淡底＋圖示，用於表單補充說明／注意事項）
+.noticeBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: $border-radius-sm;
+    background-color: rgba($color-primary, .06);
+    color: $color-ink-soft;
+    font-size: .9375rem;
+    line-height: 1.6;
+
+    i {
+        flex-shrink: 0;
+        margin-top: .2em;
+        color: $color-primary;
+        font-size: 1.125rem;
+    }
+}
+
+// 危險提示修飾子（如預約衝突警示）
+.noticeBox-danger {
+    background-color: rgba($color-danger, .08);
+    color: $color-danger;
+
+    i {
+        color: $color-danger;
+    }
+}

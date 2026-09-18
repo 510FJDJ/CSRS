@@ -1,0 +1,244 @@
+// ============================================================
+// 各類空間卡片（design.md §6：.cardCategory，hover 箭頭位移需尊重 prefers-reduced-motion）
+// 參考圖：照片上覆蓋白色淡出遮罩、文字置中；背景相片取自 img/photo/*.avif
+// 兩側裝飾：img/dec/男老師.jpg、img/dec/花.jpg（實為透明背景 PNG）
+// ============================================================
+
+.category-section {
+    position: relative;
+    overflow: clip;
+    padding: 0px 0 80px;
+    background-color: #FBFCFE;
+
+    > .container {
+        position: relative;
+    }
+}
+
+// 底部沉底波浪遮罩：波浪線以上維持區塊底色，以下露出頁面白色
+// clip-path／漸層定義見 index.html 內隱藏的 <svg><defs>（#categoryWaveClip／#categoryWaveGradient）
+.category-section-mask {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40px;
+    background-color: $color-bg-page;
+    clip-path: url(#categoryWaveClip);
+    pointer-events: none;
+
+    @media (max-width: 767.98px) {
+        height: 10px;
+    }
+}
+
+.category-section-line {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+
+    @media (max-width: 767.98px) {
+        height: 10px;
+    }
+}
+
+.category-deco-left {
+    position: absolute;
+    z-index: 2;
+    left: -5%;
+    bottom: -10%;
+    width: 300px;
+    pointer-events: none;
+
+    @media (max-width: 1400px) {
+        display: none;
+    }
+}
+
+.category-deco-right {
+    position: absolute;
+    z-index: 1;
+    right: -5%;
+    bottom: -9%;
+    width: 200px;
+    pointer-events: none;
+    transform: rotate(30deg);
+
+    @media (max-width: 1400px) {
+        display: none;
+    }
+}
+
+.category-section-head {
+    max-width: 640px;
+    margin: 0 auto 40px;
+    text-align: center;
+
+    h2 {
+        margin-bottom: 12px;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    p {
+        margin: 0;
+        color: $color-ink-soft;
+    }
+}
+@include media-breakpoint-down(md) {
+    .category-section {
+        padding: 48px 0 64px;
+    }
+
+    .category-section-head {
+        margin-bottom: 32px;
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+}
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1040px;
+    margin-inline: auto;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-card-white;
+     overflow: clip;
+    @media (max-width: 991.98px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 575.98px) {
+       border-radius: $border-radius-sm;
+    }
+}
+
+.cardCategory {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    background-size: cover;
+    background-position: center;
+    transition: color 0.4s ease;
+    border: none;
+    // 白色淡出遮罩：讓照片若隱若現、文字對比足夠
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, .9) 100%);
+        transition: opacity 0.4s ease;
+        z-index: 1;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180.34deg, rgba(2, 25, 74, 0) -18.66%, rgba(2, 25, 74, 0.6) 95.86%);
+        opacity: 0; /* 💡 預設完全透明隱藏 */
+        transition: opacity 0.4s ease; /* 💡 動態淡入 */
+        z-index: 1;
+    }
+
+     .cardCategory-body {
+        position: relative;
+        z-index: 2;
+    }
+    .cardCategory-arrow {
+        display: inline-block;
+        transition: transform 0.3s ease, color 0.4s ease;
+    }
+     &:hover::before,
+     &:focus-visible::before {
+        opacity: 0;
+    }
+    &:hover,
+    &:focus-visible {
+       color: #ffffff; 
+
+        &::before {
+            opacity: 0; 
+        }
+
+        &::after {
+            opacity: 1; 
+        }
+       .cardCategory-title,.cardCategory-count,.cardCategory-kicker,.cardCategory-arrow{
+        color:#ffffff;
+       }
+        .cardCategory-arrow {
+            transform: translateX(4px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &, &::before, &::after,.cardCategory-arrow {
+            transition: none;
+        }
+
+        &:hover .cardCategory-arrow,
+        &:focus-visible .cardCategory-arrow {
+            transform: none;
+        }
+    }
+}
+
+.cardCategory-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.cardCategory-kicker {
+    color: $color-ink-soft;
+    font-size: .8125rem;
+}
+
+// 職業教育／標題／共X間空間 文字堆疊，箭頭在外層 .cardCategory-row 與整個堆疊垂直置中並排
+.cardCategory-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.cardCategory-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.cardCategory-title {
+    color: $color-primary;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.cardCategory-count {
+    color: $color-ink-soft;
+    font-size: .875rem;
+}
+
+.cardCategory-arrow {
+    color: $color-primary;
+}
+
+.category-section-more {
+    margin-top: 40px;
+}

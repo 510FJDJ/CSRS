@@ -1,0 +1,83 @@
+// ============================================================
+// 共用 Footer（訪客／教職員／系統管理員頁面共用）
+// 參考圖：logo 左、｜分隔連結置中、電話地址靠右，下方置中版權＋Design by
+// 登入頁為獨立頁面，不套用此檔，另在 login.html 內自訂精簡版頁尾
+// ============================================================
+
+.site-footer {
+    margin-top: auto;
+    padding: 32px 0 24px;
+    background-color: $color-bg-page;
+    border-top: 1px solid $color-border;
+}
+
+.site-footer-top {
+    gap: 24px;
+    padding-bottom: 24px;
+}
+
+.site-footer-logo {
+    gap: 10px;
+    text-decoration: none;
+    color: $color-ink;
+
+    strong {
+        display: block;
+        font-size: .9375rem;
+        font-weight: 700;
+        color: $color-primary;
+    }
+
+    small {
+        font-size: .75rem;
+        color: $color-ink-soft;
+    }
+}
+
+.site-footer-nav {
+    gap: 0;
+
+    a {
+        padding: 0 16px;
+        color: $color-ink;
+        font-size: .9375rem;
+        text-decoration: none;
+        border-left: 1px solid $color-border;
+
+        &:first-child {
+            border-left: 0;
+        }
+
+        &:hover {
+            color: $color-primary;
+        }
+    }
+}
+
+.site-footer-contact {
+    gap: 4px;
+    color: $color-ink-soft;
+    font-size: .875rem;
+
+    .bi {
+        margin-right: 6px;
+        color: $color-primary;
+    }
+}
+
+.site-footer-bottom {
+    padding-top: 16px;
+    border-top: 1px solid $color-border;
+    color: $color-ink-soft;
+    font-size: .8125rem;
+    line-height: 1.8;
+    text-align: center;
+
+    p {
+        margin-bottom: 4px;
+    }
+
+    a {
+        color: $color-primary;
+    }
+}

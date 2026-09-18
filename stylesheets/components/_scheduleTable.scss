@@ -1,0 +1,341 @@
+// ============================================================
+// 空間使用總覽日曆格（外型元件，space-overview.html 專屬）
+// 週檢視（節次×日期）／單日檢視（空間×節次）共用格子與工具列樣式
+// 由 data-state 決定格子色彩，可點擊的格子開啟明細彈窗
+// ============================================================
+
+.scheduleBoard {
+    padding: 24px;
+    border-radius: $border-radius-lg;
+    background-color: $color-bg-page;
+    box-shadow: $shadow-card-white;
+}
+
+.scheduleBoard-toolbar {
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.scheduleBoard-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    small {
+        margin-left:10px;
+        color: $color-ink-soft;
+        font-weight: 500;
+    }
+}
+
+.scheduleBoard-nav {
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.scheduleBoard-navBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid $color-border;
+    border-radius: 50%;
+    background-color: #fff;
+    color: $color-ink;
+    cursor: pointer;
+
+    &:hover {
+        border-color: $color-primary;
+        color: $color-primary;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $color-focus;
+        outline-offset: 2px;
+    }
+}
+
+.scheduleBoard-dateLabel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 4px;
+    line-height: 1.3;
+
+    strong {
+        font-family: $font-family-sans-serif;
+        font-size: 1.0625rem;
+        font-weight: 700;
+    }
+
+    span {
+        color: $color-ink-soft;
+        font-size: .75rem;
+    }
+}
+
+// ---- 圖例 ----
+.scheduleLegend {
+    gap: 6px 14px;
+    margin: 0 0 16px;
+    padding: 0;
+    list-style: none;
+    color: $color-ink-soft;
+    font-size: .8125rem;
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+}
+
+.scheduleLegend-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+
+    &.is-used {
+        border-color: $color-border;
+        background-color: $color-bg-soft;
+    }
+
+    &.is-approved {
+        border-color: rgba($color-primary, .4);
+        background-color: rgba($color-primary, .12);
+    }
+
+    &.is-pending {
+        border-color: rgba($color-warning, .5);
+        background-color: rgba($color-warning, .16);
+    }
+
+    &.is-conflict {
+        border-color: $color-danger;
+        background-color: rgba($color-danger, .08);
+    }
+}
+
+// ---- 表格：橫向捲動而非卡片堆疊——本表為「節次×日期」或「空間×節次」矩陣，非清單型表格，不適用 dataTable 卡片堆疊模式 ----
+.scheduleBoard-tablewrap {
+    overflow-x: auto;
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+.scheduleTable {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+.scheduleTable-cornerHead {
+    width: 116px;
+}
+
+.scheduleTable-colHead {
+    padding: 4px;
+    color: $color-ink-soft;
+    font-weight: 500;
+    font-size: .8125rem;
+    text-align: center;
+
+    &.is-today {
+        color: $color-primary;
+        font-weight: 700;
+    }
+}
+
+.scheduleTable-colHead-weekday {
+    display: block;
+}
+
+.scheduleTable-colHead-num {
+    display: block;
+    font-family: $font-family-sans-serif;
+    font-size: .9375rem;
+}
+
+.scheduleTable-colHead-time {
+    display: block;
+    color: $color-ink-soft;
+    font-weight: 400;
+    font-family: $font-family-sans-serif;
+    font-size: .6875rem;
+}
+
+.scheduleTable-rowHead {
+    padding: 0 12px 0 4px;
+    color: $color-ink;
+    font-weight: 500;
+    font-size: .8125rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.scheduleTable-rowHead-label {
+    display: block;
+}
+
+.scheduleTable-rowHead-sub {
+    display: block;
+    color: $color-ink-soft;
+    font-weight: 400;
+    font-size: .75rem;
+}
+
+// 單日檢視：分類群組列（一般教學／藝術體育／特教專業）
+.scheduleTable-groupRow th {
+    padding: 12px 4px 6px;
+    color: $color-primary;
+    font-weight: 700;
+    font-size: .875rem;
+    text-align: left;
+}
+
+// 午休列（週檢視）
+.scheduleTable-breakRow td {
+    padding: 2px 4px;
+    color: $color-ink-soft;
+    font-size: .75rem;
+    text-align: center;
+}
+
+.scheduleTable-cell {
+    padding: 2px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.scheduleTable-dash {
+    display: inline-block;
+    padding: 12px 0;
+    color: #C2CAD4;
+}
+
+.scheduleTable-slot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    width: 100%;
+    min-height: 48px;
+    padding: 6px 4px;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    background-color: #fff;
+    color: $color-ink-soft;
+    cursor: default;
+
+    &.is-clickable {
+        cursor: pointer;
+
+        &:hover {
+            border-color: $color-primary;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $color-focus;
+            outline-offset: 2px;
+        }
+    }
+}
+
+.scheduleTable-slotStatus {
+    font-size: .8125rem;
+    font-weight: 500;
+}
+
+.scheduleTable-slotMeta {
+    color: $color-ink-soft;
+    font-size: .6875rem;
+    font-family: $font-family-sans-serif;
+}
+
+.scheduleTable-slotBadge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: $border-radius-pill;
+    background-color: $color-ink-soft;
+    color: #fff;
+    font-size: .625rem;
+    font-weight: 700;
+    font-family: $font-family-sans-serif;
+}
+
+.scheduleTable-cell[data-state="used"] .scheduleTable-slot {
+    background-color: $color-bg-soft;
+
+    .scheduleTable-slotStatus {
+        color: $color-ink-soft;
+    }
+}
+
+.scheduleTable-cell[data-state="approved"] .scheduleTable-slot {
+    border-color: rgba($color-primary, .4);
+    background-color: rgba($color-primary, .08);
+
+    .scheduleTable-slotStatus {
+        color: $color-primary;
+    }
+}
+
+.scheduleTable-cell[data-state="pending"] .scheduleTable-slot {
+    border-color: rgba($color-warning, .5);
+    background-color: rgba($color-warning, .1);
+
+    .scheduleTable-slotStatus {
+        color: $color-warning-text;
+    }
+}
+
+.scheduleTable-cell[data-state="conflict"] .scheduleTable-slot {
+    border-width: 2px;
+    border-color: $color-danger;
+    background-color: rgba($color-danger, .06);
+}
+
+// 導覽到未提供範例資料的日期／週次時顯示
+.scheduleBoard-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 48px 16px;
+    color: $color-ink-soft;
+
+    i {
+        font-size: 2rem;
+        color: #C2CAD4;
+    }
+
+    p {
+        margin: 0;
+        font-size: .9375rem;
+    }
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .scheduleBoard {
+        padding: 16px;
+    }
+}

@@ -1,0 +1,92 @@
+<header id="headerNav" class="site-header">
+    <div class="container">
+        <div class="site-header-bar flex-row-between">
+            <a href="index.html" class="site-header-logo flex-row-center" aria-label="回到首頁">
+                <img src="img/logo/logo-uni.svg" alt="" width="40" height="40">
+                <span class="site-header-logo-text flex-column">
+                    <strong>雲端空間預約管理系統</strong>
+                    <small>國立彰化特殊教育學校</small>
+                </span>
+            </a>
+
+            <nav class="site-header-nav flex-row-center d-none d-lg-flex" aria-label="主要導覽">
+                <a href="index.html">首頁</a>
+                <a href="index.html#calendarHome" data-scroll-link="calendarHome">全校行事曆</a>
+                <a href="reservation-list.html">全校預約清單</a>
+                <a href="reservation.html">我要預約</a>
+                <a href="my-reservations.html">我的預約</a>
+            </nav>
+
+            <div class="site-header-actions flex-row-center">
+                <div class="dropdown site-header-user d-none d-lg-block">
+                    <button type="button" class="site-header-user-trigger flex-row-center" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle" aria-hidden="true"></i>
+                        <span class="site-header-user-info flex-column">
+                            <strong data-user-name>陳怡君</strong>
+                            <small data-user-role>教職員</small>
+                        </span>
+                        <span class="site-header-user-iconToggle">
+                            <i class="bi bi-plus-lg site-header-user-icon icon-plus" aria-hidden="true"></i>
+                            <i class="bi bi-dash-lg site-header-user-icon icon-minus" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end site-header-user-menu">
+                        <a class="dropdown-item" href="change-password.html">
+                            <i class="bi bi-lock" aria-hidden="true"></i>修改密碼
+                        </a>
+                        <a class="dropdown-item site-header-user-menu-danger" href="index.html">
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>登出
+                        </a>
+                    </div>
+                </div>
+
+                <button type="button" class="site-header-toggle d-lg-none" data-bs-toggle="offcanvas"
+                        data-bs-target="#staffOffcanvas" aria-controls="staffOffcanvas" aria-label="開啟選單">
+                    <i class="bi bi-list" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="offcanvas offcanvas-end site-offcanvas" tabindex="-1" id="staffOffcanvas" aria-labelledby="staffOffcanvasLabel">
+    <div class="offcanvas-header">
+        <a href="index.html" class="site-header-logo flex-row-center" aria-label="回到首頁">
+            <img src="img/logo/logo-uni.svg" alt="" width="36" height="36">
+            <span class="site-header-logo-text flex-column" id="staffOffcanvasLabel">
+                <strong>雲端空間預約管理系統</strong>
+                <small>國立彰化特殊教育學校</small>
+            </span>
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="關閉選單"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="flex-column gap-3">
+            <div class="site-offcanvas-user flex-row-center">
+                <i class="bi bi-person-circle" aria-hidden="true"></i>
+                <div>
+                    <span class="fs-3 me-2" data-user-name>陳怡君</span>
+                    <span data-user-role>教職員</span>
+                </div>
+            </div>
+            <nav class="site-offcanvas-nav" aria-label="行動版主要導覽">
+                <a href="index.html">首頁</a>
+                <a href="index.html#calendarHome">全校行事曆</a>
+                <a href="reservation-list.html">全校預約清單</a>
+                <a href="reservation.html">我要預約</a>
+                <a href="my-reservations.html">我的預約</a>
+            </nav>
+        </div>
+
+        <div class="flex-column gap-2">
+            <div class="site-offcanvas-account">
+                <a href="change-password.html"><i class="bi bi-lock-fill" aria-hidden="true"></i>修改密碼</a>
+            </div>
+
+            <a href="index.html" class="site-offcanvas-pill flex-row-between">
+                <span>登出</span>
+                <span class="site-offcanvas-pill-icon" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+            </a>
+        </div>
+    </div>
+</div>

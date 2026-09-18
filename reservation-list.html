@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <script>
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo/logo-uni.svg" type="image/svg+xml">
+    <title>全校預約清單 - 彰特空間預約</title>
+    <meta name="description" content="查詢全校各空間已送出的預約紀錄，可依場地、日期區間與狀態篩選。">
+
+    <link rel="stylesheet" href="css/all.css">
+</head>
+<body>
+    <a href="#goCenter" class="sr-only focusable" accesskey="C" title="跳過導覽列，進入主要內容區">主要內容區</a>
+    <a href="#headerNav" class="sr-only focusable" accesskey="U" title="跳至上方導覽列" tabindex="-1">上方導覽列</a>
+
+    <div id="header" data-layout="layout/header.html"></div>
+
+    <main id="goCenter" tabindex="-1">
+        <!-- 內頁 Banner -->
+        <section class="page-banner">
+            <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+                <defs>
+                    <linearGradient id="bannerArcGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="15.87%" stop-color="#084DC7" stop-opacity=".58"/>
+                        <stop offset="62.02%" stop-color="#DDE9FC"/>
+                    </linearGradient>
+                    <clipPath id="bannerDotsClip" clipPathUnits="objectBoundingBox">
+                        <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <svg class="page-banner-arc" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path class="page-banner-arc-mask" d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z"/>
+                <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05" fill="none" stroke="url(#bannerArcGradient)" stroke-width="1" stroke-dasharray="6 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <img class="page-banner-mountain" src="img/dec/內頁背景banner素材/Subtract.svg" alt="">
+
+            <div class="container page-banner-content">
+                <nav class="page-banner-breadcrumb" aria-label="麵包屑導覽">
+                    <ol>
+                        <li>
+                            <a class="breadcrumb-home" href="index.html" aria-label="首頁">
+                                <i class="bi bi-house-door" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li aria-current="page">全校預約清單</li>
+                    </ol>
+                </nav>
+
+                <div class="page-banner-main flex-row-between">
+                    <div class="page-banner-text">
+                        <h1 class="page-banner-title">全校預約清單</h1>
+                        <p class="page-banner-desc">查詢全校各空間已送出的預約紀錄。可依場地、日期區間與狀態篩選，或直接搜尋事由與申請人。</p>
+                    </div>
+                    <div class="page-banner-visual" aria-hidden="true">
+                        <img src="img/dec/內頁背景banner素材/人物組圖.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 篩選列 -->
+        <section class="filter-section">
+            <div class="container">
+                <div class="filter-card">
+                    <h2 class="filter-card-title">篩選條件</h2>
+                    <div class="filter-card-divider"></div>
+
+                    <form class="filter-form" action="reservation-list.html" method="get">
+                        <div class="filter-field">
+                            <label for="filterSpace">場地</label>
+                            <select id="filterSpace" name="space" class="form-select">
+                                <option value="">全部場地</option>
+                                <option value="meeting-a">第一會議室</option>
+                                <option value="gym">活動中心</option>
+                                <option value="music">音樂教室</option>
+                                <option value="kitchen">職教烘焙教室</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field filter-field-dateRange">
+                            <label for="filterDateStart">日期區間</label>
+                            <div class="filter-dateRange">
+                                <input type="date" id="filterDateStart" name="dateStart" class="form-control" value="2026-08-30">
+                                <span class="filter-dateRange-sep" aria-hidden="true">～</span>
+                                <label for="filterDateEnd" class="sr-only">結束日期</label>
+                                <input type="date" id="filterDateEnd" name="dateEnd" class="form-control" value="2026-08-30">
+                            </div>
+                        </div>
+
+                        <div class="filter-field">
+                            <label for="filterStatus">作業狀態</label>
+                            <select id="filterStatus" name="status" class="form-select">
+                                <option value="">所有狀態</option>
+                                <option value="pending">待審核</option>
+                                <option value="approved">已核准</option>
+                                <option value="rejected">已拒絕</option>
+                                <option value="cancelled">已取消</option>
+                                <option value="scheduleCancelled">被課表取消</option>
+                                <option value="used">已使用</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-field filter-field-keyword">
+                            <label for="filterKeyword">關鍵字</label>
+                            <input type="search" id="filterKeyword" name="keyword" class="form-control" placeholder="搜尋事由、申請人…">
+                        </div>
+
+                        <div class="filter-actions">
+                            <button type="submit" class="btnRounded btn-primary">
+                                <i class="bi bi-search" aria-hidden="true"></i>查詢
+                            </button>
+                            <button type="button" class="btnRounded btn-accent">
+                                <i class="bi bi-download" aria-hidden="true"></i>匯出
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 表格清單 -->
+        <section class="dataTable-section">
+            <div class="container">
+                <div class="dataTable-head-row flex-row-between">
+                    <h2 class="dataTable-heading">預約記錄</h2>
+                    <div class="dataTable-pageSize flex-row-center">
+                        <label for="pageSize">每頁顯示</label>
+                        <select id="pageSize" name="pageSize" class="form-select form-select-sm">
+                            <option value="15" selected>15筆</option>
+                            <option value="30">30筆</option>
+                            <option value="50">50筆</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="dataTable-divider"></div>
+
+                <div class="dataTable-card" style="--dataTable-cols: 1fr 1.1fr 1.7fr 1.3fr 1.6fr 1.5fr;">
+                    <table class="dataTable" role="table" aria-label="全校預約記錄清單">
+                        <thead role="rowgroup">
+                            <tr class="dataTable-head" role="row">
+                                <th scope="col" role="columnheader">日期/星期</th>
+                                <th scope="col" role="columnheader">節次/時間</th>
+                                <th scope="col" role="columnheader">場地名稱</th>
+                                <th scope="col" role="columnheader">申請人/單號</th>
+                                <th scope="col" role="columnheader">事由</th>
+                                <th scope="col" role="columnheader">作業狀態</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="dataTable-body" role="rowgroup">
+                            <tr class="dataTable-row" role="row">
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                    <div class="dataTable-cellPrimary">2026/08/16</div>
+                                    <div class="dataTable-cellSub">星期日</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">節次/時間</span>
+                                    <div class="dataTable-cellPrimary">第三節（10:00-10:50）</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                    <div class="dataTable-cellPrimary">第一會議室</div>
+                                    <div class="dataTable-cellTags">
+                                        <span class="tagPill tagPill-sm tag-info">一般教學</span>
+                                        <span class="tagPill tagPill-sm tag-neutral">本館3樓</span>
+                                    </div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">申請人/單號</span>
+                                    <div class="dataTable-cellPrimary">王小明（T102）</div>
+                                    <div class="dataTable-cellSub">單號 R20260816001</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                    <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">班親會場地借用</textarea>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">作業狀態</span>
+                                    <span class="tagPill tag-warning"><i class="bi bi-hourglass-split" aria-hidden="true"></i>待審核</span>
+                                </td>
+                            </tr>
+
+                            <tr class="dataTable-row" role="row">
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                    <div class="dataTable-cellPrimary">2026/08/17</div>
+                                    <div class="dataTable-cellSub">星期一</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">節次/時間</span>
+                                    <div class="dataTable-cellPrimary">第五節（12:50-13:40）</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                    <div class="dataTable-cellPrimary">活動中心</div>
+                                    <div class="dataTable-cellTags">
+                                        <span class="tagPill tagPill-sm tag-info">藝術體育</span>
+                                        <span class="tagPill tagPill-sm tag-neutral">活動中心1樓</span>
+                                    </div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">申請人/單號</span>
+                                    <div class="dataTable-cellPrimary">陳美玲（T215）</div>
+                                    <div class="dataTable-cellSub">單號 R20260817004</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                    <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">全校運動會場地布置</textarea>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">作業狀態</span>
+                                    <span class="tagPill tag-danger"><i class="bi bi-x-circle" aria-hidden="true"></i>已拒絕</span>
+                                    <div class="dataTable-statusReason">同時段已有全校性活動</div>
+                                </td>
+                            </tr>
+
+                            <tr class="dataTable-row" role="row">
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                    <div class="dataTable-cellPrimary">2026/08/17</div>
+                                    <div class="dataTable-cellSub">星期一</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">節次/時間</span>
+                                    <div class="dataTable-cellPrimary">第二節（09:00-09:50）</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                    <div class="dataTable-cellPrimary">音樂教室</div>
+                                    <div class="dataTable-cellTags">
+                                        <span class="tagPill tagPill-sm tag-info">藝術體育</span>
+                                        <span class="tagPill tagPill-sm tag-neutral">本館2樓</span>
+                                    </div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">申請人/單號</span>
+                                    <div class="dataTable-cellPrimary">林建宏（T088）</div>
+                                    <div class="dataTable-cellSub">單號 R20260817007</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                    <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">合唱團晨間練習</textarea>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">作業狀態</span>
+                                    <span class="tagPill tag-success"><i class="bi bi-check-circle" aria-hidden="true"></i>已核准</span>
+                                </td>
+                            </tr>
+
+                            <tr class="dataTable-row" role="row">
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                    <div class="dataTable-cellPrimary">2026/08/18</div>
+                                    <div class="dataTable-cellSub">星期二</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">節次/時間</span>
+                                    <div class="dataTable-cellPrimary">第六節（13:50-14:40）</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                    <div class="dataTable-cellPrimary">職教烘焙教室</div>
+                                    <div class="dataTable-cellTags">
+                                        <span class="tagPill tagPill-sm tag-info">職業教育‧餐飲</span>
+                                        <span class="tagPill tagPill-sm tag-neutral">實習大樓2樓</span>
+                                    </div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">申請人/單號</span>
+                                    <div class="dataTable-cellPrimary">張淑芬（T133）</div>
+                                    <div class="dataTable-cellSub">單號 R20260818002</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                    <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">烘焙課程實作</textarea>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">作業狀態</span>
+                                    <span class="tagPill tag-purple"><i class="bi bi-x-circle" aria-hidden="true"></i>被課表取消</span>
+                                    <div class="dataTable-statusReason">與新增課表時段衝突，系統自動取消</div>
+                                </td>
+                            </tr>
+
+                            <tr class="dataTable-row" role="row">
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                    <div class="dataTable-cellPrimary">2026/08/18</div>
+                                    <div class="dataTable-cellSub">星期二</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">節次/時間</span>
+                                    <div class="dataTable-cellPrimary">第四節（11:00-11:50）</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                    <div class="dataTable-cellPrimary">第一會議室</div>
+                                    <div class="dataTable-cellTags">
+                                        <span class="tagPill tagPill-sm tag-info">一般教學</span>
+                                        <span class="tagPill tagPill-sm tag-neutral">本館3樓</span>
+                                    </div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">申請人/單號</span>
+                                    <div class="dataTable-cellPrimary">黃俊傑（T056）</div>
+                                    <div class="dataTable-cellSub">單號 R20260818006</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                    <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">導師晨會</textarea>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">作業狀態</span>
+                                    <span class="tagPill tag-neutral"><i class="bi bi-x-circle" aria-hidden="true"></i>已取消</span>
+                                    <div class="dataTable-statusReason dataTable-statusReason-neutral">申請人於 8/18 自行取消</div>
+                                </td>
+                            </tr>
+
+                            <tr class="dataTable-row" role="row">
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">日期/星期</span>
+                                    <div class="dataTable-cellPrimary">2026/08/19</div>
+                                    <div class="dataTable-cellSub">星期三</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">節次/時間</span>
+                                    <div class="dataTable-cellPrimary">第一節（08:00-08:50）</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">場地名稱</span>
+                                    <div class="dataTable-cellPrimary">音樂教室</div>
+                                    <div class="dataTable-cellTags">
+                                        <span class="tagPill tagPill-sm tag-info">藝術體育</span>
+                                        <span class="tagPill tagPill-sm tag-neutral">本館2樓</span>
+                                    </div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">申請人/單號</span>
+                                    <div class="dataTable-cellPrimary">李佳蓉（T171）</div>
+                                    <div class="dataTable-cellSub">單號 R20260819003</div>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">事由</span>
+                                    <textarea class="form-control form-control-sm cellReasonBox" readonly aria-label="事由">直笛社團練習</textarea>
+                                </td>
+                                <td class="dataTable-cell" role="cell">
+                                    <span class="dataTable-cellLabel" aria-hidden="true">作業狀態</span>
+                                    <span class="tagPill tag-info"><i class="bi bi-check-circle" aria-hidden="true"></i>已使用</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="dataTable-footer flex-column-center">
+                    <p class="dataTable-summary">顯示第 1 至 6 筆，共 32 筆資料</p>
+                    <nav aria-label="分頁導覽">
+                        <ul class="pagination mb-0">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="第一頁"><i class="bi bi-chevron-bar-left" aria-hidden="true"></i></a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="上一頁"><i class="bi bi-chevron-left me-2" aria-hidden="true"></i>上一頁</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active"><a class="page-link" href="#" aria-current="page">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="下一頁">下一頁<i class="bi bi-chevron-right ms-2" aria-hidden="true"></i></a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="最後一頁"><i class="bi bi-chevron-bar-right"  aria-hidden="true" ></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 回到頂部 -->
+    <button type="button" class="scroll-top-btn" aria-label="回到頁面頂端">
+        <i class="bi bi-arrow-up" aria-hidden="true"></i>
+        <span class="scroll-top-text">回頂端</span>
+    </button>
+
+    <div id="footer" data-layout="layout/footer.html"></div>
+
+    <script src="js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

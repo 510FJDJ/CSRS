@@ -1,0 +1,319 @@
+// ============================================================
+// 明細彈窗（外型元件）：標題＋副標＋分區塊的標籤／內容清單，用於任何「檢視單筆紀錄詳情」的彈窗
+// ============================================================
+
+.detailModal {
+    border: 0;
+}
+
+.detailModal-header {
+    align-items: flex-start;
+    padding: 24px 28px 16px;
+    border-bottom: 0;
+}
+
+.detailModal-title {
+    margin: 0 0 4px;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: $color-ink;
+}
+
+.detailModal-subtitle {
+    margin: 0;
+    color: $color-ink-soft;
+    font-size: .9375rem;
+}
+
+.detailModal .btn-close {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: $color-bg-soft;
+    opacity: 1;
+    transition: background-color .16s ease;
+
+    &:hover {
+        background-color: darken($color-bg-soft, 4%);
+    }
+}
+
+.detailModal-body {
+    padding: 4px 28px 20px;
+}
+
+.detailModal-section {
+    & + & {
+        margin-top: 20px;
+    }
+}
+
+.detailModal-sectionTitle {
+    margin: 0 0 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.detailModal-table {
+    margin: 0;
+    border-radius: $border-radius-sm;
+    background-color: $color-bg-soft;
+    overflow: hidden;
+}
+
+.detailModal-row {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 4px 16px;
+    padding: 12px 16px;
+    border-bottom: 1px dashed $color-border;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    dt {
+        color: $color-ink-soft;
+        font-size: .875rem;
+        font-weight: 500;
+    }
+
+    dd {
+        margin: 0;
+        color: $color-ink;
+    }
+}
+
+.detailModal-rowMain {
+    margin: 0;
+    color: $color-ink;
+
+    strong {
+        font-family: $font-family-sans-serif;
+    }
+}
+
+.detailModal-rowSub {
+    margin: 4px 0 0;
+    color: $color-ink-soft;
+    font-size: .8125rem;
+}
+
+// ---- 處理衝突彈窗專用（外型元件，同一 detailModal 底下的變化）----
+.detailModal-conflictSummary {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border-radius: $border-radius-sm;
+    background-color: rgba($color-primary, .06);
+    color: $color-ink;
+    font-size: .875rem;
+    line-height: 1.5;
+
+    .bi {
+        flex-shrink: 0;
+        margin-top: 2px;
+        color: $color-primary;
+    }
+
+    strong {
+        font-weight: 700;
+    }
+}
+
+.detailModal-conflictCard {
+    padding: 16px 18px;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+
+    & + & {
+        margin-top: 12px;
+    }
+}
+
+.detailModal-conflictCard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    .detailModal-sectionTitle {
+        margin: 0;
+    }
+}
+
+.detailModal-conflictCard-desc {
+    margin: 6px 0 14px;
+    color: $color-ink-soft;
+    font-size: .875rem;
+
+    &.is-instruction {
+        color: $color-warning-text;
+        font-weight: 600;
+    }
+}
+
+.detailModal-conflictNote {
+    margin: 6px 0 0;
+    color: $color-danger;
+    font-size: .8125rem;
+    font-weight: 500;
+}
+
+.detailModal-conflictConfirm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 4px;
+    padding: 10px 14px;
+    border: 1px solid rgba($color-success, .25);
+    border-radius: $border-radius-sm;
+    background-color: rgba($color-success, .08);
+    color: $color-ink;
+    font-size: .875rem;
+    font-weight: 700;
+
+    .bi {
+        flex-shrink: 0;
+        color: $color-success;
+    }
+}
+
+.detailModal-entry {
+    padding: 12px 14px;
+    border-radius: $border-radius-sm;
+    background-color: $color-bg-soft;
+
+    & + & {
+        margin-top: 10px;
+    }
+
+    &.is-conflict {
+        border-left: 3px solid $color-danger;
+        background-color: rgba($color-danger, .05);
+    }
+}
+
+.detailModal-entryHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.detailModal-entryName {
+    margin: 0;
+    color: $color-ink;
+    font-weight: 700;
+}
+
+.detailModal-entryTicket {
+    flex: 0 0 auto;
+    color: $color-ink-soft;
+    font-family: $font-family-sans-serif;
+    font-size: .8125rem;
+}
+
+.detailModal-entryReason {
+    margin: 4px 0 0;
+    color: $color-ink-soft;
+    font-size: .875rem;
+}
+
+.metaList {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 8px 0 0;
+}
+
+.metaList-row {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 4px;
+    font-size: .8125rem;
+    line-height: 1.6;
+
+    dt {
+        color: $color-ink-soft;
+        font-weight: 500;
+    }
+
+    dd {
+        margin: 0;
+        color: $color-ink;
+    }
+}
+
+.detailModal-entryTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+// 處理衝突彈窗：桌機併排顯示，手機版掉回垂直堆疊
+// 用複合選擇器（.radioCard-group.radioCard-group-pair）提高權重，
+// 避免 _reservationBooking.scss 的 .radioCard-group 因 import 順序在後而蓋掉這裡的媒體查詢規則
+.radioCard-group.radioCard-group-pair {
+    @media (min-width: 992px) {
+        flex-direction: row;
+        align-items: stretch;
+
+        .radioCard {
+            flex: 1 1 0;
+        }
+    }
+}
+
+.detailModal-entryPair {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .detailModal-entry + .detailModal-entry {
+        margin-top: 0;
+    }
+
+    @media (min-width: 992px) {
+        flex-direction: row;
+        align-items: stretch;
+
+        .detailModal-entry {
+            flex: 1 1 0;
+        }
+    }
+}
+
+.detailModal-footer {
+    gap: 12px;
+    padding: 20px 28px 28px;
+    border-top-color: $color-border;
+
+    > * {
+        margin: 0;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .detailModal-header {
+        padding: 20px 20px 12px;
+    }
+
+    .detailModal-body {
+        padding: 4px 20px 4px;
+    }
+
+    .detailModal-row {
+        grid-template-columns: 100%;
+    }
+
+    .detailModal-footer {
+        flex-direction: column-reverse;
+        padding: 16px 20px 20px;
+    }
+}

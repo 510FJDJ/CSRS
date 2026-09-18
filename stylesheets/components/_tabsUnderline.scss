@@ -1,0 +1,50 @@
+// 底線頁籤（審核管理：待審核／已核准／已拒絕）
+.tabsUnderline {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.tabsUnderline-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 2px 16px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: $color-ink-soft;
+    font-weight: 500;
+    white-space: nowrap;
+
+    i {
+        font-size: 1.1em;
+    }
+
+    &[aria-selected="true"] {
+        border-bottom-color: $color-primary;
+        color: $color-primary;
+        font-weight: 700;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $color-focus;
+        outline-offset: 2px;
+    }
+}
+
+.tabsUnderline-tab-icon-pending {
+    color: $color-primary;
+}
+
+.tabsUnderline-tab-icon-success {
+    color: $color-success;
+}
+
+.tabsUnderline-tab-icon-danger {
+    color: $color-danger;
+}
+
+.tabs-panel {
+    margin-top: 24px;
+}

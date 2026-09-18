@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <script>
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo/logo-uni.svg" type="image/svg+xml">
+    <title>我要預約 - 彰特空間預約</title>
+    <meta name="description" content="查詢空間可預約時段，挑選節次並送出預約申請。">
+
+    <link rel="stylesheet" href="css/all.css">
+</head>
+<body>
+    <a href="#goCenter" class="sr-only focusable" accesskey="C" title="跳過導覽列，進入主要內容區">主要內容區</a>
+    <a href="#headerNav" class="sr-only focusable" accesskey="U" title="跳至上方導覽列" tabindex="-1">上方導覽列</a>
+
+    <div id="header" data-layout="layout/header_StaffLogged.html"></div>
+
+    <main id="goCenter" tabindex="-1">
+        <!-- 內頁 Banner -->
+        <section class="page-banner">
+            <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+                <defs>
+                    <linearGradient id="bannerArcGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="15.87%" stop-color="#084DC7" stop-opacity=".58"/>
+                        <stop offset="62.02%" stop-color="#DDE9FC"/>
+                    </linearGradient>
+                    <clipPath id="bannerDotsClip" clipPathUnits="objectBoundingBox">
+                        <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <svg class="page-banner-arc" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path class="page-banner-arc-mask" d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z"/>
+                <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05" fill="none" stroke="url(#bannerArcGradient)" stroke-width="1" stroke-dasharray="6 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <img class="page-banner-mountain" src="img/dec/內頁背景banner素材/Subtract.svg" alt="">
+
+            <div class="container page-banner-content">
+                <nav class="page-banner-breadcrumb" aria-label="麵包屑導覽">
+                    <ol>
+                        <li>
+                            <a class="breadcrumb-home" href="index.html" aria-label="首頁">
+                                <i class="bi bi-house-door" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li aria-current="page">我要預約</li>
+                    </ol>
+                </nav>
+
+                <div class="page-banner-main flex-row-between">
+                    <div class="page-banner-text">
+                        <h1 class="page-banner-title">我要預約</h1>
+                        <p class="page-banner-desc">選擇想要使用的空間與時段，點選可預約的節次加入已選，確認後即可送出申請。</p>
+                    </div>
+                    <div class="page-banner-visual" aria-hidden="true">
+                        <img src="img/dec/內頁背景banner素材/人物組圖.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 步驟列 -->
+        <section class="reservationSteps-section">
+            <div class="container">
+                <ol class="reservationSteps">
+                    <li class="reservationSteps-item is-current" id="stepItem1">
+                        <button type="button" class="reservationSteps-link" data-step="1" id="stepTab1">
+                            <span class="reservationSteps-num">1</span>
+                            <span class="reservationSteps-label">挑選時段</span>
+                        </button>
+                    </li>
+                    <li class="reservationSteps-connector" aria-hidden="true"></li>
+                    <li class="reservationSteps-item" id="stepItem2">
+                        <button type="button" class="reservationSteps-link" data-step="2" id="stepTab2" aria-disabled="true" aria-describedby="stepLockedNotice">
+                            <span class="reservationSteps-num">2</span>
+                            <span class="reservationSteps-label">確認送出</span>
+                        </button>
+                    </li>
+                </ol>
+                <p id="stepLockedNotice" class="sr-only">請先在步驟一挑選至少一個時段</p>
+            </div>
+        </section>
+
+        <!-- 日曆與操作面板 -->
+        <section class="reservation-section">
+            <div class="container">
+                <div class="reservation-grid" id="stepPanel1">
+                    <div class="reservation-board">
+                        <div class="reservation-board-toolbar flex-row-between">
+                            <div class="reservation-board-nav flex-row-center">
+                                <button type="button" class="reservationBoard-navbtn" id="weekPrevBtn" aria-label="上一週">
+                                    <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                                </button>
+                                <div class="reservation-board-weeklabel">
+                                    <strong id="weekRangeLabel"></strong>
+                                    <span id="weekYearLabel"></span>
+                                </div>
+                                <button type="button" class="reservationBoard-navbtn" id="weekNextBtn" aria-label="下一週">
+                                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btnRounded btn-soft btn-compact" id="weekTodayBtn">本週</button>
+                            </div>
+
+                            <ul class="reservation-legend flex-row-center flex-wrap" aria-label="時段狀態圖例">
+                                <li><span class="reservation-legend-swatch is-available" aria-hidden="true"></span>可預約</li>
+                                <li><span class="reservation-legend-swatch is-mergeable" aria-hidden="true"></span>可併班</li>
+                                <li><span class="reservation-legend-swatch is-full" aria-hidden="true"></span>已額滿</li>
+                                <li><span class="reservation-legend-swatch is-past" aria-hidden="true"></span>逾期</li>
+                                <li><span class="reservation-legend-swatch is-selected" aria-hidden="true"></span>已選取</li>
+                            </ul>
+                        </div>
+
+                        <div class="reservation-board-tablewrap">
+                            <table class="reservationTable" aria-label="每週節次時段表">
+                                <caption class="sr-only">依日期與節次顯示可預約時段，點選可預約或可併班的節次即可加入已選</caption>
+                                <thead>
+                                    <tr id="weekHeadRow"></tr>
+                                </thead>
+                                <tbody id="weekBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <aside class="reservation-panel" aria-label="預約操作">
+                        <div class="reservation-panel-card">
+                            <h2 class="reservation-panel-title"><span class="reservation-panel-num">1</span>選擇空間</h2>
+                            <label for="spaceSelect" class="sr-only">選擇空間</label>
+                            <select id="spaceSelect" class="form-select">
+                                <option value="computerRoom1" selected>電腦教室（一）</option>
+                                <option value="meetingA">第一會議室</option>
+                                <option value="musicRoom">音樂教室</option>
+                            </select>
+
+                            <div class="reservation-spaceInfo">
+                                <div class="reservation-spaceInfo-tags" id="spaceInfoTags">
+                                    <span class="tagPill tagPill-sm tag-info">一般教學</span>
+                                    <span class="tagPill tagPill-sm tag-neutral">本館3樓</span>
+                                </div>
+                                <p class="reservation-spaceInfo-name" id="spaceInfoName">電腦教室（一）</p>
+                                <p class="reservation-spaceInfo-desc" id="spaceInfoDesc">容納 30 人｜電腦 30 台、單槍投影｜最多合併 2 班</p>
+                            </div>
+                        </div>
+
+                        <div class="reservation-panel-card">
+                            <h2 class="reservation-panel-title"><span class="reservation-panel-num">2</span>批次重複預約</h2>
+
+                            <div class="reservation-field">
+                                <label for="batchDateStart">日期區間</label>
+                                <div class="filter-dateRange">
+                                    <input type="date" id="batchDateStart" class="form-control" value="2026-09-17">
+                                    <span class="filter-dateRange-sep" aria-hidden="true">～</span>
+                                    <label for="batchDateEnd" class="sr-only">結束日期</label>
+                                    <input type="date" id="batchDateEnd" class="form-control" value="2026-09-17">
+                                </div>
+                            </div>
+
+                            <div class="reservation-field">
+                                <label id="batchWeekdaysLabel">每週哪幾天</label>
+                                <div class="dropdown reservation-multiSelect">
+                                    <button type="button" class="form-select reservation-multiSelect-trigger" id="batchWeekdaysBtn"
+                                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-haspopup="true">
+                                        請選擇
+                                    </button>
+                                    <div class="dropdown-menu reservation-multiSelect-menu" id="batchWeekdaysMenu" aria-labelledby="batchWeekdaysLabel">
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="wd-mon"><label class="form-check-label" for="wd-mon">週一</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="wd-tue"><label class="form-check-label" for="wd-tue">週二</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="wd-wed"><label class="form-check-label" for="wd-wed">週三</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="wd-thu"><label class="form-check-label" for="wd-thu">週四</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="wd-fri"><label class="form-check-label" for="wd-fri">週五</label></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="reservation-field">
+                                <label id="batchPeriodsLabel">哪幾節</label>
+                                <div class="dropdown reservation-multiSelect">
+                                    <button type="button" class="form-select reservation-multiSelect-trigger" id="batchPeriodsBtn"
+                                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-haspopup="true">
+                                        請選擇
+                                    </button>
+                                    <div class="dropdown-menu reservation-multiSelect-menu" id="batchPeriodsMenu" aria-labelledby="batchPeriodsLabel">
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="pd-1"><label class="form-check-label" for="pd-1">第一節</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="pd-2"><label class="form-check-label" for="pd-2">第二節</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="pd-3"><label class="form-check-label" for="pd-3">第三節</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="pd-4"><label class="form-check-label" for="pd-4">第四節</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="pd-5"><label class="form-check-label" for="pd-5">第五節</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="pd-6"><label class="form-check-label" for="pd-6">第六節</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="pd-7"><label class="form-check-label" for="pd-7">第七節</label></div>
+                                        <div class="form-check"><input type="checkbox" class="form-check-input" id="pd-8"><label class="form-check-label" for="pd-8">第八節</label></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btnRounded btn-primary reservation-applyBtn" id="applyBatchBtn">
+                                套用規則<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </aside>
+                </div>
+
+                <!-- 步驟二：確認送出 -->
+                <div class="reservation-grid" id="stepPanel2" hidden>
+                    <div class="reservation-boardStack d-flex flex-column gap-4">
+                        <div class="reservation-panel-card" id="specialCaseCard" hidden>
+                            <h2 class="reservation-panel-title">特殊情況處理 <span class="tagPill tagPill-sm tag-dangerFill">必填</span></h2>
+                            <hr class="reservationSpecialCase-divider">
+
+                            <div class="reservationSpecialCase-block" id="mergeBlock" hidden>
+                                <div class="reservationSpecialCase-head">
+                                    <span class="reservation-panel-num">1</span>
+                                    <div>
+                                        <p class="reservationSpecialCase-title">併班處理</p>
+                                        <p class="reservationSpecialCase-desc">有 <strong id="mergeCountDesc">0</strong> 個時段已有 1 班登記，仍可申請</p>
+                                    </div>
+                                </div>
+                                <div class="radioCard-group" role="radiogroup" aria-label="併班處理方式">
+                                    <label class="radioCard">
+                                        <input type="radio" name="mergeResolution" value="join" checked>
+                                        <span class="radioCard-body">
+                                            <span class="radioCard-title">一併申請，與對方併班上課</span>
+                                            <span class="radioCard-desc">送出後會同時通知對方教師，雙方可先協商場地分區與課程安排。</span>
+                                        </span>
+                                    </label>
+                                    <label class="radioCard">
+                                        <input type="radio" name="mergeResolution" value="skip">
+                                        <span class="radioCard-body">
+                                            <span class="radioCard-title">跳過這些時段，我想單獨使用</span>
+                                            <span class="radioCard-desc">只送出完全空著的節次。</span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <button type="button" class="btnText reservationSpecialCase-toggle disclosureToggle" id="mergeToggle" aria-expanded="false" aria-controls="mergeDetail">
+                                    檢視這<span id="mergeCountToggle">0</span>筆<i class="bi bi-plus" aria-hidden="true"></i>
+                                </button>
+                                <div class="reservationSpecialCase-detail" id="mergeDetail" hidden></div>
+                            </div>
+
+                            <hr class="reservationSpecialCase-blockDivider">
+
+                            <div class="reservationSpecialCase-block" id="conflictBlock" hidden>
+                                <div class="reservationSpecialCase-head">
+                                    <span class="reservation-panel-num">2</span>
+                                    <div>
+                                        <p class="reservationSpecialCase-title">衝突處理</p>
+                                        <p class="reservationSpecialCase-desc">有 <strong id="conflictCountDesc">0</strong> 個時段無法直接預約</p>
+                                    </div>
+                                </div>
+                                <div class="radioCard-group" role="radiogroup" aria-label="衝突處理方式">
+                                    <label class="radioCard">
+                                        <input type="radio" name="conflictResolution" value="skip" checked>
+                                        <span class="radioCard-body">
+                                            <span class="radioCard-title">自動跳過這些時段</span>
+                                            <span class="radioCard-desc">只送出可預約的時段，衝突的不申請。</span>
+                                        </span>
+                                    </label>
+                                    <label class="radioCard">
+                                        <input type="radio" name="conflictResolution" value="submit">
+                                        <span class="radioCard-body">
+                                            <span class="radioCard-title">仍然送出，交由管理者裁決</span>
+                                            <span class="radioCard-desc">衝突時段一併送審，由空間管理者協調或退回；時段表上會以紅框標示。</span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <button type="button" class="btnText reservationSpecialCase-toggle disclosureToggle" id="conflictToggle" aria-expanded="false" aria-controls="conflictDetail">
+                                    檢視這<span id="conflictCountToggle">0</span>筆<i class="bi bi-plus" aria-hidden="true"></i>
+                                </button>
+                                <div class="reservationSpecialCase-detail" id="conflictDetail" hidden></div>
+                            </div>
+                        </div>
+
+                        <div class="reservation-panel-card">
+                            <div class="flex-row-between">
+                                <h2 class="reservation-panel-title">一般時段 <span class="text-primary" id="generalCount">0</span></h2>
+                                <button type="button" class="btnText disclosureToggle" id="generalToggle" aria-expanded="false" aria-controls="generalDetail">
+                                    檢視明細<i class="bi bi-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="reservationGeneral-groups" id="generalDetail" hidden></div>
+                        </div>
+                    </div>
+
+                    <aside class="reservation-panel" aria-label="送出申請">
+                        <div class="reservation-panel-card">
+                            <div class="reservationReview-headBlock">
+                                <p class="reservation-spaceInfo-name" id="reviewSpaceName"></p>
+                                <p class="reservation-spaceInfo-desc" id="reviewSpaceDesc"></p>
+                            </div>
+
+                            <p class="reservationReview-summary">已選 <strong id="reviewCount">0</strong> 個時段，分布在 <strong id="reviewDays">0</strong> 天</p>
+                            <div class="reservationReview-rangeBlock">
+                                <p class="reservationReview-line" id="reviewRange"></p>
+                                 
+                                <p class="reservationReview-line" id="reviewPattern"></p>
+                            </div>
+
+                            <div class="reservation-field mt-4">
+                                <div class="reservationReview-reasonHead">
+                                    <label for="reservationReason">預約事由</label>
+                                    <span class="tagPill tagPill-sm tag-dangerFill">必填</span>
+                                </div>
+                                <div class="reservationReview-textareaWrap">
+                                    <textarea id="reservationReason" class="form-control reservationReview-textarea" maxlength="50" placeholder="例:綜職科二年級 烘培丙級技術科練習" aria-describedby="reasonCounter reasonError"></textarea>
+                                    <p class="reservationReview-counter" id="reasonCounter">0 / 50</p>
+                                </div>
+                                <p class="reservationReview-error" id="reasonError" hidden>請填寫預約事由</p>
+                            </div>
+
+                            <div class="flex-row-between gap-3 reservationReview-actions">
+                                <button type="button" class="btnRounded btn-outline" id="backToStep1Btn">
+                                    <i class="bi bi-arrow-left" aria-hidden="true"></i>改時段
+                                </button>
+                                <button type="button" class="btnRounded btn-primary flex-fill" id="submitReservationBtn">
+                                    送出申請<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 固定底部列：已選時段數／確認送出 -->
+    <div class="reservation-bottomBar" id="reservationBottomBar" hidden>
+        <div class="container reservation-bottomBar-inner flex-row-between">
+            <p class="reservation-bottomBar-count">已選 <strong id="selectedCount">0</strong> 個時段</p>
+            <div class="flex-row-center gap-3">
+                <button type="button" class="btnRounded btn-ghost" id="resetSelectionBtn">
+                    <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>重置
+                </button>
+                <button type="button" class="btnRounded btn-primary" id="confirmSubmitBtn">
+                    確認送出<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 已送出申請 -->
+    <div class="modal fade" id="submitSuccessModal" tabindex="-1" aria-labelledby="submitSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content statusModal">
+                <span class="statusModal-circle" aria-hidden="true"></span>
+                <div class="modal-body statusModal-body">
+                    <div class="statusModal-text">
+                        <h2 class="statusModal-title" id="submitSuccessModalLabel">已送出申請</h2>
+                        <p class="statusModal-subtitle" id="submitSuccessSpaceLine"></p>
+                        <p class="statusModal-desc">審核結果會逐筆更新，可到「全校預約清單」追蹤進度。</p>
+                    </div>
+                    <div class="statusModal-illustration" aria-hidden="true">
+                        <img src="img/characters/已送出申請.png" alt="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btnRounded authModalBtn-close" data-bs-dismiss="modal">關閉</button>
+                    <a href="reservation-list.html" class="btnRounded btn-primary authModalBtn-main">
+                        前往查看預約清單<i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 移除已選時段確認 -->
+    <div class="modal fade" id="modalRemoveSlot" tabindex="-1" aria-labelledby="modalRemoveSlotLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content statusModal">
+                <span class="statusModal-circle" aria-hidden="true"></span>
+                <div class="modal-body statusModal-body">
+                    <div class="statusModal-text">
+                        <h2 class="statusModal-title" id="modalRemoveSlotLabel">確定要移除<br>這個時段？</h2>
+                        <p class="statusModal-desc statusModal-desc-emphasis" id="modalRemoveSlotLine"></p>
+                        <p class="statusModal-desc">移除後這個時段就不會送出申請。</p>
+                    </div>
+                    <div class="statusModal-illustration" aria-hidden="true">
+                        <img src="img/characters/刪除預約.png" alt="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btnPill btn-soft" data-bs-dismiss="modal">先不要</button>
+                    <button type="button" class="btnPill btn-danger flex-fill" id="confirmRemoveSlotBtn">
+                        <i class="bi bi-trash3" aria-hidden="true"></i>確認移除
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 回到頂部 -->
+    <button type="button" class="scroll-top-btn" aria-label="回到頁面頂端">
+        <i class="bi bi-arrow-up" aria-hidden="true"></i>
+        <span class="scroll-top-text">回頂端</span>
+    </button>
+
+    <div id="footer" data-layout="layout/footer.html"></div>
+
+    <script src="js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/reservationBooking.js"></script>
+</body>
+</html>

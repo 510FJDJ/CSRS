@@ -1,0 +1,93 @@
+// ============================================================
+// CSRS 設計 Token（來源：design.md §3）
+// 此檔必須在 bootstrap/scss/variables 之前載入（!default 覆寫機制）
+// ============================================================
+
+// ---- 品牌藍（主色）----
+$color-primary:       #2A6CC5; // 按鈕、連結、重點標題
+$color-primary-hover: #1840B8;
+$color-primary-dark:  #1A4FA0; // 深色區塊背景（全校預約行事曆區、登入頁 hero）
+
+// ---- 輔助色 ----
+$color-accent-orange: #F5A623; // 插圖配色、重點強調，不做大面積文字色
+$color-success:       #1F9D55;
+$color-warning:       #E08A1E;
+$color-warning-text:  #99590A; // $color-warning 同色相加深，供純文字使用（原色對白底僅約2.7:1，未達AA 4.5:1，見 design.md §3）
+$color-danger:        #D6322D;
+$color-purple:        #7C3AED; // 狀態標籤「被課表取消」
+
+// ---- 中性色 ----
+$color-ink:      #1F2937;
+$color-ink-soft: #55606E;
+$color-border:   #E2E8F0;
+$color-bg-soft:   #F4F6F9;
+$color-bg-page:   #FFFFFF; // 卡片／元件白底（header、footer、filterBar、dataTable 等共用）
+$color-bg-canvas: #FBFCFE; // 頁面畫布底色（body 專用），刻意與卡片白底有落差
+
+// ---- 無障礙焦點（ACCESSIBILITY.md §4.1）----
+$color-focus:              $color-accent-orange;
+$color-primary-focus-ring: rgba(29, 78, 216, .35);
+
+// ---- 陰影 ----
+$shadow-card:       0 8px 24px rgba(29, 78, 216, .08);
+$shadow-card-hover: 0 12px 28px rgba(29, 78, 216, .12);
+$shadow-card-white: 0px 0px 22px 0px #0035981A;
+
+// ============================================================
+// Bootstrap 5 變數覆寫
+// ============================================================
+$primary:   $color-primary;
+$success:   $color-success;
+$warning:   $color-warning;
+$danger:    $color-danger;
+
+$min-contrast-ratio: 4.5; // WCAG 2.1 AA
+
+$body-bg:    $color-bg-canvas;
+$body-color: $color-ink;
+
+$link-color:       $color-primary;
+$link-hover-color: $color-primary-hover;
+
+// 中文用 Noto Sans TC，數字／英文用 Poppins（design.md §4）
+$font-family-sans-serif: "Poppins", "Noto Sans TC", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+$font-size-base:   1rem;
+$line-height-base: 1.7;
+
+// 間距階（design.md §5：4px 基準倍數）
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: 4px,
+  2: 8px,
+  3: 12px,
+  4: 16px,
+  5: 24px,
+  6: 32px,
+  7: 48px,
+  8: 64px,
+);
+
+$border-radius:      12px;
+$border-radius-sm:   8px;
+$border-radius-lg:   16px;
+$border-radius-pill: 999px;
+
+$border-color: $color-border;
+
+$box-shadow: $shadow-card-white;
+
+// Modal／offcanvas 遮罩統一色（2026/9 使用者指定）
+$modal-backdrop-bg:      #0C182D;
+$modal-backdrop-opacity: .5;
+
+$input-border-color:       $color-border;
+$input-border-radius:      8px;
+$input-focus-border-color: $color-primary;
+$input-focus-box-shadow:   0 0 0 3px #{$color-primary-focus-ring};
+$input-placeholder-color:  #8A94A3;
+
+$form-check-input-width: 1.25em; // 放大 checkbox／radio 比例，方便點選（Bootstrap 預設 1em）
+
+$grid-gutter-width: 24px;

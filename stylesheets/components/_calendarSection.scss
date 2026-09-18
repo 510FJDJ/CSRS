@@ -1,0 +1,439 @@
+// ============================================================
+// 首頁「全校預約行事曆」滿版深藍區塊
+// CALENDAR 浮水印、分類篩選、月曆卡＋當日動態卡、底部白色圓弧收邊（CSS 繪製）
+// 人物裝飾：img/dec/行事曆女.jpg（實為透明背景 PNG）
+// ============================================================
+
+.calendar-home {
+    position: relative;
+    // overflow: clip;
+    padding: 72px 0 160px;
+    scroll-margin-top: 96px; // 抵消 sticky header（.site-header-bar 高度約 96px）遮住區塊開頭
+    background-color: $color-primary-dark;
+    color: #fff;
+
+    // 底部白色圓弧收邊
+    &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -70px;
+        width: 130%;
+        min-width: 900px;
+        height: 140px;
+        transform: translateX(-50%);
+        border-radius: 100% 100% 0 0;
+        background-color: #FBFCFE;
+    }
+
+    @media (max-width: 767.98px) {
+        padding: 56px 0 120px;
+    }
+}
+
+.calendar-home-watermark {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: $font-family-sans-serif;
+    font-size: clamp(4rem, 11vw, 8.5rem);
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: rgba(255, 255, 255, .06);
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+}
+
+.calendar-home-deco {
+    position: absolute;
+    left: 1.8vw;
+    top: -182px;
+    z-index: -1;
+    width: 280px;
+    pointer-events: none;
+
+    //  @include media-breakpoint-up(md) {
+    //     left: 300px;
+    // }
+
+    @media (max-width: 1399.98px) {
+        display: none;
+    }
+}
+
+.calendar-home-head {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    text-align: center;
+
+    h2 {
+        margin: 0;
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    p {
+        margin: 0;
+        color: rgba(255, 255, 255, .85);
+    }
+}
+
+.calendar-home-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.calendar-home-filter {
+    padding: 8px 20px;
+    border: 1px solid rgba(255, 255, 255, .55);
+    border-radius: $border-radius-pill;
+    background: none;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, .12);
+    }
+
+    &[aria-selected="true"] {
+        background-color: #fff;
+        border-color: #fff;
+        color: $color-primary-dark;
+        font-weight: 700;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $color-focus;
+        outline-offset: 2px;
+    }
+}
+
+.calendar-home-grid {
+    position: relative;
+    z-index: 1;
+    gap: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+// ---- 月曆卡（白底）----
+.calendar-home-board {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1 1 520px;
+    padding: 24px;
+    border-radius: $border-radius-lg;
+    background-color: #fff;
+    color: $color-ink;
+}
+
+.calendar-home-toolbar {
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.calendar-home-toolbar-nav {
+    gap: 8px;
+}
+
+.calendar-home-navbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid $color-border;
+    border-radius: 50%;
+    background-color: #fff;
+    color: $color-ink;
+    cursor: pointer;
+
+    &:hover {
+        border-color: $color-primary;
+        color: $color-primary;
+    }
+}
+
+.calendar-home-month {
+    padding: 0 8px;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.calendar-home-todaybtn {
+    min-height: 36px;
+}
+
+.calendar-home-view {
+    margin: 0;
+    color: $color-ink-soft;
+    font-size: .8125rem;
+
+    strong {
+        color: $color-ink;
+    }
+}
+
+.calendar-home-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    color: $color-ink-soft;
+    font-size: .8125rem;
+    text-align: center;
+}
+
+.calendar-home-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendar-home-day {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 56px;
+    padding: 6px 2px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: none;
+    cursor: pointer;
+
+    &:hover {
+        border-color: $color-border;
+        background-color: $color-bg-soft;
+    }
+
+    &.is-empty {
+        cursor: default;
+        pointer-events: none;
+    }
+
+    // 已過申請期限：灰字、斜線底
+    &.is-past {
+        color: #8A94A3;
+        cursor: not-allowed;
+        background-image: repeating-linear-gradient(
+            -45deg,
+            transparent 0 6px,
+            rgba(85, 96, 110, .06) 6px 7px
+        );
+
+        &:hover {
+            border-color: transparent;
+        }
+
+        .calendar-home-daycount {
+            color: #8A94A3;
+        }
+    }
+
+    &.is-today {
+        border-color: $color-primary;
+    }
+
+    &.is-selected {
+        border-color: $color-primary;
+        background-color: rgba($color-primary, .08);
+
+        .calendar-home-daynum {
+            font-weight: 700;
+            color: $color-primary;
+        }
+    }
+    &.has-fastest {
+         border-color: $color-accent-orange;;
+        background-color: rgba($color-accent-orange, .08);
+    }
+}
+
+.calendar-home-daynum {
+    font-family: $font-family-sans-serif;
+    font-size: .9375rem;
+    line-height: 1.2;
+}
+
+.calendar-home-daycount {
+    font-size: .6875rem;
+    color: $color-primary;
+    line-height: 1.2;
+}
+
+.calendar-home-fastest {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1px 8px;
+    border-radius: $border-radius-pill;
+    background-color: $color-accent-orange;
+    color: $color-ink;
+    font-size: .6875rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.calendar-home-legend {
+    gap: 8px 16px;
+    padding-top: 12px;
+    border-top: 1px solid $color-border;
+    color: $color-ink-soft;
+    font-size: .8125rem;
+
+    > span:first-child {
+        gap: 6px;
+    }
+}
+
+.calendar-home-legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+
+    &.is-past-dot {
+        background-color: #C6CDD8;
+    }
+
+    &.is-fastest-dot {
+        background-color: $color-accent-orange;
+        margin-left: 10px;
+    }
+}
+
+// ---- 當日動態卡（白底）----
+.calendar-home-agenda {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1 1 340px;
+    padding: 24px;
+    border-radius: $border-radius-lg;
+    background-color: #fff;
+    color: $color-ink;
+}
+
+.calendar-agenda-head {
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid $color-border;
+
+    h3 {
+        margin: 0;
+        font-size: 1.125rem;
+        font-weight: 700;
+    }
+
+    small {
+        color: $color-ink-soft;
+    }
+}
+
+.calendar-agenda-tools {
+    gap: 10px;
+}
+
+.calendar-agenda-count {
+    padding: 4px 12px;
+    border-radius: $border-radius-pill;
+    background-color: rgba($color-primary, .1);
+    color: $color-primary;
+    font-size: .8125rem;
+    font-weight: 700;
+}
+
+.calendar-agenda-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.calendar-agenda-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.calendar-agenda-period {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid $color-border;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+}
+
+.calendar-agenda-periodmeta {
+    flex: 0 0 92px;
+    gap: 2px;
+
+    strong {
+        font-size: .9375rem;
+    }
+
+    span {
+        color: $color-ink-soft;
+        font-size: .8125rem;
+        font-family: $font-family-sans-serif;
+    }
+}
+
+.calendar-agenda-entries {
+    flex: 1 1 auto;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.calendar-agenda-entry {
+    > span {
+        gap: 8px;
+        flex-wrap: wrap;
+
+        strong {
+            font-size: .9375rem;
+        }
+    }
+
+    small {
+        display: block;
+        color: $color-ink-soft;
+    }
+}
+
+.calendar-agenda-more {
+    align-self: center;
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+.calendar-agenda-empty {
+    padding: 24px 0;
+    color: $color-ink-soft;
+    font-size: .875rem;
+    text-align: center;
+}
