@@ -17472,6 +17472,10 @@ textarea:focus-visible {
   font-size: 0.8125rem;
 }
 
+.modal-dialog:has(.statusModal) {
+  --bs-modal-width: 600px;
+}
+
 .statusModal {
   position: relative;
   overflow: clip;
@@ -17517,7 +17521,7 @@ textarea:focus-visible {
   margin: 0;
   color: #1F2937;
   font-size: 1rem;
-  max-width: 200px;
+  max-width: 260px;
 }
 .statusModal-subtitle strong {
   color: #2A6CC5;
@@ -17538,7 +17542,7 @@ textarea:focus-visible {
   width: 220px;
   position: absolute;
   bottom: 0px;
-  left: 260px;
+  left: 350px;
 }
 .statusModal-illustration img {
   display: block;
@@ -17564,7 +17568,8 @@ textarea:focus-visible {
   .statusModal-illustration {
     width: 180px;
     bottom: 0px;
-    left: 240px;
+    left: 50%;
+    opacity: 0.3;
   }
   .statusModal-circle {
     top: -50px;

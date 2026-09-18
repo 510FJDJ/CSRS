@@ -5,6 +5,11 @@
 // footer 按鈕沿用 _login.scss 既有的 .authModalBtn-close／-main／-full（已是通用的 flex 版位樣式，非 auth 專屬邏輯）
 // ============================================================
 
+// 預設 Bootstrap modal 寬度（500px）放不下固定 left 位置的出血插圖＋文字欄，統一加寬
+.modal-dialog:has(.statusModal) {
+    --bs-modal-width: 600px;
+}
+
 .statusModal {
     position: relative;
     overflow: clip;
@@ -48,7 +53,7 @@
     margin: 0;
     color: $color-ink;
     font-size: 1rem;
-    max-width: 200px;
+    max-width: 260px;
     strong{
         color:$color-primary;
     }
@@ -70,7 +75,7 @@
     width: 220px;
     position: absolute;
     bottom:0px;
-    left:260px;
+    left:350px;
 
     img {
         display: block;
@@ -99,7 +104,8 @@
     .statusModal-illustration {
         width: 180px;
         bottom:0px;
-        left:240px;
+        left:50%;
+        opacity: 0.3;
     }
 
     .statusModal-circle {
