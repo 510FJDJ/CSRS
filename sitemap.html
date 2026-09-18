@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <script>
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo/logo-uni.svg" type="image/svg+xml">
+    <title>網站導覽 - 彰特空間預約</title>
+    <meta name="description" content="彰特空間預約系統網站導覽，列出全站頁面連結與鍵盤操作說明。">
+
+    <link rel="stylesheet" href="css/all.css">
+</head>
+<body>
+    <a href="#goCenter" class="sr-only focusable" accesskey="C" title="跳過導覽列，進入主要內容區">主要內容區</a>
+    <a href="#headerNav" class="sr-only focusable" accesskey="U" title="跳至上方導覽列" tabindex="-1">上方導覽列</a>
+
+    <div id="header" data-layout="layout/header.html"></div>
+
+    <main id="goCenter" tabindex="-1">
+        <section class="page-banner">
+            <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+                <defs>
+                    <linearGradient id="bannerArcGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="15.87%" stop-color="#084DC7" stop-opacity=".58"/>
+                        <stop offset="62.02%" stop-color="#DDE9FC"/>
+                    </linearGradient>
+                    <clipPath id="bannerDotsClip" clipPathUnits="objectBoundingBox">
+                        <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <svg class="page-banner-arc" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path class="page-banner-arc-mask" d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05 L1,1 L0,1 Z"/>
+                <path d="M0,0.05 C0.25,0.75 0.75,0.75 1,0.05" fill="none" stroke="url(#bannerArcGradient)" stroke-width="1" stroke-dasharray="6 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <img class="page-banner-mountain" src="img/dec/內頁背景banner素材/Subtract.svg" alt="">
+
+            <div class="container page-banner-content">
+                <nav class="page-banner-breadcrumb" aria-label="麵包屑導覽">
+                    <ol>
+                        <li>
+                            <a class="breadcrumb-home" href="index.html" aria-label="首頁">
+                                <i class="bi bi-house-door" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li aria-current="page">網站導覽</li>
+                    </ol>
+                </nav>
+
+                <div class="page-banner-main flex-row-between">
+                    <div class="page-banner-text">
+                        <h1 class="page-banner-title">網站導覽</h1>
+                        <p class="page-banner-desc">列出全站頁面連結，並提供鍵盤快速鍵操作說明，方便使用鍵盤或輔助科技的使用者快速定位。</p>
+                    </div>
+                    <div class="page-banner-visual" aria-hidden="true">
+                        <img src="img/dec/內頁背景banner素材/人物組圖.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pb-8">
+            <div class="container">
+                <div class="infoCard">
+                    <p class="infoCard-lead mb-5">本系統全站皆可單靠 <strong>Tab</strong>＋<strong>Enter</strong> 鍵完整操作，並提供下列快速鍵直接定位到頁面各區：</p>
+
+                    <h2 class="infoCard-sectionTitle mb-4">鍵盤操作說明</h2>
+                    <div class="flex-column gap-3 mb-4">
+                        <div class="flex-row-start flex-wrap gap-3">
+                            <div class="kbdCombo flex-row-center gap-1">
+                                <span class="kbdCombo-key">Alt</span><span class="kbdCombo-plus">+</span><span class="kbdCombo-key">U</span>
+                            </div>
+                            <p class="kbdCombo-desc mb-0">移至頁面「上方導覽列」，可回到首頁、查看全校預約清單或登入系統。</p>
+                        </div>
+                        <div class="flex-row-start flex-wrap gap-3">
+                            <div class="kbdCombo flex-row-center gap-1">
+                                <span class="kbdCombo-key">Alt</span><span class="kbdCombo-plus">+</span><span class="kbdCombo-key">C</span>
+                            </div>
+                            <p class="kbdCombo-desc mb-0">跳過導覽列，直接進入頁面主要內容區。</p>
+                        </div>
+                        <div class="flex-row-start flex-wrap gap-3">
+                            <div class="kbdCombo flex-row-center gap-1">
+                                <span class="kbdCombo-key">Alt</span><span class="kbdCombo-plus">+</span><span class="kbdCombo-key">Z</span>
+                            </div>
+                            <p class="kbdCombo-desc mb-0">移至頁尾「資訊區」，可查看聯絡電話、地址與相關連結。</p>
+                        </div>
+                    </div>
+                    <p class="noticeBox mb-0">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i>
+                        <span>Firefox 瀏覽器請改按 <strong>Shift+Alt+按鍵</strong>。</span>
+                    </p>
+
+                    <h2 class="infoCard-sectionTitle mt-6 mb-4">網站導覽</h2>
+                    <div class="row g-4">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="siteNavGroup">
+                                <h3 class="siteNavGroup-title mb-3">訪客頁面</h3>
+                                <ul class="siteNavGroup-list flex-column gap-2 list-unstyled">
+                                    <li><a href="index.html">首頁</a></li>
+                                    <li><a href="reservation-list.html">全校預約清單</a></li>
+                                    <li><a href="login.html">登入</a></li>
+                                    <li aria-current="page" class="siteNavGroup-current">網站導覽（目前頁面）</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="siteNavGroup">
+                                <h3 class="siteNavGroup-title mb-3">教職員頁面</h3>
+                                <ul class="siteNavGroup-list flex-column gap-2 list-unstyled">
+                                    <li><a href="reservation.html">我要預約</a></li>
+                                    <li><a href="my-reservations.html">我的預約</a></li>
+                                    <li><a href="change-password.html">修改密碼</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="siteNavGroup">
+                                <h3 class="siteNavGroup-title mb-3">系統管理員頁面</h3>
+                                <ul class="siteNavGroup-list flex-column gap-2 list-unstyled">
+                                    <li><a href="space-overview.html">空間使用總覽</a></li>
+                                    <li><a href="review.html">審核管理</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button type="button" class="scroll-top-btn" aria-label="回到頁面頂端">
+        <i class="bi bi-arrow-up" aria-hidden="true"></i>
+        <span class="scroll-top-text">回頂端</span>
+    </button>
+
+    <div id="footer" data-layout="layout/footer.html"></div>
+
+    <script src="js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

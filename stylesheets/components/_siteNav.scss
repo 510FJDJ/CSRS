@@ -1,0 +1,76 @@
+// 網站導覽頁（sitemap.html）專屬元件：白底內容卡＋鍵盤操作說明＋角色分類頁面清單
+
+.infoCard {
+    position: relative;
+    z-index: 2;
+    margin-top: -100px;
+    padding: 24px 32px;
+    border-radius: 20px;
+    background-color: $color-bg-page;
+    box-shadow: $shadow-card-white;
+
+    @media (max-width: 992px) {
+        margin-top: -40px;
+        padding: 20px;
+    }
+}
+
+.infoCard-lead {
+    color: $color-ink-soft;
+}
+
+.infoCard-sectionTitle {
+    color: $color-primary;
+    font-size: 1.5rem;
+}
+
+.kbdCombo {
+    padding: 6px 10px;
+    border-radius: $border-radius-sm;
+    background-color: $color-bg-soft;
+    white-space: nowrap;
+}
+
+.kbdCombo-key {
+    padding: 2px 8px;
+    border: 1px solid $color-border;
+    border-radius: 6px;
+    background-color: $color-bg-page;
+    box-shadow: 0 2px 0 $color-border;
+    color: $color-ink;
+    font-weight: 500;
+    font-size: .9rem;
+}
+
+.kbdCombo-plus {
+    color: $color-ink-soft;
+}
+
+.kbdCombo-label {
+    color: $color-ink-soft;
+    font-size: .85rem;
+}
+
+.kbdCombo-desc {
+    color: $color-ink-soft;
+}
+
+.siteNavGroup-title {
+    color: $color-ink;
+    font-size: 1.1rem;
+}
+
+.siteNavGroup-list a {
+    color: $color-primary;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+        text-decoration: underline;
+    }
+}
+
+.siteNavGroup-current {
+    color: $color-ink-soft;
+    font-weight: 500;
+}

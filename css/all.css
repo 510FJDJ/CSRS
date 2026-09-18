@@ -17020,7 +17020,7 @@ textarea:focus-visible {
   padding: 8px 12px;
   border-radius: 8px;
   background-color: rgba(42, 108, 197, 0.06);
-  color: #55606E;
+  color: #2A6CC5;
   font-size: 0.9375rem;
   line-height: 1.6;
 }
@@ -19806,4 +19806,77 @@ textarea:focus-visible {
   .scheduleBoard {
     padding: 16px;
   }
+}
+.infoCard {
+  position: relative;
+  z-index: 2;
+  margin-top: -100px;
+  padding: 24px 32px;
+  border-radius: 20px;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 22px 0px rgba(0, 53, 152, 0.1019607843);
+}
+@media (max-width: 992px) {
+  .infoCard {
+    margin-top: -40px;
+    padding: 20px;
+  }
+}
+
+.infoCard-lead {
+  color: #55606E;
+}
+
+.infoCard-sectionTitle {
+  color: #2A6CC5;
+  font-size: 1.5rem;
+}
+
+.kbdCombo {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background-color: #F4F6F9;
+  white-space: nowrap;
+}
+
+.kbdCombo-key {
+  padding: 2px 8px;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 0 #E2E8F0;
+  color: #1F2937;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.kbdCombo-plus {
+  color: #55606E;
+}
+
+.kbdCombo-label {
+  color: #55606E;
+  font-size: 0.85rem;
+}
+
+.kbdCombo-desc {
+  color: #55606E;
+}
+
+.siteNavGroup-title {
+  color: #1F2937;
+  font-size: 1.1rem;
+}
+
+.siteNavGroup-list a {
+  color: #2A6CC5;
+  text-decoration: none;
+}
+.siteNavGroup-list a:hover, .siteNavGroup-list a:focus-visible {
+  text-decoration: underline;
+}
+
+.siteNavGroup-current {
+  color: #55606E;
+  font-weight: 500;
 }/*# sourceMappingURL=all.css.map */
