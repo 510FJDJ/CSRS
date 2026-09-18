@@ -15195,6 +15195,14 @@ textarea:focus-visible {
 .site-header-user {
   position: relative;
 }
+.site-header-user::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
 
 .site-header-user-trigger {
   gap: 10px;
@@ -15287,12 +15295,13 @@ textarea:focus-visible {
     transition: none;
   }
 }
-.site-header-user:hover .site-header-user-menu {
+.site-header-user:hover .site-header-user-menu,
+.site-header-user-trigger[aria-expanded=true] + .site-header-user-menu {
   display: block;
   top: 100%;
   right: 0;
   left: auto;
-  margin-top: 0.125rem;
+  margin-top: 10px;
 }
 
 .site-header-user-menu {
@@ -16958,11 +16967,11 @@ textarea:focus-visible {
 }
 
 .steps-item:nth-child(1) .steps-item-visual {
-  max-width: 300px;
+  max-width: 280px;
 }
 
 .steps-item:nth-child(2) .steps-item-visual {
-  max-width: 200px;
+  max-width: 205px;
 }
 
 .steps-item:nth-child(3) .steps-item-visual {
@@ -17001,7 +17010,7 @@ textarea:focus-visible {
     max-width: 150px;
   }
   .steps-item:nth-child(3) .steps-item-visual {
-    max-width: 180px;
+    max-width: 170px;
   }
 }
 .noticeBox {

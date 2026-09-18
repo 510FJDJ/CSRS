@@ -4,6 +4,17 @@
 
 .site-header-user {
     position: relative;
+
+    // 按鈕與選單之間有 10px 視覺間隔（margin-top），但 margin 不屬於可 hover 範圍，
+    // 滑鼠從按鈕移向選單途中會先離開 :hover 判定導致選單消失，故加透明橋接偽元素蓋住這段間隔
+    &::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        height: 10px;
+    }
 }
 
 .site-header-user-trigger {
@@ -106,13 +117,16 @@
 }
 
 // 滑鼠 hover 於整個使用者選單區塊（按鈕＋選單）時，直接展開下拉選單；
-// 鍵盤 Tab+Enter 仍走 Bootstrap 原生點擊切換（aria-expanded／.show），兩者並存。
-.site-header-user:hover .site-header-user-menu {
+// 鍵盤 Tab+Enter／點擊仍走 Bootstrap 原生切換（aria-expanded／.show），
+// 觸發按鈕已加 data-bs-display="static" 關閉 Popper 自動定位，兩種觸發方式共用同一組定位，
+// 間距與 .site-admin-nav-menu（第二排下拉）統一為 10px
+.site-header-user:hover .site-header-user-menu,
+.site-header-user-trigger[aria-expanded="true"] + .site-header-user-menu {
     display: block;
     top: 100%;
     right: 0;
     left: auto;
-    margin-top: $dropdown-spacer;
+    margin-top: 10px;
 }
 
 .site-header-user-menu {

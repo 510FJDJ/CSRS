@@ -151,11 +151,11 @@ $steps-wave-front: #F1F6FD;
 // 三張插圖原始畫布留白比例不同（查詢空間.png 含電腦視窗、留白較多），
 // 若同寬顯示臉部會大小不一，故各自校正 max-width 讓臉部視覺尺寸一致
 .steps-item:nth-child(1) .steps-item-visual {
-    max-width: 300px;
+    max-width: 280px;
 }
 
 .steps-item:nth-child(2) .steps-item-visual {
-    max-width: 200px;
+    max-width: 205px;
 }
 
 .steps-item:nth-child(3) .steps-item-visual {
@@ -194,6 +194,6 @@ $steps-wave-front: #F1F6FD;
     max-width: 150px;
 }
 .steps-item:nth-child(3) .steps-item-visual {
-    max-width: 180px;
+    max-width: 170px;
 }
 }
